@@ -18,7 +18,7 @@ public class LoginRequest {
     public static boolean passwordValidation(String email, String password) {
         try (Session session = sessionFactory.openSession()) {
             // Assuming UserDriver is an entity representing users with a 'password' property
-            Query<UserDriver> query = session.createQuery("SELECT ud FROM UserDriver ud WHERE ud.Email = :email", UserDriver.class);
+            Query<UserDriver> query = session.createQuery("SELECT ud FROM UserDriver ud WHERE ud.email = :email", UserDriver.class);
             query.setParameter("email", email);
             UserDriver user = query.uniqueResult();
 

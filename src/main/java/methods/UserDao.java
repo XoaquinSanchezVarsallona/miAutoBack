@@ -29,12 +29,12 @@ public class UserDao { // User Data Access Objects
 
         post("/register", (req, res) -> {
             try {
-                UserDriver user = gson.fromJson(req.body(), UserDriver.class);
-                RegisterRequest.saveInBd(user);
+                // UserDriver user = gson.fromJson(req.body(), UserDriver.class);
+                // RegisterRequest.saveInBd(user);
                 res.status(201);
                 return "User registered successfully!";
             } catch (Exception e) {
-                res.status(401);
+                res.status(500);
                 return "An error occurred while registering the user: " + e.getMessage();
             }
         });
