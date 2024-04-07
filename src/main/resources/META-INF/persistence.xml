@@ -15,7 +15,7 @@
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbc.JDBCDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:file:/home/matias/Downloads/hsqldb-2.7.2/hsqldb/db;shutdown=true"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:hsqldb:hsql://localhost/miAutoDB;shutdown=true"/>
             <property name="javax.persistence.jdbc.user" value="sa"/>
             <property name="javax.persistence.jdbc.password" value=""/>
 
