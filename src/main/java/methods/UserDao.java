@@ -9,7 +9,7 @@ public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
 
-        port(8082);
+        port(9001);
 
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -21,7 +21,6 @@ public class UserDao { // User Data Access Objects
             if (accessControlRequestMethod != null) {
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
             }
-
             return "OK";
         });
 
@@ -40,10 +39,11 @@ public class UserDao { // User Data Access Objects
         });
 
         //puerto que spark escucha
-        port(8082);
         //ruta para un posteo del login
         post("/login", (req, res) -> {
             try {
+                System.out.println(req.body());
+                System.out.println(res);
                 // tengo el JSON string
                 String requestBody = req.body();
 
@@ -54,19 +54,24 @@ public class UserDao { // User Data Access Objects
                 String email = jsonObj.get("email").getAsString();
                 String password = jsonObj.get("password").getAsString();
 
+                System.out.println(email);
+                System.out.println(password);
+
                 // Validate the password
-                boolean isValid = LoginRequest.passwordValidation(email, password);
+                //boolean isValid = LoginRequest.passwordValidation(email, password);
+                boolean isValid = true;
+
 
                 // si el usuario existe y los datos son correctos.
                 if (isValid) {
                     res.status(200); //manda respuesta positiva al frontend
+                    System.out.println("se loggineeooooooooooooooooo");
                     return "User logged in successfully!";
                 } else {
                     res.status(401); // 401 Unauthorized
                     return "User not found or password incorrect";
                 }
             } catch (Exception e) {
-                e.printStackTrace();
                 res.status(500); // 500 Internal Server Error
                 return "An error occurred";
             }
