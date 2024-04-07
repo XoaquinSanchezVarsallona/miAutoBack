@@ -9,10 +9,34 @@ public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
 
+        port(8082);
+
+        options("/*", (request, response) -> {
+            String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
+            if (accessControlRequestHeaders != null) {
+                response.header("Access-Control-Allow-Headers", accessControlRequestHeaders);
+            }
+
+            String accessControlRequestMethod = request.headers("Access-Control-Request-Method");
+            if (accessControlRequestMethod != null) {
+                response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
+            }
+
+            return "OK";
+        });
+
+        before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+
         post("/register", (req, res) -> {
-            UserDriver user = gson.fromJson(req.body(), UserDriver.class);
-            RegisterRequest.saveInBd(user);
-            return "User registered successfully!";
+            try {
+                UserDriver user = gson.fromJson(req.body(), UserDriver.class);
+                RegisterRequest.saveInBd(user);
+                res.status(201);
+                return "User registered successfully!";
+            } catch (Exception e) {
+                res.status(401);
+                return "An error occurred while registering the user: " + e.getMessage();
+            }
         });
 
         //ruta para un posteo del login

@@ -8,7 +8,6 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-
 public class LoginRequest {
     // El SessionFactory que crea las sessiones para hacer los query.
     static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
