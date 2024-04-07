@@ -1,7 +1,6 @@
 package org.austral.ing.lab1;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,24 +12,24 @@ public class UserDriver {
     private long idDriver;
 
     @Column(nullable = false, unique = true)
-    public String Username;
+    public String username;
 
     @Column(nullable= false, unique = true)
-    public String Email;
+    public String email;
 
     @Column
-    public String Name;
+    public String name;
 
     @Column
-    public String Surname;
+    public String surname;
 
     @Column
-    public String Password;
+    public String password;
 
     //entiendo q esto lo usariamos para en un futuro buscar mecanicos cerca del domicilio. habria q pensar si no conviene pedir provincia y ciudad, xq si nos pasan "tigre avenida bancalari 1200 barrio las aguas"
     //no nos va a servir tanto. estaría bueno simplificarlo capaz, tipo q sea [provincia][ciudad] o algo asi.
     @Column
-    public String Domicilio;
+    public String domicilio;
 
     //dicen q hace falta? de ser asi, habría q pasarle al constructor la date del momento.
     //@Column
@@ -49,12 +48,12 @@ public class UserDriver {
 
     //constructores
     public UserDriver(String Email, String Username, String Name, String Surname, String Password, String Domicilio) {
-        this.Email = Email;
-        this.Username = Username;
-        this.Password = Password;
-        this.Domicilio = Domicilio;
-        this.Name = Name;
-        this.Surname = Surname;
+        this.email = Email;
+        this.username = Username;
+        this.password = Password;
+        this.domicilio = Domicilio;
+        this.name = Name;
+        this.surname = Surname;
     }
 
     public UserDriver() {
@@ -67,6 +66,6 @@ public class UserDriver {
     }
 
     public String getPassword() {
-        return this.Password;
+        return this.password;
     }
 }
