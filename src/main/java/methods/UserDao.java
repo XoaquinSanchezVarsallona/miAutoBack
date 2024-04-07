@@ -15,28 +15,36 @@ public class UserDao { // User Data Access Objects
             return "User registered successfully!";
         });
 
+        //puerto que spark escucha
+        port(8082);
         //ruta para un posteo del login
         post("/login", (req, res) -> {
-            // tengo el JSON string
-            String requestBody = req.body();
+            try {
+                // tengo el JSON string
+                String requestBody = req.body();
 
-            // lo parseo a un objeto json al string
-            JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
+                // lo parseo a un objeto json al string
+                JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
 
-            // extraigo mail y password
-            String email = jsonObj.get("email").getAsString();
-            String password = jsonObj.get("password").getAsString();
+                // extraigo mail y password
+                String email = jsonObj.get("email").getAsString();
+                String password = jsonObj.get("password").getAsString();
 
-            // Validate the password
-            boolean isValid = LoginRequest.passwordValidation(email, password);
+                // Validate the password
+                boolean isValid = LoginRequest.passwordValidation(email, password);
 
-            // si el usuario existe y los datos son correctos.
-            if (isValid) {
-                res.status(200); //manda respuesta positiva al frontend
-                return "User logged in successfully!";
-            } else {
-                res.status(401); // 401 Unauthorized
-                return "User not found or password incorrect";
+                // si el usuario existe y los datos son correctos.
+                if (isValid) {
+                    res.status(200); //manda respuesta positiva al frontend
+                    return "User logged in successfully!";
+                } else {
+                    res.status(401); // 401 Unauthorized
+                    return "User not found or password incorrect";
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                res.status(500); // 500 Internal Server Error
+                return "An error occurred";
             }
         });
     }
