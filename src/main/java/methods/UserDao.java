@@ -31,9 +31,10 @@ public class UserDao { // User Data Access Objects
             try {
                 // Una forma de crear un user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-                UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
+                System.out.println(jsonObj.get("domicilio").getAsString() + "sssssssssssssssss");
+                // UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
                 // Otra forma de crear un user
-                UserDriver user2 = gson.fromJson(req.body(), UserDriver.class);
+                // UserDriver user2 = gson.fromJson(req.body(), UserDriver.class);
 
                 // Esto persiste el objeto en la base de datos
                 // RegisterRequest.saveInBd(user);
