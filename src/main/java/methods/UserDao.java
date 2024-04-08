@@ -10,7 +10,7 @@ public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
 
-        port(9001);
+        port(9002);
 
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -64,8 +64,8 @@ public class UserDao { // User Data Access Objects
                 System.out.println(password);
 
                 // Validate the password
-                //boolean isValid = LoginRequest.passwordValidation(email, password);
-                boolean isValid = true;
+                boolean isValid = LoginRequest.passwordValidation(email, password);
+                //boolean isValid = true;
 
 
                 // si el usuario existe y los datos son correctos.
