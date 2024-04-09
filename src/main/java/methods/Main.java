@@ -3,7 +3,7 @@ package methods;
 
 import org.austral.ing.lab1.Car;
 import org.austral.ing.lab1.Familia;
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -46,7 +46,7 @@ public class Main {
 
     private static void sample2(EntityManager entityManager) {
         // Creo un conductor, una familia y un auto.
-        UserDriver maxVerstappen = new UserDriver("max234@gmail.com", "Maxiver123", "Max", "Verstappen", "passwordMax", "buenos aires - la matanza");
+        User maxVerstappen = new User("max234@gmail.com", "Maxiver123", "Max", "Verstappen", "passwordMax", "buenos aires - la matanza", "driver");
 
         //comienza transacción //
         entityManager.getTransaction().begin();

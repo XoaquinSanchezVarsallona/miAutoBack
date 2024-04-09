@@ -1,19 +1,19 @@
 package methods;
 
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
 import javax.persistence.EntityManager;
 
 public class LoginRequest {
-    //IMPLEMENTADO SOLO PARA USERDRIVER POR AHORA.
-    public static boolean passwordValidation(String email, String password, EntityManager entityManager) {
+    public static boolean passwordValidation(String email, String password, String userType, EntityManager entityManager) {
         try {
             // Assuming UserDriver is an entity representing users with a 'password' property
-            javax.persistence.TypedQuery<UserDriver> query = entityManager.createQuery("SELECT ud FROM UserDriver ud WHERE ud.email = :email", UserDriver.class);
+            javax.persistence.TypedQuery<User> query = entityManager.createQuery("SELECT ud FROM User ud WHERE ud.email = :email AND ud.userType = :userType", User.class);
             query.setParameter("email", email);
-            UserDriver user = query.getSingleResult();
+            query.setParameter("userType", userType);
+            User user = query.getSingleResult();
 
             // Replace this password check with a secure password verification method
             // such as BCrypt or another secure hashing algorithm
