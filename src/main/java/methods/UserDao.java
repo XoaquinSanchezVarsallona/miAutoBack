@@ -29,7 +29,7 @@ public class UserDao { // User Data Access Objects
 
         post("/register", (req, res) -> {
             try {
-                // Una forma de crear un user
+                // Creo el user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
                 UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
 
