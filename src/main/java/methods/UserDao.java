@@ -12,7 +12,6 @@ public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
-        final EntityManager entityManager = factory.createEntityManager();
 
         port(9002);
 
@@ -33,6 +32,8 @@ public class UserDao { // User Data Access Objects
 
         post("/register", (req, res) -> {
             try {
+                final EntityManager entityManager = factory.createEntityManager();
+
                 // Creo el user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
 
@@ -43,6 +44,8 @@ public class UserDao { // User Data Access Objects
 
                 User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
                 RegisterRequest.saveInBd(user, entityManager);
+                entityManager.close();
+
 
                 res.status(201);
                 return "Usuario registrado exitosamente!";
@@ -55,6 +58,8 @@ public class UserDao { // User Data Access Objects
         // Ruta para un posteo del login
         post("/login", (req, res) -> {
             try {
+                final EntityManager entityManager = factory.createEntityManager();
+
                 // tengo el JSON string
                 String requestBody = req.body();
 
@@ -62,22 +67,36 @@ public class UserDao { // User Data Access Objects
                 JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
                 String email = jsonObj.get("email").getAsString();
                 String password = jsonObj.get("password").getAsString();
+                String userType = jsonObj.get("userType").getAsString();
 
-                User user = findUserByEmail(email, entityManager);
+                User user = LoginRequest.findUserByEmail(email, entityManager);
                 if (user == null) {
                     res.status(404); // Not Found
                     return "User not found";
                 }
 
+
                 // Validate the password
                 boolean isValid = LoginRequest.passwordValidation(jsonObj.get("email").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("userType").getAsString(),entityManager);
-                if (!isValid) {
-                    res.status(401); // Unauthorized
-                    return "Incorrect password, ";
+                entityManager.close();
+
+                if (isValid) {
+                    res.status(200);
+                    return "User logged in successfully!";
+                } else {
+                    if (user == null) {
+                        res.status(404);
+                        return "User not found";
+                    } else if (!user.getUserType().equalsIgnoreCase(userType)) {
+                        res.status(401);
+                        return "Incorrect account type";
+                    } else {
+                        res.status(401);
+                        return "Incorrect password, try again.";
+                    }
                 }
 
-                res.status(200);
-                return "User logged in successfully!";
+
             } catch (Exception e) {
                 res.status(500); // 500 Internal Server Error
                 return "An error occurred";
@@ -102,16 +121,6 @@ public class UserDao { // User Data Access Objects
         } catch (NoResultException e) {
             //no existen usuarios con ese username o mail
             return false;
-        }
-    }
-
-    public static User findUserByEmail(String email, EntityManager entityManager) {
-        try {
-            TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
-            query.setParameter("email", email);
-            return query.getSingleResult();  // Will throw NoResultException if no user found
-        } catch (NoResultException e) {
-            return null;  // Return null if no user is found
         }
     }
 

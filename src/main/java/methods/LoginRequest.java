@@ -1,26 +1,44 @@
 package methods;
 
 import org.austral.ing.lab1.User;
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+//import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+import java.util.Objects;
 
 public class LoginRequest {
     public static boolean passwordValidation(String email, String password, String userType, EntityManager entityManager) {
         try {
-            // Assuming UserDriver is an entity representing users with a 'password' property
-            javax.persistence.TypedQuery<User> query = entityManager.createQuery("SELECT ud FROM User ud WHERE ud.email = :email AND ud.userType = :userType", User.class);
-            query.setParameter("email", email);
-            query.setParameter("userType", userType);
-            User user = query.getSingleResult();
+            User user = findUserByEmail(email, entityManager);
 
+            if (user == null) {
+                return false;
+            }
+
+
+            //boolean isPasswordCorrect = BCrypt.checkpw(password, user.getPassword());
+            boolean isPasswordCorrect = Objects.equals(password, user.getPassword());
+
+            boolean isUserTypeCorrect = user.getUserType().equalsIgnoreCase(userType);
+
+            return isPasswordCorrect && isUserTypeCorrect;
             // Replace this password check with a secure password verification method
             // such as BCrypt or another secure hashing algorithm
-            return user != null && user.getPassword().equals(password);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    static User findUserByEmail(String email, EntityManager entityManager) {
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         }
     }
 
