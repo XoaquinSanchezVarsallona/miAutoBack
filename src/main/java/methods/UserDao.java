@@ -2,8 +2,7 @@ package methods;
 import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserDao { // User Data Access Objects
@@ -32,9 +31,9 @@ public class UserDao { // User Data Access Objects
             try {
                 // Una forma de crear un user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-                UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
+                User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
                 // Otra forma de crear un user
-                UserDriver user2 = gson.fromJson(req.body(), UserDriver.class);
+                User user2 = gson.fromJson(req.body(), User.class);
 
                 // Esto persiste el objeto en la base de datos
                 // RegisterRequest.saveInBd(user);
@@ -73,8 +72,8 @@ public class UserDao { // User Data Access Objects
         });
     }
 
-    private static UserDriver createUserDriver(String email, String username, String name, String surname, String password, String domicilio) {
-        return new UserDriver(email, username, name, surname, password, domicilio);
+    private static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio) {
+        return new User(email, username, name, surname, password, domicilio);
     }
 
     // Previo al login o al registro, el usuario debería poder decidir si entrar como userDriver o userService.

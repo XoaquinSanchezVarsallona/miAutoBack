@@ -1,12 +1,10 @@
 package methods;
 
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-
-import java.util.List;
 
 public class LoginRequest {
     // El SessionFactory que crea las sessiones para hacer los query.
@@ -18,9 +16,9 @@ public class LoginRequest {
     public static boolean passwordValidation(String email, String password) {
         try (Session session = sessionFactory.openSession()) {
             // Assuming UserDriver is an entity representing users with a 'password' property
-            Query<UserDriver> query = session.createQuery("SELECT ud FROM UserDriver ud WHERE ud.email = :email", UserDriver.class);
+            Query<User> query = session.createQuery("SELECT ud FROM User ud WHERE ud.email = :email", User.class);
             query.setParameter("email", email);
-            UserDriver user = query.uniqueResult();
+            User user = query.uniqueResult();
 
             // Replace this password check with a secure password verification method
             // such as BCrypt or another secure hashing algorithm

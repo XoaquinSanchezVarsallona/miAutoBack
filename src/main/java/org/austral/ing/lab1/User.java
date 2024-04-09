@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class UserDriver {
+public class User {
 
     @Id
     @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
@@ -47,7 +47,7 @@ public class UserDriver {
 
 
     //constructores
-    public UserDriver(String Email, String Username, String Name, String Surname, String Password, String Domicilio) {
+    public User(String Email, String Username, String Name, String Surname, String Password, String Domicilio) {
         this.email = Email;
         this.username = Username;
         this.password = Password;
@@ -56,13 +56,17 @@ public class UserDriver {
         this.surname = Surname;
     }
 
-    public UserDriver() {
+    public User() {
 
     }
 
     //obtener las familias a las que pertenece el usuario
     public List<Familia> getFamilias() {
         return familias;
+    }
+
+    public void addFamily(Familia familia) {
+        familias.add(familia);
     }
 
     public String getPassword() {
