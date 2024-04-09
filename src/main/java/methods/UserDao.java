@@ -2,14 +2,21 @@ package methods;
 import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import org.austral.ing.lab1.User;
+import com.google.gson.JsonSyntaxException;
+import org.austral.ing.lab1.UserDriver;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
+        final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+        final EntityManager entityManager = factory.createEntityManager();
 
-        port(8082);
+        port(9002);
 
         options("/*", (request, response) -> {
             String accessControlRequestHeaders = request.headers("Access-Control-Request-Headers");
@@ -21,7 +28,6 @@ public class UserDao { // User Data Access Objects
             if (accessControlRequestMethod != null) {
                 response.header("Access-Control-Allow-Methods", accessControlRequestMethod);
             }
-
             return "OK";
         });
 
@@ -29,14 +35,12 @@ public class UserDao { // User Data Access Objects
 
         post("/register", (req, res) -> {
             try {
-                // Una forma de crear un user
+                // Creo el user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-                User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
-                // Otra forma de crear un user
-                User user2 = gson.fromJson(req.body(), User.class);
+                UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
 
                 // Esto persiste el objeto en la base de datos
-                // RegisterRequest.saveInBd(user);
+                RegisterRequest.saveInBd(user, entityManager);
 
                 res.status(201);
                 return "User registered successfully!";
@@ -46,34 +50,35 @@ public class UserDao { // User Data Access Objects
             }
         });
 
-        //ruta para un posteo del login
+        // Ruta para un posteo del login
         post("/login", (req, res) -> {
-            // tengo el JSON string
-            String requestBody = req.body();
+            try {
+                // tengo el JSON string
+                String requestBody = req.body();
 
-            // lo parseo a un objeto json al string
-            JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
+                // lo parseo a un objeto json al string
+                JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
 
-            // extraigo mail y password
-            String email = jsonObj.get("email").getAsString();
-            String password = jsonObj.get("password").getAsString();
+                // Validate the password
+                boolean isValid = LoginRequest.passwordValidation(jsonObj.get("email").getAsString(), jsonObj.get("password").getAsString(), entityManager);
 
-            // Validate the password
-            boolean isValid = LoginRequest.passwordValidation(email, password);
-
-            // si el usuario existe y los datos son correctos.
-            if (isValid) {
-                res.status(200); //manda respuesta positiva al frontend
-                return "User logged in successfully!";
-            } else {
-                res.status(401); // 401 Unauthorized
-                return "User not found or password incorrect";
+                // si el usuario existe y los datos son correctos.
+                if (isValid) {
+                    res.status(200); //manda respuesta positiva al frontend
+                    return "User logged in successfully!";
+                } else {
+                    res.status(401); // 401 Unauthorized
+                    return "User not found or password incorrect";
+                }
+            } catch (Exception e) {
+                res.status(500); // 500 Internal Server Error
+                return "An error occurred";
             }
         });
     }
 
-    private static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio) {
-        return new User(email, username, name, surname, password, domicilio);
+    private static UserDriver createUserDriver(String email, String username, String name, String surname, String password, String domicilio) {
+        return new UserDriver(email, username, name, surname, password, domicilio);
     }
 
     // Previo al login o al registro, el usuario debería poder decidir si entrar como userDriver o userService.
