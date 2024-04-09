@@ -3,11 +3,11 @@ package methods;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 
 public class RegisterRequest {
     // Guardado en la bd
-    public static void saveInBd(UserDriver user) {
+    public static void saveInBd(User user) {
         // Crea una session para poder hacer el query.
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
         final EntityManager entityManager = factory.createEntityManager();
