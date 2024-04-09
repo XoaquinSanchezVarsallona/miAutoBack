@@ -17,7 +17,7 @@ public class Familia {
     private final List<Car> cars = new ArrayList<>();
 
     @ManyToMany(mappedBy = "familias", cascade = CascadeType.ALL)
-    private final List<UserDriver> userDrivers = new ArrayList<>();
+    private final List<User> userDrivers = new ArrayList<>();
 
     public Familia(String apellido) {
         this.apellido = apellido;
@@ -30,7 +30,7 @@ public class Familia {
     public List<Car> getCars() {
         return cars;
     }
-    public List<UserDriver> getUserDrivers() {
+    public List<User> getUserDrivers() {
         return userDrivers;
     }
 

@@ -3,12 +3,16 @@ import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
+
+import javax.persistence.*;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserDao { // User Data Access Objects
     public static void main(String[] args) {
         Gson gson = new Gson();
+        final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+        final EntityManager entityManager = factory.createEntityManager();
 
         port(9002);
 
@@ -31,52 +35,49 @@ public class UserDao { // User Data Access Objects
             try {
                 // Creo el user
                 JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-                UserDriver user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString());
 
-                // Esto persiste el objeto en la base de datos
-                RegisterRequest.saveInBd(user);
+                if (userExists(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), entityManager)) {
+                    res.status(409);
+                    return "Email o username ya existe";
+                }
+
+                User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
+                RegisterRequest.saveInBd(user, entityManager);
 
                 res.status(201);
-                return "User registered successfully!";
+                return "Usuario registrado exitosamente!";
             } catch (Exception e) {
                 res.status(500);
                 return "An error occurred while registering the user: " + e.getMessage();
             }
         });
 
-        //puerto que spark escucha
-        //ruta para un posteo del login
+        // Ruta para un posteo del login
         post("/login", (req, res) -> {
             try {
-                System.out.println(req.body());
-                System.out.println(res);
                 // tengo el JSON string
                 String requestBody = req.body();
 
                 // lo parseo a un objeto json al string
                 JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
-
-                // extraigo mail y password
                 String email = jsonObj.get("email").getAsString();
                 String password = jsonObj.get("password").getAsString();
 
-                System.out.println(email);
-                System.out.println(password);
+                User user = findUserByEmail(email, entityManager);
+                if (user == null) {
+                    res.status(404); // Not Found
+                    return "User not found";
+                }
 
                 // Validate the password
-                boolean isValid = LoginRequest.passwordValidation(email, password);
-                //boolean isValid = true;
-
-
-                // si el usuario existe y los datos son correctos.
-                if (isValid) {
-                    res.status(200); //manda respuesta positiva al frontend
-                    System.out.println("se loggineeooooooooooooooooo");
-                    return "User logged in successfully!";
-                } else {
-                    res.status(401); // 401 Unauthorized
-                    return "User not found or password incorrect";
+                boolean isValid = LoginRequest.passwordValidation(jsonObj.get("email").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("userType").getAsString(),entityManager);
+                if (!isValid) {
+                    res.status(401); // Unauthorized
+                    return "Incorrect password, ";
                 }
+
+                res.status(200);
+                return "User logged in successfully!";
             } catch (Exception e) {
                 res.status(500); // 500 Internal Server Error
                 return "An error occurred";
@@ -84,9 +85,36 @@ public class UserDao { // User Data Access Objects
         });
     }
 
-    private static UserDriver createUserDriver(String email, String username, String name, String surname, String password, String domicilio) {
-        return new UserDriver(email, username, name, surname, password, domicilio);
+    private static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio, String userType) {
+        return new User(email, username, name, surname, password, domicilio, userType);
     }
+
+    public static boolean userExists(String email, String username, EntityManager entityManager) {
+        String jpql = "SELECT COUNT(u) FROM User u WHERE u.email = :email OR u.username = :username";
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("email", email);
+        query.setParameter("username", username);
+
+        try {
+            //si hay alguno, existe
+            Long count = query.getSingleResult();
+            return count > 0;
+        } catch (NoResultException e) {
+            //no existen usuarios con ese username o mail
+            return false;
+        }
+    }
+
+    public static User findUserByEmail(String email, EntityManager entityManager) {
+        try {
+            TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+            query.setParameter("email", email);
+            return query.getSingleResult();  // Will throw NoResultException if no user found
+        } catch (NoResultException e) {
+            return null;  // Return null if no user is found
+        }
+    }
+
 
     // Previo al login o al registro, el usuario debería poder decidir si entrar como userDriver o userService.
 
