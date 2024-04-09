@@ -2,25 +2,18 @@ package methods;
 
 import org.austral.ing.lab1.UserDriver;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 
-import java.util.List;
+import javax.persistence.EntityManager;
 
 public class LoginRequest {
-    // El SessionFactory que crea las sessiones para hacer los query.
-    static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-    // Obtener los mail y contraseña del usuario que quiere acceder
-
-
     //IMPLEMENTADO SOLO PARA USERDRIVER POR AHORA.
-    public static boolean passwordValidation(String email, String password) {
-        try (Session session = sessionFactory.openSession()) {
+    public static boolean passwordValidation(String email, String password, EntityManager entityManager) {
+        try {
             // Assuming UserDriver is an entity representing users with a 'password' property
-            Query<UserDriver> query = session.createQuery("SELECT ud FROM UserDriver ud WHERE ud.email = :email", UserDriver.class);
+            javax.persistence.TypedQuery<UserDriver> query = entityManager.createQuery("SELECT ud FROM UserDriver ud WHERE ud.email = :email", UserDriver.class);
             query.setParameter("email", email);
-            UserDriver user = query.uniqueResult();
+            UserDriver user = query.getSingleResult();
 
             // Replace this password check with a secure password verification method
             // such as BCrypt or another secure hashing algorithm
@@ -28,13 +21,6 @@ public class LoginRequest {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public void responseToRequest(String email, String password) {
-        boolean  isValidated = passwordValidation(email, password);
-        if (isValidated) {
-
         }
     }
 
