@@ -1,24 +1,20 @@
 package methods;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import org.austral.ing.lab1.User;
+
+import org.austral.ing.lab1.UserDriver;
 
 public class RegisterRequest {
     // Guardado en la bd
-    public static void saveInBd(User user) {
+    public static void saveInBd(UserDriver user, EntityManager entityManager) {
         // Crea una session para poder hacer el query.
-        final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
-        final EntityManager entityManager = factory.createEntityManager();
 
         // Comienza la transacción
         entityManager.getTransaction().begin();
         entityManager.persist(user);
         entityManager.getTransaction().commit();
         entityManager.close();
-        // Finaliza la transacción
-        factory.close();
+        // Finaliza la transacción -> factory.close();
     }
     // Obtener los mail y contraseña del usuario que quiere acceder
 
