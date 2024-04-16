@@ -2,7 +2,6 @@ package methods;
 import static spark.Spark.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import org.austral.ing.lab1.User;
 
 import javax.persistence.*;
