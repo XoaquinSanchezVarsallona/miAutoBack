@@ -8,7 +8,6 @@
         <!-- URL de chev: jdbc:hsqldb:hsql://localhost/miAutoDB;shutdown=true -->
 
         <class>org.austral.ing.lab1.User</class>
-        <class>org.austral.ing.lab1.UserService</class>
         <class>org.austral.ing.lab1.Car</class>
         <class>org.austral.ing.lab1.Familia</class>
 

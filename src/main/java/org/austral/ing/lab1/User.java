@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
-    private long idDriver;
+    private long idUser;
 
     @Column(nullable = false, unique = true)
     public String username;
@@ -29,6 +29,10 @@ public class User {
     @Column
     public String domicilio;
 
+    //driver o service
+    @Column
+    public String userType;
+
     //entiendo q esto lo usariamos para en un futuro buscar mecanicos cerca del domicilio. habria q pensar si no conviene pedir provincia y ciudad, xq si nos pasan "tigre avenida bancalari 1200 barrio las aguas"
     //no nos va a servir tanto. estaría bueno simplificarlo capaz, tipo q sea [provincia][ciudad] o algo asi.
 
@@ -40,7 +44,7 @@ public class User {
     @ManyToMany
     @JoinTable(
             name = "familia_conductores",
-            joinColumns = @JoinColumn(name = "idDriver"),
+            joinColumns = @JoinColumn(name = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
     private List<Familia> familias = new ArrayList<>(); //cada conductor tiene un lista de familias
@@ -48,13 +52,14 @@ public class User {
 
 
     //constructores
-    public User(String Email, String Username, String Name, String Surname, String Password, String Domicilio) {
+    public User(String Email, String Username, String Name, String Surname, String Password, String Domicilio, String userType) {
         this.email = Email;
         this.username = Username;
         this.password = Password;
         this.domicilio = Domicilio;
         this.name = Name;
         this.surname = Surname;
+        this.userType = userType;
     }
 
     public User() {
@@ -66,11 +71,11 @@ public class User {
         return familias;
     }
 
-    public void addFamily(Familia familia) {
-        familias.add(familia);
-    }
-
     public String getPassword() {
         return this.password;
+    }
+
+    public String getUserType() {
+        return this.userType;
     }
 }

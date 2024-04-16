@@ -1,12 +1,11 @@
 package methods;
 
 import javax.persistence.EntityManager;
-
-import org.austral.ing.lab1.UserDriver;
+import org.austral.ing.lab1.User;
 
 public class RegisterRequest {
     // Guardado en la bd
-    public static void saveInBd(UserDriver user, EntityManager entityManager) {
+    public static void saveInBd(User user, EntityManager entityManager) {
         // Crea una session para poder hacer el query.
 
         // Comienza la transacción

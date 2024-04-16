@@ -15,7 +15,7 @@ public class Car {
     @Id
     private String patente;
 
-    // Se me ocurrió que el estado va a fluctuar entre 0 y 10 dependiendo como ponderemos las alertas/kilometraje/reparaciones. y q en base al número, se displayee rojo, verde o naranja
+    // Se me ocurrió que el estado va a fluctuar entre 0 y 10 dependiendo como ponderemos las alertas/kilometraje/reparaciones. Y que basándonos en el número, sé display rojo, verde o naranja
     @Column
     private Float estado;
 
