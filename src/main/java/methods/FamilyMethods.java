@@ -11,12 +11,12 @@ import org.hibernate.query.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class FamilyMethods {
     static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
     static final EntityManager entityManager = factory.createEntityManager();
-    static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
     public static User lookForUser(String username) {
         return entityManager.find(User.class, username);
@@ -33,7 +33,7 @@ public class FamilyMethods {
     }
     public static void CreateFamily(String username , String apellido) {
         User user = lookForUser(username);
-        List<Familia> familias = getFamiliasOfUser(sessionFactory.openSession(), username);
+        List<Familia> familias = getFamiliasOfUser(username);
         for (Familia familia : familias) {
             if (familia.getApellido().equals(apellido)) throw  new IllegalArgumentException("Apellido has already been used");
         }
@@ -48,14 +48,18 @@ public class FamilyMethods {
         // Finaliza la transacción
         factory.close();
     }
-    public static List<Familia> getFamiliasOfUser(Session session, String username) {
+    public static List<Familia> getFamiliasOfUser(String username) {
+        final EntityManager entityManager = factory.createEntityManager();
+
         // Assuming UserDriver is an entity representing users with a 'password' property
-        Query<Familia> familiasOfUserQuery = session.createQuery("SELECT f.idFamilia FROM User ud " +
+        TypedQuery<Familia> familiasOfUserQuery = entityManager.createQuery("SELECT f.idFamilia FROM User ud " +
                                                                             "join ud.familias fc " +
                                                                             "join Familia f on fc.idFamilia = f.idFamilia " +
                                                                             "where ud.username = :username", Familia.class);
         familiasOfUserQuery.setParameter("username", username);
-        return familiasOfUserQuery.list();
+        List<Familia> familias = familiasOfUserQuery.getResultList();
+        entityManager.close();
+        return familias;
     }
 
 }

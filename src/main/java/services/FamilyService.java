@@ -13,11 +13,11 @@ import org.hibernate.query.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class FamilyService {
     static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
-    static final SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
 
     public static User lookForUser(String username) {
         final EntityManager entityManager = factory.createEntityManager();
@@ -27,7 +27,7 @@ public class FamilyService {
         final EntityManager entityManager = factory.createEntityManager();
 
         User user = lookForUser(username);
-        List<Familia> familias = getFamiliasOfUser(sessionFactory.openSession(), username);
+        List<Familia> familias = getFamiliasOfUser(username);
         for (Familia familia : familias) {
             if (familia.getApellido().equals(apellido)) throw  new IllegalArgumentException("Apellido has already been used");
         }
@@ -41,20 +41,10 @@ public class FamilyService {
         user.addFamily(family);
         // Finaliza la transacción
     }
-    public static List<Familia> getFamiliasOfUser(Session session, String username) {
-        // Assuming UserDriver is an entity representing users with a 'password' property
-        Query<Familia> familiasOfUserQuery = session.createQuery("SELECT f.idFamilia FROM User ud " +
-                "join ud.familias fc " +
-                "join Familia f on fc.idFamilia = f.idFamilia " +
-                "where ud.username = :username", Familia.class);
-        familiasOfUserQuery.setParameter("username", username);
-        List<Familia> familias = familiasOfUserQuery.list();
-        session.close();
-        return familias;
-    }
 
-    private static Familia getFamilia (Session session, String username, String apellido) {
-        Query<Familia> familiasOfUserQuery = session.createQuery("SELECT f.idFamilia FROM User ud " +
+    private static Familia getFamilia (String username, String apellido) {
+        final EntityManager entityManager = factory.createEntityManager();
+        TypedQuery<Familia> familiasOfUserQuery = entityManager.createQuery("SELECT f.idFamilia FROM User ud " +
                 "join ud.familias fc " +
                 "join Familia f on fc.idFamilia = f.idFamilia " +
                 "where ud.username = :username " +
@@ -62,11 +52,28 @@ public class FamilyService {
 
         familiasOfUserQuery.setParameter("username", username);
         familiasOfUserQuery.setParameter("apellido", apellido);
-        return familiasOfUserQuery.uniqueResult();
+        Familia familia = familiasOfUserQuery.getSingleResult();
+        entityManager.close();
+        return familia;
+    }
+
+
+    public static List<Familia> getFamiliasOfUser(String username) {
+        final EntityManager entityManager = factory.createEntityManager();
+
+        // Assuming UserDriver is an entity representing users with a 'password' property
+        TypedQuery<Familia> familiasOfUserQuery = entityManager.createQuery("SELECT f.idFamilia FROM User ud " +
+                "join ud.familias fc " +
+                "join Familia f on fc.idFamilia = f.idFamilia " +
+                "where ud.username = :username", Familia.class);
+        familiasOfUserQuery.setParameter("username", username);
+        List<Familia> familias = familiasOfUserQuery.getResultList();
+        entityManager.close();
+        return familias;
     }
 
     public static boolean deleteMember(String username, String apellido) {
-        Familia familia = getFamilia(sessionFactory.openSession(), username, apellido);
+        Familia familia = getFamilia(username, apellido);
         User user = lookForUser(username);
         familia.removeUser(user);
         user.removeFamilia(familia);
@@ -88,7 +95,7 @@ public class FamilyService {
     }
 
     public static void addMember(String username, String apellido) {
-        Familia familia = getFamilia(sessionFactory.openSession(), username, apellido);
+        Familia familia = getFamilia( username, apellido);
         User user = lookForUser(username);
         familia.addUser(user);
     }

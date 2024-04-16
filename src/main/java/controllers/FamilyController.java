@@ -16,7 +16,6 @@ import java.util.List;
 import static spark.Spark.*;
 
 public class FamilyController {
-    static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
     private final FamilyService familyService;
     private final Gson gson = new Gson();
 
@@ -28,7 +27,7 @@ public class FamilyController {
         String username = req.params(":username");
         try {
             res.type("application/json");
-            List<Familia> result = FamilyMethods.getFamiliasOfUser(sessionFactory.openSession(), username);
+            List<Familia> result = FamilyMethods.getFamiliasOfUser(username);
             if (result.isEmpty()) {
                 res.status(300);
                 return "Couldn't find any familia";
