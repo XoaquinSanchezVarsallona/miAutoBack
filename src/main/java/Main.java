@@ -24,8 +24,7 @@ public class Main {
     private static void sample1(EntityManager entityManager) {
         // Creo un conductor, una familia y un auto.
         Familia familiaPerez = new Familia("Perez");
-        Car motomoto = new Car("AA476OV", "Toyota", "Corolla Cross", 1000, 2019,
-                LocalDateTime.of(2023, 12, 1, 0, 0), LocalDateTime.of(2024, 12, 1, 0, 0));
+        Car motomoto = new Car("AA476OV", "Toyota", "Corolla Cross", 1000, 2019,"1/12/23", "1/12/24");
 
         // Genero la relación entre familia y auto, agregando cada uno a la lista del otro.
         familiaPerez.getCars().add(motomoto);

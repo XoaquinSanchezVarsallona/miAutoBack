@@ -13,7 +13,14 @@ public class UserDao {
     }
 
     public User findUserByEmail(String email) {
-        return entityManager.find(User.class, email);
+        String jpql = "SELECT u FROM User u WHERE u.email = :email";
+        TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 
     public void saveUser(User user) {

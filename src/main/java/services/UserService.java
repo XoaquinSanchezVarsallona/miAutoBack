@@ -32,4 +32,8 @@ public class UserService {
         }
         return false;
     }
+
+    public User getUserByEmail(String email) {
+        return userDao.findUserByEmail(email);
+    }
 }

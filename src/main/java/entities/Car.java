@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,10 +33,10 @@ public class Car {
 
     // Estas dos serian string, o serian datetime? en el caso de datetime, no nos importa la hora sino q el año/mes/dia.
     @Column
-    private LocalDateTime fechaVencimientoSeguro;
+    public String fechaVencimientoSeguro;
 
     @Column
-    private LocalDateTime fechaVencimientoVTV;
+    public String fechaVencimientoVTV;
 
     @ManyToMany
     @JoinTable(
@@ -48,7 +47,7 @@ public class Car {
     private List<Familia> familias = new ArrayList<>();
 
 
-    public Car(String patente, String marca, String modelo, float kilometraje, int ano, LocalDateTime fechaVencimientoSeguro, LocalDateTime fechaVencimientoVTV) {
+    public Car(String patente, String marca, String modelo, float kilometraje, int ano, String fechaVencimientoSeguro, String fechaVencimientoVTV) {
         this.patente = patente;
         this.marca = marca;
         this.modelo = modelo;
