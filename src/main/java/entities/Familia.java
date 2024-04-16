@@ -14,10 +14,10 @@ public class Familia {
     private String apellido;
 
     @ManyToMany(mappedBy = "familias", cascade = CascadeType.ALL)
-    private final List<Car> cars = new ArrayList<>();
+    private List<Car> cars = new ArrayList<>();
 
     @ManyToMany(mappedBy = "familias", cascade = CascadeType.ALL)
-    private final List<User> users = new ArrayList<>();
+    private List<User> users = new ArrayList<>();
 
     public Familia(String apellido) {
         this.apellido = apellido;

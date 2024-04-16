@@ -45,8 +45,8 @@ public class Application {
 
         post("/login", userController.login);
         post("/register", userController.register);
-
-        //get("/user/:username", familyController.familyDisplayed);
+        get("/username/:email", userController.getUserByEmail);
+        get("/username/:username", familyController.familyDisplayed);
         //get("/user/:username/addFamily", familyController.addFamily);
         //get("/user/:username/delMember", familyController.deleteMember);
         //get("/user/:username/addMember", familyController.addMember);
