@@ -41,5 +41,6 @@ public class UserDao {
     public static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio, String userType) {
         return new User(email, username, name, surname, password, domicilio, userType);
     }
+
 }
 

@@ -56,7 +56,26 @@ public class UserController { // User Data Access Objects
             return "Email or username already exists";
         }
     };
+
+    public Route editProfile = (req, res) -> {
+        JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
+        String userId = jsonObj.get("userId").getAsString();  // Assuming you send userId to identify the user
+        String field = jsonObj.get("field").getAsString();
+        String newValue = jsonObj.get("value").getAsString();
+
+        // Implement the update logic. Assuming updateUserField updates the given field with the new value for the specified user
+        boolean isUpdated = UserService.updateUserField(userId, field, newValue);
+        if (isUpdated) {
+            res.status(200);
+            return "Profile updated successfully!";
+        } else {
+            res.status(400);
+            return "Failed to update profile";
+        }
+    };
 }
+
+
     /*public static void main(String[] args) {
         Gson gson = new Gson();
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");

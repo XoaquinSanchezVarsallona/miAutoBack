@@ -16,6 +16,10 @@ public class UserService {
         this.userDao = userDao;
     }
 
+    public static boolean updateUserField(String userId, String field, String newValue) {
+        //updatea el userField.
+    }
+
     public User login(String email, String password) {
         User user = userDao.findUserByEmail(email);
 
