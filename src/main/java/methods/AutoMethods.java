@@ -1,6 +1,6 @@
 package methods;
 
-import org.austral.ing.lab1.Car;
+import entities.Car;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

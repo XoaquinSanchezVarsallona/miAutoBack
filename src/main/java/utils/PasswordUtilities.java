@@ -1,15 +1,24 @@
-package methods;
+package utils;
 
-import org.austral.ing.lab1.User;
+import entities.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 //import org.mindrot.jbcrypt.BCrypt;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.Objects;
 
-public class LoginRequest {
-    public static boolean passwordValidation(String email, String password, String userType, EntityManager entityManager) {
+public class PasswordUtilities {
+    static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+    //static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+    static EntityManager entityManager;
+
+    public PasswordUtilities() {
+        PasswordUtilities.entityManager = factory.createEntityManager();
+    }
+    public static boolean passwordValidation(String email, String password, String userType) {
+        EntityManager entityManager = factory.createEntityManager();
+
         try {
             User user = findUserByEmail(email, entityManager);
 
@@ -32,7 +41,8 @@ public class LoginRequest {
         }
     }
 
-    static User findUserByEmail(String email, EntityManager entityManager) {
+    public static User findUserByEmail(String email, EntityManager entityManager) {
+
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         try {
@@ -41,6 +51,18 @@ public class LoginRequest {
             return null;
         }
     }
+    public static User findUserByEmail(String email) {
+        EntityManager entityManager = factory.createEntityManager();
+
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
 
     //uso UserDao para chequear si existe el usuario en la base de datos
 

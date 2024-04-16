@@ -1,4 +1,4 @@
-package org.austral.ing.lab1;
+package entities;
 
 public enum tipoDeServicio {
     Lavadero, Mecanico, Gomería
