@@ -3,17 +3,11 @@ package controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Familia;
-import methods.FamilyMethods;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.json4s.jackson.Json$;
 import services.FamilyService;
 import spark.Route;
 
 
 import java.util.List;
-
-import static spark.Spark.*;
 
 public class FamilyController {
     private final FamilyService familyService;
@@ -27,7 +21,7 @@ public class FamilyController {
         String username = req.params(":username");
         try {
             res.type("application/json");
-            List<Familia> result = FamilyMethods.getFamiliasOfUser(username);
+            List<Familia> result = FamilyService.getFamiliasOfUser(username);
             if (result.isEmpty()) {
                 res.status(300);
                 return "Couldn't find any familia";
