@@ -1,4 +1,6 @@
-package org.austral.ing.lab1;
+package entities;
+
+import entities.Familia;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -89,4 +91,7 @@ public class User {
         return this.username;
     }
 
+    public String getEmail() {
+        return this.email;
+    }
 }

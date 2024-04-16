@@ -1,7 +1,7 @@
 package methods;
 
-import org.austral.ing.lab1.Familia;
-import org.austral.ing.lab1.User;
+import entities.Familia;
+import entities.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -52,8 +52,8 @@ public class FamilyMethods {
         // Assuming UserDriver is an entity representing users with a 'password' property
         Query<Familia> familiasOfUserQuery = session.createQuery("SELECT f.idFamilia FROM User ud " +
                                                                             "join ud.familias fc " +
-                                                                            "join Familia f on fc.idFamilia == f.idFamilia " +
-                                                                            "where ud.username == :username", Familia.class);
+                                                                            "join Familia f on fc.idFamilia = f.idFamilia " +
+                                                                            "where ud.username = :username", Familia.class);
         familiasOfUserQuery.setParameter("username", username);
         return familiasOfUserQuery.list();
     }

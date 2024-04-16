@@ -7,9 +7,9 @@
         <!-- URL de mati: jdbc:hsqldb:file:/home/matias/Downloads/hsqldb-2.7.2/hsqldb/db;shutdown=true -->
         <!-- URL de chev: jdbc:hsqldb:hsql://localhost/miAutoDB;shutdown=true -->
 
-        <class>org.austral.ing.lab1.User</class>
-        <class>org.austral.ing.lab1.Car</class>
-        <class>org.austral.ing.lab1.Familia</class>
+        <class>entities.User</class>
+        <class>entities.Car</class>
+        <class>entities.Familia</class>
 
 
         <properties>

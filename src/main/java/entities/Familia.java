@@ -1,4 +1,4 @@
-package org.austral.ing.lab1;
+package entities;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -47,4 +47,7 @@ public class Familia {
         return users;
     }
 
+    public int userSize() {
+        return users.size();
+    }
 }

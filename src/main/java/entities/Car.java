@@ -1,4 +1,4 @@
-package org.austral.ing.lab1;
+package entities;
 
 import javax.persistence.*;
 import javax.persistence.Entity;

@@ -1,9 +1,6 @@
-package methods;
-
-
-import org.austral.ing.lab1.Car;
-import org.austral.ing.lab1.Familia;
-import org.austral.ing.lab1.User;
+import entities.Car;
+import entities.Familia;
+import entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
