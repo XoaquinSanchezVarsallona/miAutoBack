@@ -57,4 +57,6 @@ public class FamilyMethods {
         familiasOfUserQuery.setParameter("username", username);
         return familiasOfUserQuery.list();
     }
+
 }
+
