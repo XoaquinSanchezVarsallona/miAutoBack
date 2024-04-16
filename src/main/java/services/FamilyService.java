@@ -2,6 +2,7 @@ package services;
 
 import dao.FamilyDao;
 
+import dao.UserDao;
 import entities.Familia;
 import entities.User;
 import org.hibernate.Session;
@@ -17,7 +18,13 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class FamilyService {
+    private FamilyDao familyDao;
+
     static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+
+    public FamilyService(FamilyDao familyDao) {
+        this.familyDao = familyDao;
+    }
 
     public static User lookForUser(String username) {
         final EntityManager entityManager = factory.createEntityManager();
@@ -32,15 +39,9 @@ public class FamilyService {
             if (familia.getApellido().equals(apellido)) throw  new IllegalArgumentException("Apellido has already been used");
         }
         Familia family = new Familia(apellido);
-        // Comienza la transacción
-        entityManager.getTransaction().begin();
-        entityManager.persist(family);
-        entityManager.getTransaction().commit();
-        entityManager.close();
-        family.addUser(user);
-        user.addFamily(family);
-        // Finaliza la transacción
+        FamilyDao.addFamilyToUser(entityManager, family, user);
     }
+
 
     private static Familia getFamilia (String username, String apellido) {
         final EntityManager entityManager = factory.createEntityManager();
@@ -79,19 +80,11 @@ public class FamilyService {
         user.removeFamilia(familia);
 
         if (familia.userSize() == 0) {
-            removeFamily(familia);
+            FamilyDao.removeFamily(familia);
             return true;
 
         } else return false;
         //verificacion de que se borro solo el member o que se borro la familia tambien.
-    }
-
-    private static void removeFamily(Familia familia) {
-        final EntityManager entityManager = factory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.remove(familia);
-        entityManager.getTransaction().commit();
-        entityManager.close();
     }
 
     public static void addMember(String username, String apellido) {

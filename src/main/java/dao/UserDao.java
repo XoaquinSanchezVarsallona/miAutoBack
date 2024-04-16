@@ -6,7 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class UserDao {
-    private static EntityManager entityManager;
+    static EntityManager entityManager;
 
     public UserDao(EntityManager entityManager) {
         UserDao.entityManager = entityManager;
