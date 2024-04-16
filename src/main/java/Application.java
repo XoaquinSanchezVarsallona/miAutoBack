@@ -22,9 +22,9 @@ public class Application {
         UserService userService = new UserService(userDao);
         UserController userController = new UserController(userService);
 
-        //FamilyDao familyDao = new FamilyDao(entityManager);
-        //FamilyService familyService = new FamilyService();
-        //FamilyController familyController = new FamilyController(familyService);
+        FamilyDao familyDao = new FamilyDao(entityManager);
+        FamilyService familyService = new FamilyService(familyDao);
+        FamilyController familyController = new FamilyController(familyService);
 
         port(9002);
 
