@@ -78,4 +78,15 @@ public class User {
     public String getUserType() {
         return this.userType;
     }
+
+    public void addFamily(Familia familia) {
+        this.familias.add(familia);
+    }
+    public void removeFamilia(Familia familia) {
+        this.familias.remove(familia);
+    }
+    public String getUsername() {
+        return this.username;
+    }
+
 }
