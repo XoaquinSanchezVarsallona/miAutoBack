@@ -4,99 +4,45 @@ import dao.FamilyDao;
 
 import entities.Familia;
 import entities.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.query.Query;
-
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
 import java.util.List;
 
 public class FamilyService {
-    static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
 
-    public static User lookForUser(String username) {
-        final EntityManager entityManager = factory.createEntityManager();
-        return entityManager.find(User.class, username);
-    }
     public static void createFamily(String username , String apellido) {
-        final EntityManager entityManager = factory.createEntityManager();
-
-        User user = lookForUser(username);
-        List<Familia> familias = getFamiliasOfUser(username);
+        User user = FamilyDao.lookForUser(username);
+        List<Familia> familias = FamilyDao.getFamiliasOfUser(username);
         for (Familia familia : familias) {
             if (familia.getApellido().equals(apellido)) throw  new IllegalArgumentException("Apellido has already been used");
         }
         Familia family = new Familia(apellido);
         // Comienza la transacción
-        entityManager.getTransaction().begin();
-        entityManager.persist(family);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        FamilyDao.saveFamily(family);
         family.addUser(user);
         user.addFamily(family);
         // Finaliza la transacción
     }
 
-    private static Familia getFamilia (String username, String apellido) {
-        final EntityManager entityManager = factory.createEntityManager();
-        TypedQuery<Familia> familiasOfUserQuery = entityManager.createQuery("SELECT f.idFamilia FROM User ud " +
-                "join ud.familias fc " +
-                "join Familia f on fc.idFamilia = f.idFamilia " +
-                "where ud.username = :username " +
-                "and f.apellido = :apellido", Familia.class);
-
-        familiasOfUserQuery.setParameter("username", username);
-        familiasOfUserQuery.setParameter("apellido", apellido);
-        Familia familia = familiasOfUserQuery.getSingleResult();
-        entityManager.close();
-        return familia;
-    }
-
-
-    public static List<Familia> getFamiliasOfUser(String username) {
-        final EntityManager entityManager = factory.createEntityManager();
-
-        // Assuming UserDriver is an entity representing users with a 'password' property
-        TypedQuery<Familia> familiasOfUserQuery = entityManager.createQuery("SELECT f.idFamilia FROM User ud " +
-                "join ud.familias fc " +
-                "join Familia f on fc.idFamilia = f.idFamilia " +
-                "where ud.username = :username", Familia.class);
-        familiasOfUserQuery.setParameter("username", username);
-        List<Familia> familias = familiasOfUserQuery.getResultList();
-        entityManager.close();
-        return familias;
-    }
-
     public static boolean deleteMember(String username, String apellido) {
-        Familia familia = getFamilia(username, apellido);
-        User user = lookForUser(username);
+        Familia familia = FamilyDao.getFamilia(username, apellido);
+        User user = FamilyDao.lookForUser(username);
         familia.removeUser(user);
         user.removeFamilia(familia);
 
         if (familia.userSize() == 0) {
-            removeFamily(familia);
+            FamilyDao.removeFamily(familia);
             return true;
 
         } else return false;
         //verificacion de que se borro solo el member o que se borro la familia tambien.
     }
 
-    private static void removeFamily(Familia familia) {
-        final EntityManager entityManager = factory.createEntityManager();
-        entityManager.getTransaction().begin();
-        entityManager.remove(familia);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+    public static List<Familia> getFamiliasOfUser(String username) {
+        return FamilyDao.getFamiliasOfUser(username);
     }
 
     public static void addMember(String username, String apellido) {
-        Familia familia = getFamilia( username, apellido);
-        User user = lookForUser(username);
+        Familia familia = FamilyDao.getFamilia( username, apellido);
+        User user = FamilyDao.lookForUser(username);
         familia.addUser(user);
     }
 }
