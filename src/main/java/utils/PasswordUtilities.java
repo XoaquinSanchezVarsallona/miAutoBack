@@ -1,26 +1,16 @@
 package utils;
 
+import dao.FactoryCreator;
 import entities.User;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-//import org.mindrot.jbcrypt.BCrypt;
-
 import javax.persistence.*;
 import java.util.Objects;
 
 public class PasswordUtilities {
-    static final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
-    //static SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-    static EntityManager entityManager;
+    static EntityManager entityManager = FactoryCreator.getEntityManager();
 
-    public PasswordUtilities() {
-        PasswordUtilities.entityManager = factory.createEntityManager();
-    }
     public static boolean passwordValidation(String email, String password, String userType) {
-        EntityManager entityManager = factory.createEntityManager();
-
         try {
-            User user = findUserByEmail(email, entityManager);
+            User user = findUserByEmail(email);
 
             if (user == null) {
                 return false;
@@ -41,18 +31,7 @@ public class PasswordUtilities {
         }
     }
 
-    public static User findUserByEmail(String email, EntityManager entityManager) {
-
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
-        query.setParameter("email", email);
-        try {
-            return query.getSingleResult();
-        } catch (NoResultException e) {
-            return null;
-        }
-    }
     public static User findUserByEmail(String email) {
-        EntityManager entityManager = factory.createEntityManager();
 
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);

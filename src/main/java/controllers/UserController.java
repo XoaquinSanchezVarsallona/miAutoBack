@@ -10,13 +10,6 @@ import static dao.UserDao.createUserDriver;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserController { // User Data Access Objects
-    private UserService userService;
-    private Gson gson;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-        this.gson = new Gson();
-    }
 
     public Route login = (req, res) -> {
         Gson gson = new Gson();
@@ -31,7 +24,7 @@ public class UserController { // User Data Access Objects
         }
 
         // Validate the password
-        boolean isValid = PasswordUtilities.passwordValidation(jsonObj.get("email").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("userType").getAsString());
+        boolean isValid = PasswordUtilities.passwordValidation(email, password, jsonObj.get("userType").getAsString());
 
         if (isValid) {
             res.status(200);
@@ -48,7 +41,7 @@ public class UserController { // User Data Access Objects
 
         User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
 
-        if (userService.registerUser(user)) {
+        if (UserService.registerUser(user)) {
             res.status(201);
             return "User registered successfully!";
         } else {
