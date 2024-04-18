@@ -10,19 +10,24 @@ public class UserDao {
 
 
     public static User findUserByEmail(String email) {
-        return entityManager.find(User.class, email);
+        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
+        return entityManagerA.find(User.class, email);
     }
 
     public static void saveUser(User user) {
-        entityManager.getTransaction().begin();
-        entityManager.persist(user);
-        entityManager.getTransaction().commit();
-        entityManager.close();
+        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
+
+        entityManagerA.getTransaction().begin();
+        entityManagerA.persist(user);
+        entityManagerA.getTransaction().commit();
+        entityManagerA.close();
     }
 
     public static boolean userExists(String email, String username) {
+        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
+
         String jpql = "SELECT COUNT(u) FROM User u WHERE u.email = :email OR u.username = :username";
-        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        TypedQuery<Long> query = entityManagerA.createQuery(jpql, Long.class);
         query.setParameter("email", email);
         query.setParameter("username", username);
 
@@ -34,6 +39,7 @@ public class UserDao {
             //no existen usuarios con ese username o mail
             return false;
         }
+
     }
     public static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio, String userType) {
         return new User(email, username, name, surname, password, domicilio, userType);
