@@ -6,17 +6,14 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class UserDao {
-    static EntityManager entityManager;
+    private static final EntityManager entityManager = FactoryCreator.getEntityManager();
 
-    public UserDao(EntityManager entityManager) {
-        UserDao.entityManager = entityManager;
-    }
 
-    public User findUserByEmail(String email) {
+    public static User findUserByEmail(String email) {
         return entityManager.find(User.class, email);
     }
 
-    public void saveUser(User user) {
+    public static void saveUser(User user) {
         entityManager.getTransaction().begin();
         entityManager.persist(user);
         entityManager.getTransaction().commit();

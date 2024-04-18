@@ -1,30 +1,14 @@
-import com.google.gson.Gson;
-import controllers.FamilyController;
-import dao.FamilyDao;
-import dao.UserDao;
-import controllers.UserController;
-import services.FamilyService;
-import services.UserService;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
+
+import controllers.*;
+
 
 import static spark.Spark.*;
 
 public class Application {
     public static void main(String[] args) {
-        Gson gson = new Gson();
 
-        EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
-        EntityManager entityManager = factory.createEntityManager();
-
-        UserDao userDao = new UserDao(entityManager);
-        UserService userService = new UserService(userDao);
-        UserController userController = new UserController(userService);
-
-        FamilyDao familyDao = new FamilyDao(entityManager);
-        FamilyService familyService = new FamilyService(familyDao);
-        FamilyController familyController = new FamilyController(familyService);
+        UserController userController = new UserController();
+        FamilyController familyController = new FamilyController();
 
         port(9002);
 
@@ -46,9 +30,8 @@ public class Application {
         post("/login", userController.login);
         post("/register", userController.register);
 
-        //get("/user/:username", familyController.familyDisplayed);
-        //get("/user/:username/addFamily", familyController.addFamily);
-        //get("/user/:username/delMember", familyController.deleteMember);
-        //get("/user/:username/addMember", familyController.addMember);
-        post("/editProfile", userController.editProfile);
+        get("/user/:username", familyController.familyDisplayed);
+        get("/user/:username/addFamily", familyController.addFamily);
+        get("/user/:username/delMember", familyController.deleteMember);
+        get("/user/:username/addMember", familyController.addMember);
 }}
