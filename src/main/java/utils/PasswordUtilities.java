@@ -32,7 +32,6 @@ public class PasswordUtilities {
     }
 
     public static User findUserByEmail(String email) {
-
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         try {

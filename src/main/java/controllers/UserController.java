@@ -2,6 +2,7 @@ package controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.User;
+import DTOs.UserDTO;
 import services.UserService;
 import spark.Route;
 import utils.PasswordUtilities;
@@ -10,6 +11,19 @@ import static dao.UserDao.createUserDriver;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserController { // User Data Access Objects
+
+    public Route findUserByEmail = (req, res) -> {
+        Gson gson = new Gson();
+        String email = req.params("email");
+        User user = PasswordUtilities.findUserByEmail(email);
+        if (user == null) {
+            res.status(404); // Not Found
+            return "User not found";
+        }
+        res.status(200);
+        UserDTO userDTO = new UserDTO(user); // Me llevo al front solo lo que necesito del user
+        return gson.toJson(userDTO);
+    };
 
     public Route login = (req, res) -> {
         Gson gson = new Gson();
@@ -40,7 +54,6 @@ public class UserController { // User Data Access Objects
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
 
         User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
-
         if (UserService.registerUser(user)) {
             res.status(201);
             return "User registered successfully!";

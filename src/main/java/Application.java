@@ -30,6 +30,9 @@ public class Application {
         post("/login", userController.login);
         post("/register", userController.register);
 
+        get("/user/:email", userController.findUserByEmail);
+        get("/family/:idFamilia", familyController.findFamilyById);
+
         get("/user/:username", familyController.familyDisplayed);
         get("/user/:username/addFamily", familyController.addFamily);
         get("/user/:username/delMember", familyController.deleteMember);
