@@ -1,5 +1,6 @@
 package controllers;
 
+import DTOs.FamiliaDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Familia;
@@ -12,6 +13,24 @@ import java.util.List;
 public class FamilyController {
     private final Gson gson = new Gson();
 
+    public Route findFamilyById = (req, res) -> {
+        int idFamilia = Integer.parseInt(req.params(":idFamilia"));
+        try {
+            res.type("application/json");
+            Familia result = FamilyService.getFamiliaById(idFamilia);
+            if (result == null) {
+                res.status(404);
+                return "Couldn't find familia with id " + idFamilia;
+            } else {
+                res.status(200);
+                FamiliaDTO familiaDTO = new FamiliaDTO(result);
+                return gson.toJson(familiaDTO);
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
 
     public Route familyDisplayed = (req, res) -> {
         String username = req.params(":username");
@@ -57,13 +76,12 @@ public class FamilyController {
             if (response) {
                 res.status(200);
                 return "Last member deleted, so the family has been deleted";
-
-                // caso de que sea el ultimo miembro de una familia.
+                // caso de que sea el último miembro de una familia.
             }
             else {
                 res.status(201);
                 return "Member has been deleted";
-                // caso de que tenga mas miembros la familia
+                // caso de que tenga más miembros la familia
             }
         } catch (Exception e) {
             res.status(500);

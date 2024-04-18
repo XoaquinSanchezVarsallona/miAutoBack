@@ -45,4 +45,8 @@ public class FamilyService {
         User user = FamilyDao.lookForUser(username);
         familia.addUser(user);
     }
+
+    public static Familia getFamiliaById(int idFamilia) {
+        return FamilyDao.getFamiliaById(idFamilia);
+    }
 }

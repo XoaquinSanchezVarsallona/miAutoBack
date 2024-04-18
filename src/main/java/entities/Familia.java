@@ -1,5 +1,9 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +43,9 @@ public class Familia {
         cars.remove(car);
     }
     public String getApellido() {return apellido;}
-
+    public int getFamiliaId() {
+        return idFamilia;
+    }
     public List<Car> getCars() {
         return cars;
     }

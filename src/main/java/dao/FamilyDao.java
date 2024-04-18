@@ -62,4 +62,20 @@ public class FamilyDao {
         em.close();
     }
 
+    /*
+    public static Familia getFamiliaById(int idFamilia) {
+        EntityManager em = factory.createEntityManager();
+        return em.find(Familia.class, idFamilia);
+    }
+
+     */
+
+    public static Familia getFamiliaById(int idFamilia) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<Familia> query = em.createQuery("SELECT f FROM Familia f WHERE f.idFamilia = :idFamilia", Familia.class);
+        query.setParameter("idFamilia", idFamilia);
+        Familia result = query.getSingleResult();
+        em.close();
+        return result;
+    }
 }

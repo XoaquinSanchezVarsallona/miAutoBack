@@ -1,6 +1,8 @@
 package entities;
 
-import entities.Familia;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -49,7 +51,7 @@ public class User {
             joinColumns = @JoinColumn(name = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
-    private List<Familia> familias = new ArrayList<>(); //cada conductor tiene un lista de familias
+    private List<Familia> familias = new ArrayList<>(); //cada conductor tiene una lista de familias
 
 
 
@@ -93,5 +95,13 @@ public class User {
 
     public String getEmail() {
         return this.email;
+    }
+
+    public List<Integer> getFamiliasId() {
+        List<Integer> result = new ArrayList<>();
+        for (Familia familia : familias) {
+            result.add(familia.getFamiliaId());
+        }
+        return result;
     }
 }
