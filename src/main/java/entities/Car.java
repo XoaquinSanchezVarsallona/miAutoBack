@@ -34,10 +34,10 @@ public class Car {
 
     // Estas dos serian string, o serian datetime? en el caso de datetime, no nos importa la hora sino q el año/mes/dia.
     @Column
-    private LocalDateTime fechaVencimientoSeguro;
+    private String fechaVencimientoSeguro;
 
     @Column
-    private LocalDateTime fechaVencimientoVTV;
+    private String fechaVencimientoVTV;
 
     @ManyToMany
     @JoinTable(
@@ -48,7 +48,7 @@ public class Car {
     private List<Familia> familias = new ArrayList<>();
 
 
-    public Car(String patente, String marca, String modelo, float kilometraje, int ano, LocalDateTime fechaVencimientoSeguro, LocalDateTime fechaVencimientoVTV) {
+    public Car(String patente, String marca, String modelo, float kilometraje, int ano, String fechaVencimientoSeguro, String fechaVencimientoVTV) {
         this.patente = patente;
         this.marca = marca;
         this.modelo = modelo;

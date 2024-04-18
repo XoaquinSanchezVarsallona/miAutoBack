@@ -8,6 +8,7 @@ public class UserService {
 
     public static boolean updateUserField(String userId, String field, String newValue) {
         //updatea el userField.
+        return UserDao.updateUserField(userId, field, newValue);
     }
 
     public User login(String email, String password) {

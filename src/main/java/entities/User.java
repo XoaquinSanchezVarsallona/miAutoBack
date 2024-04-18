@@ -1,7 +1,5 @@
 package entities;
 
-import entities.Familia;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,4 +92,30 @@ public class User {
     public String getEmail() {
         return this.email;
     }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
 }
