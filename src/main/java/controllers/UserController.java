@@ -5,6 +5,7 @@ import entities.User;
 import services.UserService;
 import spark.Route;
 import utils.PasswordUtilities;
+import utils.JwtUtil;
 
 import static dao.UserDao.createUserDriver;
 
@@ -13,27 +14,41 @@ public class UserController { // User Data Access Objects
 
     public Route login = (req, res) -> {
         Gson gson = new Gson();
-        JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-        String email = jsonObj.get("email").getAsString();
-        String password = jsonObj.get("password").getAsString();
+        try {
+            JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
+            String email = jsonObj.get("email").getAsString();
+            String password = jsonObj.get("password").getAsString();
 
-        User user = PasswordUtilities.findUserByEmail(email);
-        if (user == null) {
-            res.status(404); // Not Found
-            return "User not found";
-        }
+            // Step 1: Verify user exists
+            User user = PasswordUtilities.findUserByEmail(email);
+            if (user == null) {
+                res.status(404);
+                return "User not found";
+            }
 
-        // Validate the password
-        boolean isValid = PasswordUtilities.passwordValidation(email, password, jsonObj.get("userType").getAsString());
+            // Step 2: Validate the password
+            boolean isValid = PasswordUtilities.passwordValidation(email, password, jsonObj.get("userType").getAsString());
+            if (!isValid) {
+                res.status(401);
+                return "Incorrect password, try again.";
+            }
 
-        if (isValid) {
+            // Step 3: Generate and send token
+            String token = JwtUtil.generateToken(user.getUsername()); // Ensure user.getUsername() is not null
+            JsonObject responseJson = new JsonObject();
+            responseJson.addProperty("token", token);
+            responseJson.addProperty("user", gson.toJson(user)); // Serialize user object to JSON
             res.status(200);
-            return "User logged in successfully!";
-        } else {
-            res.status(401);
-            return "Incorrect password, try again.";
+            return responseJson.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the error
+            res.status(500);
+            return "Internal Server Error: " + e.getMessage();
         }
     };
+
+
 
     public Route register = (req, res) -> {
         Gson gson = new Gson();
@@ -51,6 +66,8 @@ public class UserController { // User Data Access Objects
     };
 
     public Route editProfile = (req, res) -> {
+        Gson gson = new Gson();
+
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
         String userId = jsonObj.get("userId").getAsString();  // Assuming you send userId to identify the user
         String field = jsonObj.get("field").getAsString();
