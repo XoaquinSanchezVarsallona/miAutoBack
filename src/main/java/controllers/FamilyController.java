@@ -10,12 +10,8 @@ import spark.Route;
 import java.util.List;
 
 public class FamilyController {
-    private final FamilyService familyService;
     private final Gson gson = new Gson();
 
-    public FamilyController(FamilyService familyService) {
-        this.familyService = familyService;
-    };
 
     public Route familyDisplayed = (req, res) -> {
         String username = req.params(":username");
