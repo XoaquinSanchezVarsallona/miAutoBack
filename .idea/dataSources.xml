@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="HSQLDB (Local)" uuid="7d29ee7b-cf12-4b25-8691-b62c57b41627">
+    <data-source source="LOCAL" name="miAutoDB" uuid="7d29ee7b-cf12-4b25-8691-b62c57b41627">
       <driver-ref>hsqldb.local</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.hsqldb.jdbc.JDBCDriver</jdbc-driver>
-      <jdbc-url>jdbc:hsqldb:hsql://localhost/miAutoDB;shutdown=true</jdbc-url>
+      <jdbc-url>jdbc:hsqldb:file:/miAutoDB/localhost;shutdown=true</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>
