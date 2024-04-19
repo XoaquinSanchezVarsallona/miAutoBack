@@ -4,9 +4,6 @@
              version="2.0">
     <persistence-unit name="miAutoDB">
 
-        <!-- URL de mati: jdbc:hsqldb:file:/home/matias/Downloads/hsqldb-2.7.2/hsqldb/db;shutdown=true -->
-        <!-- URL de chev: jdbc:hsqldb:hsql://localhost/miAutoDB;shutdown=true -->
-
         <class>entities.User</class>
         <class>entities.Car</class>
         <class>entities.Familia</class>

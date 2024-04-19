@@ -34,9 +34,9 @@ public class UserController { // User Data Access Objects
             JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
             String email = jsonObj.get("email").getAsString();
             String password = jsonObj.get("password").getAsString();
-
             // Step 1: Verify user exists //
             User user = PasswordUtilities.findUserByEmail(email);
+
             if (user == null) {
                 res.status(404);
                 return "User not found";
@@ -53,7 +53,7 @@ public class UserController { // User Data Access Objects
             String token = JwtUtil.generateToken(user.getUsername(), user.getUserID()); // Ensure user.getUsername() is not null
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("token", token);
-            responseJson.addProperty("user", gson.toJson(user)); // Serialize user object to JSON
+            responseJson.addProperty("user", gson.toJson(new UserDTO(user))); // Serialize user object to JSON
             res.status(200);
             return responseJson.toString();
 
