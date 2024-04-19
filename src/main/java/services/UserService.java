@@ -6,8 +6,10 @@ import utils.PasswordUtilities;
 
 public class UserService {
 
-    public static boolean updateUserField(String userId, String field, String newValue) {
+    public static boolean updateUserField(Long userId, String field, String newValue) {
         //updatea el userField.
+        //System.out.println("UserService.updateUserField called");
+
         return UserDao.updateUserField(userId, field, newValue);
     }
 
