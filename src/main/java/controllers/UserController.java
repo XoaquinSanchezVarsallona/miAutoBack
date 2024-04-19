@@ -7,6 +7,8 @@ import spark.Route;
 import utils.PasswordUtilities;
 import utils.JwtUtil;
 
+import java.util.Map;
+
 import static dao.UserDao.createUserDriver;
 
 // Clase para definir la conexión entre la página web y la base de datos
@@ -34,7 +36,7 @@ public class UserController { // User Data Access Objects
             }
 
             // Step 3: Generate and send token
-            String token = JwtUtil.generateToken(user.getUsername()); // Ensure user.getUsername() is not null
+            String token = JwtUtil.generateToken(user.getUsername(), user.getUserID()); // Ensure user.getUsername() is not null
             JsonObject responseJson = new JsonObject();
             responseJson.addProperty("token", token);
             responseJson.addProperty("user", gson.toJson(user)); // Serialize user object to JSON
@@ -66,23 +68,45 @@ public class UserController { // User Data Access Objects
     };
 
     public Route editProfile = (req, res) -> {
-        Gson gson = new Gson();
+        //System.out.println("editProfile route hitted");
 
+        Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-        String userId = jsonObj.get("userId").getAsString();  // Assuming you send userId to identify the user
+        Long userId = jsonObj.get("userId").getAsLong();  // Assuming you send userId to identify the user
         String field = jsonObj.get("field").getAsString();
         String newValue = jsonObj.get("value").getAsString();
 
-        // Implement the update logic. Assuming updateUserField updates the given field with the new value for the specified user
-        boolean isUpdated = UserService.updateUserField(userId, field, newValue);
-        if (isUpdated) {
-            res.status(200);
-            return "Profile updated successfully!";
-        } else {
-            res.status(400);
-            return "Failed to update profile";
+        try {
+            //System.out.println("Calling UserService.updateUserField");
+
+            // Implement the update logic. Assuming updateUserField updates the given field with the new value for the specified user
+            boolean isUpdated = UserService.updateUserField(userId, field, newValue);
+            if (isUpdated) {
+                res.status(200);
+                //return "Profile updated successfully!";
+                return jsonObj.toString();
+            } else {
+                res.status(400);
+                return "Failed to update profile";
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Internal Server Error: " + e.getMessage();
         }
     };
+
+    public Route validateToken = (req, res) -> {
+        String token = req.headers("Authorization").replace("Bearer ", "");
+        Map<String, String> userInfo = JwtUtil.validateToken(token);
+        if (userInfo == null) {
+            res.status(401);
+            return "{\"message\":\"Invalid or expired token\"}";
+        } else {
+            res.type("application/json");
+            return new Gson().toJson(userInfo);
+        }
+    };
+
 }
 
 

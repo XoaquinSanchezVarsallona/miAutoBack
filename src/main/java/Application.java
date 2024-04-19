@@ -35,6 +35,7 @@ public class Application {
         get("/user/:username/delMember", familyController.deleteMember);
         get("/user/:username/addMember", familyController.addMember);
 
-        post("/user/:username/editProfile", userController.editProfile);
+        post("/editProfile", userController.editProfile);
+        post("/validateToken", userController.validateToken);
 
     }}

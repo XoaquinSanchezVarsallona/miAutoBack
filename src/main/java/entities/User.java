@@ -118,4 +118,7 @@ public class User {
     }
 
 
+    public String getUserID() {
+        return String.valueOf(this.idUser);
+    }
 }
