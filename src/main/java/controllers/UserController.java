@@ -21,7 +21,7 @@ public class UserController { // User Data Access Objects
             String email = jsonObj.get("email").getAsString();
             String password = jsonObj.get("password").getAsString();
 
-            // Step 1: Verify user exists
+            // Step 1: Verify user exists //
             User user = PasswordUtilities.findUserByEmail(email);
             if (user == null) {
                 res.status(404);
