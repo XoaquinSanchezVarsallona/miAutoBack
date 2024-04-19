@@ -1,9 +1,4 @@
 package entities;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,5 +98,34 @@ public class User {
             result.add(familia.getFamiliaId());
         }
         return result;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public String getUserID() {
+        return String.valueOf(this.idUser);
     }
 }
