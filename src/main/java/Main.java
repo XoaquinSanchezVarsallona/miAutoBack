@@ -11,9 +11,9 @@ public class Main {
         final EntityManager entityManager = factory.createEntityManager();
 
         // sample1(entityManager);
-        sample2(entityManager);
-        // sample3(entityManager); // Intento de vínculo user y familia
-        // sample4(entityManager); // Sample para borrar tablas
+        //sample2(entityManager);
+        sample8(entityManager); // Intento de vínculo user y familia
+        //sample4(entityManager); // Sample para borrar tablas
 
         entityManager.close();
 
@@ -35,8 +35,8 @@ public class Main {
     }
 
     private static void sample3(EntityManager entityManager) {
-        Familia gonzales = new Familia("Gonzales");
-        User mateo = new User("mateo", "mateo", "mateo", "Gonzales", "mateo", "buenosaires", "driver");
+        Familia gonzales = new Familia("Gonzalessss");
+        User mateo = new User("AAA", "AAA", "mateo", "A", "AAA", "buenosaires", "driver");
         mateo.addFamily(gonzales);
         gonzales.addUser(mateo);
         //comienza transacción //
@@ -44,6 +44,34 @@ public class Main {
 
         entityManager.persist(mateo);
         entityManager.persist(gonzales);
+
+        entityManager.getTransaction().commit();
+        // terminó transacción //
+    }
+
+    private static void sample8(EntityManager entityManager) {
+        Familia gonzales = new Familia("AA");
+        Familia misAutosGonza = new Familia("AA2");
+        Familia misAutos = new Familia("misAutosAA");
+
+
+        User mateo = new User("AAA", "AAA", "mateo", "AA", "AAA", "buenosaires", "driver");
+        mateo.addFamily(gonzales);
+        gonzales.addUser(mateo);
+
+        mateo.addFamily(misAutosGonza);
+        misAutosGonza.addUser(mateo);
+
+        mateo.addFamily(misAutos);
+        misAutos.addUser(mateo);
+
+        //comienza transacción //
+        entityManager.getTransaction().begin();
+
+        entityManager.persist(mateo);
+        entityManager.persist(gonzales);
+        entityManager.persist(misAutosGonza);
+        entityManager.persist(misAutos);
 
         entityManager.getTransaction().commit();
         // terminó transacción //

@@ -1,9 +1,15 @@
 package services;
 
+import dao.FactoryCreator;
 import dao.FamilyDao;
 
 import entities.Familia;
 import entities.User;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 public class FamilyService {
@@ -49,4 +55,45 @@ public class FamilyService {
     public static Familia getFamiliaById(int idFamilia) {
         return FamilyDao.getFamiliaById(idFamilia);
     }
+
+    public static boolean deleteFamily(Long userID, String apellido) {
+        Familia familia = FamilyDao.getFamilia(userID, apellido);
+        if (familia != null) {
+            FamilyDao.removeFamily(familia);
+            return true;
+        }
+        return false;
+    }
+
+    public static void updateSurname(String apellido, String nuevoApellido) {
+        EntityManager entityManager = FactoryCreator.getEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+
+            Familia familia = entityManager.createQuery("SELECT f FROM Familia f WHERE f.apellido = :apellido", Familia.class)
+                    .setParameter("apellido", apellido)
+                    .getSingleResult();
+            System.out.println("FAMILIAAAA" + familia);
+
+            familia.setSurname(nuevoApellido);
+            entityManager.merge(familia);
+
+            transaction.commit();
+        } catch (NoResultException e) {
+            System.out.println("No Familia entity with the given surname exists");
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        } catch (Exception e) {
+            System.out.println("An error occurred while updating the surname: " + e.getMessage());
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+        } finally {
+            entityManager.close();
+        }
+    }
+
 }

@@ -1,7 +1,9 @@
 package entities;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Entity
 public class User {
@@ -46,6 +48,7 @@ public class User {
             joinColumns = @JoinColumn(name = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
+
     private List<Familia> familias = new ArrayList<>(); //cada conductor tiene una lista de familias
 
 
@@ -127,5 +130,13 @@ public class User {
 
     public String getUserID() {
         return String.valueOf(this.idUser);
+    }
+
+    public Map<Integer, String> getFamiliasMap() {
+        HashMap<Integer, String> result = new HashMap<>();
+        for (Familia familia : familias) {
+            result.put(familia.getFamiliaId(), familia.getApellido());
+        }
+        return result;
     }
 }

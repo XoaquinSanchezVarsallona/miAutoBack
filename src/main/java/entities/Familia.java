@@ -14,13 +14,14 @@ public class Familia {
     @GeneratedValue(generator = "userGen", strategy = GenerationType.SEQUENCE)
     private int idFamilia;
 
-    @Column
+    @Column(nullable= false, unique = true)
     private String apellido;
 
-    @ManyToMany(mappedBy = "familias", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private final List<Car> cars = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "familias", cascade = CascadeType.ALL)
+    //como no quiero eliminar usuario al eliminar familia, saco cascade.remove de la lista.
+    @ManyToMany(mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private final List<User> users = new ArrayList<>();
 
     public Familia(String apellido) {
@@ -55,5 +56,13 @@ public class Familia {
 
     public int userSize() {
         return users.size();
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setSurname(String nuevoApellido) {
+        this.apellido = nuevoApellido;
     }
 }

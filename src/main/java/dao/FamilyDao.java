@@ -8,6 +8,9 @@ import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+import static dao.UserDao.findUserByEmail;
+import static dao.UserDao.findUserByUserID;
+
 public class FamilyDao {
     static EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
 
@@ -24,21 +27,40 @@ public class FamilyDao {
         return em.find(User.class, username);
     }
 
+    public static Familia getFamilia (Long userID, String apellido) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        User user = findUserByUserID(userID);
+        if (user == null) {
+            System.out.println("User not found");
+            return null;
+        }
+        for (Familia familia : user.getFamilias()) {
+            if (familia.getApellido().equals(apellido)) {
+                return familia;
+            }
+        }
+        System.out.println("No Familia found for the given username and apellido");
+        return null;
+    }
+
     public static Familia getFamilia (String username, String apellido) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        TypedQuery<Familia> familiasOfUserQuery = em.createQuery("SELECT f.idFamilia FROM User ud " +
-                                                                        "join ud.familias fc " +
-                                                                        "join Familia f on fc.idFamilia = f.idFamilia " +
-                                                                        "where ud.username = :username " +
-                                                                        "and f.apellido = :apellido", Familia.class);
-
-        familiasOfUserQuery.setParameter("username", username);
-        familiasOfUserQuery.setParameter("apellido", apellido);
-        Familia familia = familiasOfUserQuery.getSingleResult();
-        em.close();
-        return familia;
+        User user = findUserByEmail(username);
+        if (user == null) {
+            System.out.println("User not found");
+            return null;
+        }
+        for (Familia familia : user.getFamilias()) {
+            if (familia.getApellido().equals(apellido)) {
+                return familia;
+            }
+        }
+        System.out.println("No Familia found for the given username and apellido");
+        return null;
     }
+
 
     public static List<Familia> getFamiliasOfUser(String username) {
         EntityManager em = factory.createEntityManager();
@@ -57,7 +79,12 @@ public class FamilyDao {
     public static void removeFamily(Familia familia) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        em.remove(familia);
+        Familia toRemove = em.merge(familia);
+        for (User user : toRemove.getUsers()) {
+            user.getFamilias().remove(toRemove);
+            em.merge(user);
+        }
+        em.remove(toRemove);
         em.getTransaction().commit();
         em.close();
     }
