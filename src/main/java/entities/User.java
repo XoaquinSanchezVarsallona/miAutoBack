@@ -34,13 +34,6 @@ public class User {
     @Column
     public String userType;
 
-    //entiendo q esto lo usariamos para en un futuro buscar mecanicos cerca del domicilio. habria q pensar si no conviene pedir provincia y ciudad, xq si nos pasan "tigre avenida bancalari 1200 barrio las aguas"
-    //no nos va a servir tanto. estaría bueno simplificarlo capaz, tipo q sea [provincia][ciudad] o algo asi.
-
-    //dicen q hace falta? de ser asi, habría q pasarle al constructor la date del momento.
-    //@Column
-    //private LocalDateTime creationDate;
-
     //tabla familia_conductores
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(

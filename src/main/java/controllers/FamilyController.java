@@ -149,4 +149,21 @@ public class FamilyController {
             return "Could not update surname";
         }
     };
+    public Route vehiclesOfFamily = (req, res) -> {
+        try {
+            int familyID = Integer.parseInt(req.params(":familyID"));
+            res.type("application/json");
+            List<String> result = FamilyService.getVehiclesOfFamily(familyID);
+            if (result.isEmpty()) {
+                res.status(300);
+                return "Couldn't find any vehicle";
+            } else {
+                res.status(200);
+                return gson.toJson(result);
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
 }

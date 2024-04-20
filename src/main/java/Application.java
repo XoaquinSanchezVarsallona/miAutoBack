@@ -9,6 +9,7 @@ public class Application {
 
         UserController userController = new UserController();
         FamilyController familyController = new FamilyController();
+        CarController carController = new CarController();
 
         port(9002);
 
@@ -32,6 +33,9 @@ public class Application {
 
         get("/user/:email", userController.findUserByEmail);
         get("/family/:idFamilia", familyController.findFamilyById);
+        get("/vehicles/family/:familyID", familyController.vehiclesOfFamily);
+        get("/car/:patente", carController.findCarByPatente);
+        post("/car/:familyId/addVehicle", carController.createCar);
 
         get("/user/:username", familyController.familyDisplayed);
         post("/user/:username/addFamily", familyController.addFamily);
