@@ -5,7 +5,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 // Esta clase permite enviarle mensajes de error de forma más clara al front end,
-// en vez de enviar 500 server error, da al menos el mensaje de información
+// en vez de enviar 500 server error, da al menos el mensaje de información.
 @Provider
 public class IllegalArgumentExceptionMapper implements ExceptionMapper<IllegalArgumentException> {
     @Override

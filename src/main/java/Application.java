@@ -40,7 +40,6 @@ public class Application {
         delete("/family/:surname", FamilyController.deleteFamily);
         put("/family/:surname", familyController.updateSurname);
 
-
         post("/editProfile", userController.editProfile);
         post("/validateToken", userController.validateToken);
 

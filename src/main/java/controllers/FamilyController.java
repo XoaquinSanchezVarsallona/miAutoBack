@@ -60,7 +60,7 @@ public class FamilyController {
             String username = req.params(":username");
             try { FamilyService.createFamily(username, apellido); } catch (IllegalArgumentException e) {
                 res.status(400);
-                return "Family already exists";
+                return "Family already exists!";
             }
             res.status(200);
             return "Family has been created";
