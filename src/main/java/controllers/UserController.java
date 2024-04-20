@@ -13,7 +13,7 @@ import java.util.Map;
 import static dao.UserDao.createUserDriver;
 
 // Clase para definir la conexión entre la página web y la base de datos
-public class UserController { // User Data Access Objects
+public class UserController {
 
     public Route findUserByEmail = (req, res) -> {
         Gson gson = new Gson();

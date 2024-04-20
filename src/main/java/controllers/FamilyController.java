@@ -6,9 +6,11 @@ import com.google.gson.JsonObject;
 import entities.Familia;
 import services.FamilyService;
 import spark.Route;
+import utils.JwtUtil;
 
 
 import java.util.List;
+import java.util.Objects;
 
 public class FamilyController {
     private final Gson gson = new Gson();
@@ -66,6 +68,7 @@ public class FamilyController {
             return "Could not create Family";
         }
     };
+
     public Route deleteMember = (req, res) -> {
         try {
             String requestBody = req.body();
@@ -105,4 +108,44 @@ public class FamilyController {
         }
     };
 
+    public static Route deleteFamily = (req, res) -> {
+        try {
+            System.out.println("route deleteFamily hit");
+            String surname = req.params(":surname");
+            System.out.println("surname" + surname);
+            String token = req.headers("Authorization").replace("Bearer ", "");
+            Long userID = Long.valueOf(Objects.requireNonNull(JwtUtil.validateToken(token)).get("userId"));
+            boolean result = FamilyService.deleteFamily(userID, surname);
+            System.out.println("result: " + result);
+            if (result) {
+                res.status(200);
+                return "Family deleted successfully";
+            } else {
+                res.status(404);
+                return "Family not found";
+            }
+        } catch (NumberFormatException e) {
+            res.status(400);
+            return "Invalid id parameter";
+        }
+    };
+
+    public Route updateSurname = (req, res) -> {
+        try {
+            System.out.println("UPDATE SURNAME ROUTE FOUND ");
+
+            String familySurname = req.params(":surname");
+            JsonObject jsonObject = gson.fromJson(req.body(), JsonObject.class);
+            String newSurname = jsonObject.get("surname").getAsString();
+            System.out.println("surname " + familySurname);
+            System.out.println("newSurname " + newSurname);
+
+            FamilyService.updateSurname(familySurname, newSurname);
+            res.status(200);
+            return "Surname updated successfully to " + newSurname;
+        } catch (Exception e) {
+            res.status(500);
+            return "Could not update surname";
+        }
+    };
 }

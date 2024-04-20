@@ -14,6 +14,11 @@ public class UserDao {
         return entityManagerA.find(User.class, email);
     }
 
+    public static User findUserByUserID(Long userID) {
+        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
+        return entityManagerA.find(User.class, userID);
+    }
+
     public static void saveUser(User user) {
         final EntityManager entityManagerA = FactoryCreator.getEntityManager();
 
