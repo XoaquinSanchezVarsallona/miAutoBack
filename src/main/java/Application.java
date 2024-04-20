@@ -34,7 +34,7 @@ public class Application {
         get("/family/:idFamilia", familyController.findFamilyById);
 
         get("/user/:username", familyController.familyDisplayed);
-        get("/user/:username/addFamily", familyController.addFamily);
+        post("/user/:username/addFamily", familyController.addFamily);
         get("/user/:username/delMember", familyController.deleteMember);
         get("/user/:username/addMember", familyController.addMember);
         delete("/family/:surname", FamilyController.deleteFamily);

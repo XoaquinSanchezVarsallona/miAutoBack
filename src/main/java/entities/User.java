@@ -42,15 +42,13 @@ public class User {
     //private LocalDateTime creationDate;
 
     //tabla familia_conductores
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "familia_conductores",
             joinColumns = @JoinColumn(name = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
-
-    private List<Familia> familias = new ArrayList<>(); //cada conductor tiene una lista de familias
-
+    private List<Familia> familias = new ArrayList<>();
 
 
     //constructores

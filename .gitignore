@@ -1,0 +1,8 @@
+build/distributions/untitled-boot-1.0 SNAPSHOT.tar
+build/distributions/untitled-1.0 SNAPSHOT.zip
+build/distributions/untitled-boot-1.0 SNAPSHOT.zip
+build/libs/untitled-1.0 SNAPSHOT.jar
+build/distributions/untitled-1.0 SNAPSHOT.tar
+*.zip
+*.tar
+*.jar

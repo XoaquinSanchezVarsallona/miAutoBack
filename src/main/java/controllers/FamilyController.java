@@ -55,12 +55,13 @@ public class FamilyController {
     public Route addFamily = (req, res) -> {
         try {
             String requestBody = req.body();
-
             JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
-            String apellido = jsonObj.get("apellido").getAsString();
-
+            String apellido = jsonObj.get("surname").getAsString();
             String username = req.params(":username");
-            FamilyService.createFamily(username, apellido);
+            try { FamilyService.createFamily(username, apellido); } catch (IllegalArgumentException e) {
+                res.status(400);
+                return "Family already exists";
+            }
             res.status(200);
             return "Family has been created";
         } catch (Exception e) {

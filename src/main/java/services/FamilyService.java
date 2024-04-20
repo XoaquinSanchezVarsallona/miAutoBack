@@ -15,16 +15,20 @@ import java.util.List;
 public class FamilyService {
 
     public static void createFamily(String username , String apellido) {
+
+
         User user = FamilyDao.lookForUser(username);
         List<Familia> familias = FamilyDao.getFamiliasOfUser(username);
+        // Me fijo que no exista una familia con el ismo apellido en la db
         for (Familia familia : familias) {
-            if (familia.getApellido().equals(apellido)) throw  new IllegalArgumentException("Apellido has already been used");
+            if (familia.getApellido().equals(apellido)) throw new IllegalArgumentException("Apellido has already been used");
         }
         Familia family = new Familia(apellido);
         // Comienza la transacción
         FamilyDao.saveFamily(family);
         family.addUser(user);
         user.addFamily(family);
+        FamilyDao.updateUser(user);
         // Finaliza la transacción
     }
 
