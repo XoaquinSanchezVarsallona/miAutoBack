@@ -9,7 +9,6 @@ import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 public class FamilyService {
@@ -100,4 +99,7 @@ public class FamilyService {
         }
     }
 
+    public static List<String> getVehiclesOfFamily(int familyID) {
+        return FamilyDao.getVehiclesOfFamily(familyID);
+    }
 }

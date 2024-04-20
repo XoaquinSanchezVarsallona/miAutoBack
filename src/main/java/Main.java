@@ -12,23 +12,36 @@ public class Main {
 
         // sample1(entityManager);
         //sample2(entityManager);
-        sample8(entityManager); // Intento de vínculo user y familia
-        //sample4(entityManager); // Sample para borrar tablas
-
+        // sample8(entityManager); // Intento de vínculo user y familia
+        // sample4(entityManager); // Sample para borrar tablas
+        sample5(entityManager); // Sample para vincular auto con familia
         entityManager.close();
 
         factory.close();
     }
 
+    private static void sample5(EntityManager entityManager) {
+        User user = getUserWithUsername("hola", entityManager);
+        Car car = new Car("AB567KU", "Toyota", "Corolla Cross", 1000, 2019,
+                "11/12/24", "12/12/2023");
+        Familia familia = user.getFamilias().get(0);
+        familia.addCar(car);
+        car.addFamilia(familia);
+        // Comienza la transacción
+        entityManager.getTransaction().begin();
+        entityManager.persist(car);
+        entityManager.getTransaction().commit();
+        // Finaliza la transacción
+        entityManager.close();
+    }
+
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
 
-        Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
-        Query query2 = entityManager.createNativeQuery("DROP TABLE familia_auto");
-        Query query3 = entityManager.createNativeQuery("DROP TABLE familia");
+        Query query = entityManager.createNativeQuery("DROP TABLE familia_auto");
+        Query query1 = entityManager.createNativeQuery("DROP TABLE car");
         query.executeUpdate();
-        query2.executeUpdate();
-        query3.executeUpdate();
+        query1.executeUpdate();
 
         entityManager.getTransaction().commit();
         entityManager.close();
@@ -98,9 +111,8 @@ public class Main {
     }
 
     private static void sample2(EntityManager entityManager) {
-        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
-        query.setParameter("username", "hola");
-        User user = query.getSingleResult();
+        User user = getUserWithUsername("hola", entityManager);
+
         Familia Perez = new Familia("Gonzales");
         user.addFamily(Perez);
         Perez.addUser(user);
@@ -112,6 +124,12 @@ public class Main {
 
         entityManager.getTransaction().commit();
         // terminó transacción //
+    }
+
+    private static User getUserWithUsername(String username, EntityManager entityManager) {
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
+        query.setParameter("username", username);
+        return query.getSingleResult();
     }
 
 }
