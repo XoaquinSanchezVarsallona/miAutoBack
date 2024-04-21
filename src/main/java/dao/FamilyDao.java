@@ -2,10 +2,8 @@ package dao;
 
 import entities.Familia;
 import entities.User;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+
+import javax.persistence.*;
 import java.util.List;
 
 import static dao.UserDao.findUserByEmail;
@@ -22,6 +20,7 @@ public class FamilyDao {
         em.getTransaction().commit();
         em.close();
     }
+
     public static User lookForUser(String username) {
         EntityManager em = factory.createEntityManager();
         TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
@@ -31,7 +30,7 @@ public class FamilyDao {
         return result;
     }
 
-    public static Familia getFamilia (Long userID, String apellido) {
+    public static Familia getFamilia(Long userID, String apellido) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         User user = findUserByUserID(userID);
@@ -48,7 +47,7 @@ public class FamilyDao {
         return null;
     }
 
-    public static Familia getFamilia (String username, String apellido) {
+    public static Familia getFamilia(String username, String apellido) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         User user = findUserByEmail(username);
@@ -70,7 +69,7 @@ public class FamilyDao {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         // Assuming UserDriver is an entity representing users with a 'password' property
-        TypedQuery<Familia> familiasOfUserQuery = em.createQuery("SELECT f FROM User u JOIN u.familias f WHERE u.username = :username", Familia.class );
+        TypedQuery<Familia> familiasOfUserQuery = em.createQuery("SELECT f FROM User u JOIN u.familias f WHERE u.username = :username", Familia.class);
         familiasOfUserQuery.setParameter("username", username);
         List<Familia> familias = familiasOfUserQuery.getResultList();
         em.close();
@@ -99,6 +98,26 @@ public class FamilyDao {
         return result;
     }
 
+    public static Familia getFamiliaFromAllExistingFamilies(String apellido) {
+        System.out.println("Searching for Familia with apellido: " + apellido);
+        EntityManager em = factory.createEntityManager();
+        try {
+            TypedQuery<Familia> query = em.createQuery("SELECT f FROM Familia f WHERE f.apellido = :apellido", Familia.class);
+            query.setParameter("apellido", apellido);
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            System.out.println("No Familia found for the given apellido: " + e.getMessage());
+            return null;
+        } catch (NonUniqueResultException e) {
+            System.out.println("Multiple Familias found for the given apellido: " + e.getMessage());
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+
+
     public static void updateUser(User user) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
@@ -114,5 +133,24 @@ public class FamilyDao {
         List<String> result = query.getResultList();
         em.close();
         return result;
+    }
+
+    public static Familia updateFamilia(Familia familia) {
+        EntityManager entityManager = factory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        Familia managedFamilia = null;
+        try {
+            transaction.begin();
+            managedFamilia = entityManager.merge(familia);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
+        return managedFamilia;
     }
 }

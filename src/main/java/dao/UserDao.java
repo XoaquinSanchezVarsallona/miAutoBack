@@ -14,6 +14,17 @@ public class UserDao {
         return entityManagerA.find(User.class, email);
     }
 
+    public static User findUserByUsername(String username) {
+        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
+        TypedQuery<User> query = entityManagerA.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
+        query.setParameter("username", username);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
     public static User findUserByUserID(Long userID) {
         final EntityManager entityManagerA = FactoryCreator.getEntityManager();
         return entityManagerA.find(User.class, userID);
