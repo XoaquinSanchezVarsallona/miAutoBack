@@ -4,8 +4,13 @@ import DTOs.CarDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Car;
+import entities.Familia;
 import services.CarService;
+import services.FamilyService;
 import spark.Route;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarController {
     private final Gson gson = new Gson();
@@ -58,12 +63,29 @@ public class CarController {
                 res.status(400);
                 return "Invalid kilometraje or año parameter";
             }
-
             CarService.createCar(familyId, patente, marca, modelo, kilometraje, ano, fechaVencimientoSeguro, fechaVencimientoVTV);
-            return "Car created";
+            // List<Car> cars = CarController.getCarsOfFamily(familyId);
+            res.status(200);
+            return "Car created successfully";
+            // return gson.toJson(getIdOfCars(cars));
         } catch (Exception e) {
             res.status(500);
             return "Something went wrong";
         }
     };
+
+/*
+    private List<String> getIdOfCars(List<Car> cars) {
+        List<String> ids = new ArrayList<>();
+        for (Car car : cars) {
+            ids.add(car.getPatente());
+        }
+        return ids;
+    }
+
+ */
+
+    private static List<Car> getCarsOfFamily(Integer familyId) {
+        return CarService.getCarsOfFamily(familyId);
+    }
 }

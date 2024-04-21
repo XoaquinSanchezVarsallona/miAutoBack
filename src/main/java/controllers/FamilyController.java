@@ -9,6 +9,7 @@ import spark.Route;
 import utils.JwtUtil;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,17 +59,30 @@ public class FamilyController {
             JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
             String apellido = jsonObj.get("surname").getAsString();
             String username = req.params(":username");
-            try { FamilyService.createFamily(username, apellido); } catch (IllegalArgumentException e) {
+            try {
+                FamilyService.createFamily(username, apellido);
+                List<Familia> familias = FamilyService.getFamiliasOfUser(username);
+                res.status(200);
+                // Family created successfully
+                return gson.toJson(getIdOfFamilias(familias));
+            } catch (IllegalArgumentException e) {
                 res.status(400);
                 return "Family already exists!";
             }
-            res.status(200);
-            return "Family has been created";
         } catch (Exception e) {
             res.status(500);
-            return "Could not create Family";
+            e.printStackTrace(); // Log the exception stack trace
+            return "Could not create Family: " + e.getMessage(); // Include the exception message in the error response
         }
     };
+
+    private List<Integer> getIdOfFamilias(List<Familia> familias) {
+        List<Integer> ids = new ArrayList<>();
+        for (Familia familia : familias) {
+            ids.add(familia.getFamiliaId());
+        }
+        return ids;
+    }
 
     public Route deleteMember = (req, res) -> {
         try {
@@ -149,11 +163,13 @@ public class FamilyController {
             return "Could not update surname";
         }
     };
+
     public Route vehiclesOfFamily = (req, res) -> {
         try {
-            int familyID = Integer.parseInt(req.params(":familyID"));
+            int familyID = Integer.parseInt(req.params(":familyId"));
             res.type("application/json");
             List<String> result = FamilyService.getVehiclesOfFamily(familyID);
+
             if (result.isEmpty()) {
                 res.status(300);
                 return "Couldn't find any vehicle";
