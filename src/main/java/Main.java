@@ -16,6 +16,9 @@ public class Main {
         sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         entityManager.close();
+        // sample4(entityManager); // Sample para borrar tablas
+        //sample5(entityManager); // Sample para vincular auto con familia
+        //sample7(entityManager); // Sample para vincular alerta con familia
 
         factory.close();
     }
@@ -66,6 +69,31 @@ public class Main {
 
         entityManager.getTransaction().commit();
         // terminó transacción //
+    }
+
+    public static void sample7(EntityManager entityManager) {
+        // Start a new transaction
+        entityManager.getTransaction().begin();
+
+        User user = new User("123", "123", "mateo", "A", "123", "buenosaires", "driver");
+        Familia familia = new Familia("Smith");
+        Alert alert = new Alert("Alert message", "Alert type");
+
+        user.addFamily(familia);
+        familia.addUser(user);
+
+        alert.setFamilia(familia);
+        familia.addAlert(alert);
+
+        entityManager.persist(user);
+        entityManager.persist(familia);
+        entityManager.persist(alert);
+
+        // Commit the transaction
+        entityManager.getTransaction().commit();
+
+        // Close the EntityManager
+        entityManager.close();
     }
 
     private static void sample8(EntityManager entityManager) {
