@@ -106,4 +106,13 @@ public class FamilyDao {
         em.getTransaction().commit();
         em.close();
     }
+
+    public static List<String> getVehiclesOfFamily(int familyID) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<String> query = em.createQuery("SELECT c.patente FROM Familia f JOIN f.cars c WHERE f.idFamilia = :familyID", String.class);
+        query.setParameter("familyID", familyID);
+        List<String> result = query.getResultList();
+        em.close();
+        return result;
+    }
 }

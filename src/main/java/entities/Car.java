@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +61,39 @@ public class Car {
 
     }
 
+    public String getPatente() {
+        return patente;
+    }
+
+    public String getMarca() {
+        return marca;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public float getKilometraje() {
+        return kilometraje;
+    }
+
+    public int getAno() {
+        return ano;
+    }
+
+    public String getFechaVencimientoSeguro() {
+        return fechaVencimientoSeguro;
+    }
+
+    public String getFechaVencimientoVTV() {
+        return fechaVencimientoVTV;
+    }
 
     public List<Familia> getFamilias() {
         return familias;
+    }
+
+    public void addFamilia(Familia familia) {
+        this.familias.add(familia);
     }
 }

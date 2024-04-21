@@ -46,7 +46,7 @@ public class UserController {
             boolean isValid = PasswordUtilities.passwordValidation(email, password, jsonObj.get("userType").getAsString());
             if (!isValid) {
                 res.status(401);
-                return "Incorrect password, try again.";
+                return "Incorrect password, please try again.";
             }
 
             // Step 3: Generate and send token
