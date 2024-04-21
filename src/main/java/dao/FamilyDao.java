@@ -24,7 +24,11 @@ public class FamilyDao {
     }
     public static User lookForUser(String username) {
         EntityManager em = factory.createEntityManager();
-        return em.find(User.class, username);
+        TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class);
+        query.setParameter("username", username);
+        User result = query.getSingleResult();
+        em.close();
+        return result;
     }
 
     public static Familia getFamilia (Long userID, String apellido) {
@@ -66,10 +70,7 @@ public class FamilyDao {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         // Assuming UserDriver is an entity representing users with a 'password' property
-        TypedQuery<Familia> familiasOfUserQuery = em.createQuery("SELECT f.idFamilia FROM User ud " +
-                                                                        "join ud.familias fc " +
-                                                                        "join Familia f on fc.idFamilia = f.idFamilia " +
-                                                                        "where ud.username = :username", Familia.class);
+        TypedQuery<Familia> familiasOfUserQuery = em.createQuery("SELECT f FROM User u JOIN u.familias f WHERE u.username = :username", Familia.class );
         familiasOfUserQuery.setParameter("username", username);
         List<Familia> familias = familiasOfUserQuery.getResultList();
         em.close();
@@ -89,19 +90,28 @@ public class FamilyDao {
         em.close();
     }
 
-    /*
-    public static Familia getFamiliaById(int idFamilia) {
-        EntityManager em = factory.createEntityManager();
-        return em.find(Familia.class, idFamilia);
-    }
-
-     */
-
     public static Familia getFamiliaById(int idFamilia) {
         EntityManager em = factory.createEntityManager();
         TypedQuery<Familia> query = em.createQuery("SELECT f FROM Familia f WHERE f.idFamilia = :idFamilia", Familia.class);
         query.setParameter("idFamilia", idFamilia);
         Familia result = query.getSingleResult();
+        em.close();
+        return result;
+    }
+
+    public static void updateUser(User user) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        em.merge(user);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public static List<String> getVehiclesOfFamily(int familyID) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<String> query = em.createQuery("SELECT c.patente FROM Familia f JOIN f.cars c WHERE f.idFamilia = :familyID", String.class);
+        query.setParameter("familyID", familyID);
+        List<String> result = query.getResultList();
         em.close();
         return result;
     }

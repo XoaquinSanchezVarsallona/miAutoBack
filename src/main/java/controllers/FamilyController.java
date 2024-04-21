@@ -55,12 +55,13 @@ public class FamilyController {
     public Route addFamily = (req, res) -> {
         try {
             String requestBody = req.body();
-
             JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
-            String apellido = jsonObj.get("apellido").getAsString();
-
+            String apellido = jsonObj.get("surname").getAsString();
             String username = req.params(":username");
-            FamilyService.createFamily(username, apellido);
+            try { FamilyService.createFamily(username, apellido); } catch (IllegalArgumentException e) {
+                res.status(400);
+                return "Family already exists!";
+            }
             res.status(200);
             return "Family has been created";
         } catch (Exception e) {
@@ -146,6 +147,23 @@ public class FamilyController {
         } catch (Exception e) {
             res.status(500);
             return "Could not update surname";
+        }
+    };
+    public Route vehiclesOfFamily = (req, res) -> {
+        try {
+            int familyID = Integer.parseInt(req.params(":familyID"));
+            res.type("application/json");
+            List<String> result = FamilyService.getVehiclesOfFamily(familyID);
+            if (result.isEmpty()) {
+                res.status(300);
+                return "Couldn't find any vehicle";
+            } else {
+                res.status(200);
+                return gson.toJson(result);
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
         }
     };
 }
