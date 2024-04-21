@@ -9,6 +9,7 @@ import spark.Route;
 import utils.JwtUtil;
 
 
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Objects;
 
@@ -69,6 +70,32 @@ public class FamilyController {
             return "Could not create Family";
         }
     };
+
+    public Route joinToFamily = (req, res) -> {
+        try {
+            String requestBody = req.body();
+            JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
+            String apellido = jsonObject.get("surname").getAsString();
+            String username = req.params(":username");
+
+            FamilyService.joinToFamily(username, apellido);
+            res.status(200);
+            return "Joined to Family";
+        } catch (NoResultException e) {
+            System.out.println(e.getMessage());
+            res.status(404);
+            return "Family doesn't exist";
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            res.status(400);
+            return "You are already in that family";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            res.status(500);
+            return e.getMessage();
+        }
+    };
+
 
     public Route deleteMember = (req, res) -> {
         try {

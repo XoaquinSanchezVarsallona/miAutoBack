@@ -41,10 +41,15 @@ public class Application {
         post("/user/:username/addFamily", familyController.addFamily);
         get("/user/:username/delMember", familyController.deleteMember);
         get("/user/:username/addMember", familyController.addMember);
+        post("/user/:username/joinToFamily", familyController.joinToFamily);
+
         delete("/family/:surname", FamilyController.deleteFamily);
         put("/family/:surname", familyController.updateSurname);
 
         post("/editProfile", userController.editProfile);
         post("/validateToken", userController.validateToken);
+
+        post("alerts/add", AlertController.addAlertToFamily);
+        get("alerts/family/:familyApellido", AlertController.getAlertsOfFamily);
 
     }}
