@@ -1,3 +1,4 @@
+import entities.Alert;
 import entities.Car;
 import entities.Familia;
 import entities.User;
