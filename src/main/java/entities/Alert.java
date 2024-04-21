@@ -1,5 +1,7 @@
 package entities;
 
+import com.google.gson.annotations.Expose;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,12 +9,15 @@ public class Alert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Expose
     private Long idAlert;
 
     @Column(nullable = false)
+    @Expose
     private String message;
 
     @Column(nullable = false)
+    @Expose
     private String tipoDeAlerta;
 
     @ManyToOne

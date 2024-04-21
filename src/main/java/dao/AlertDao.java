@@ -1,13 +1,14 @@
 package dao;
 
 import entities.Alert;
+import entities.Familia;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import java.util.List;
 
 public class AlertDao {
+    static EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+
 
     public static void saveAlert(Alert alert) {
         EntityManager em = FactoryCreator.factory.createEntityManager();
@@ -28,12 +29,39 @@ public class AlertDao {
         }
     }
 
-    public static List<Alert> getAlertsByFamilyName(String familyName) {
-        EntityManager entityManager = FactoryCreator.factory.createEntityManager();
+    public static List<Alert> getAlertsByFamilyApellido(String familyApellido) {
+        EntityManager entityManager = factory.createEntityManager();
+        List<Alert> alertas = null;
+        try {
+            entityManager.getTransaction().begin();
+            TypedQuery<Alert> query = entityManager.createQuery(
+                    "SELECT a FROM Alert a WHERE a.familia.apellido = :familyApellido", Alert.class);
+            query.setParameter("familyApellido", familyApellido);
+            alertas = query.getResultList();
+            System.out.println("ALERTAS SON" + alertas);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            System.out.println("An error occurred while fetching the alerts: " + e.getMessage());
+        } finally {
+            entityManager.close();
+        }
+        return alertas;
+    }
 
-        TypedQuery<Alert> query = entityManager.createQuery(
-                "SELECT a FROM Alert a WHERE a.familia.apellido = :familyName", Alert.class);
-        query.setParameter("familyName", familyName);
-        return query.getResultList();
+    public static boolean deleteAlert(Long idAlert) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Alert alert = em.find(Alert.class, idAlert);
+        boolean isDeleted = false;
+        if (alert != null) {
+            em.remove(alert);
+            isDeleted = true;
+        }
+        em.getTransaction().commit();
+        em.close();
+        return isDeleted;
     }
 }

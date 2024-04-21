@@ -28,6 +28,8 @@ public class Application {
 
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
+        get("/alertas/family/:familyApellido", AlertController.getAlertsOfFamily);
+
         post("/login", userController.login);
         post("/register", userController.register);
 
@@ -49,7 +51,7 @@ public class Application {
         post("/editProfile", userController.editProfile);
         post("/validateToken", userController.validateToken);
 
-        post("alerts/add", AlertController.addAlertToFamily);
-        get("alerts/family/:familyApellido", AlertController.getAlertsOfFamily);
+        post("/alerts/add", AlertController.addAlertToFamily);
+        delete("/alerts/:idAlert", AlertController.deleteAlert);
 
     }}
