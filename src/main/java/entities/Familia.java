@@ -21,8 +21,11 @@ public class Familia {
     private final List<Car> cars = new ArrayList<>();
 
     //como no quiero eliminar usuario al eliminar familia, saco cascade.remove de la lista.
-    @ManyToMany(mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private final List<User> users = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="familia", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private List<Alert> alerts = new ArrayList<>();
 
     public Familia(String apellido) {
         this.apellido = apellido;
@@ -64,5 +67,13 @@ public class Familia {
 
     public void setSurname(String nuevoApellido) {
         this.apellido = nuevoApellido;
+    }
+
+    public void addAlert(Alert alert) {
+        alerts.add(alert);
+    }
+
+    public List<Alert> getAlerts() {
+        return alerts;
     }
 }
