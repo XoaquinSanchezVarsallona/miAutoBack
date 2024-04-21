@@ -37,6 +37,7 @@ public class Application {
 
         get("/car/:patente", carController.findCarByPatente);
         post("/car/:familyId/addVehicle", carController.createCar);
+        delete("/car/:patente/deleteCar", carController.deleteCar);
 
         get("/user/:username", familyController.familyDisplayed);
         post("/user/:username/addFamily", familyController.addFamily);

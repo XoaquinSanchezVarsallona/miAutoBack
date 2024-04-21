@@ -28,4 +28,12 @@ public class CarDao {
         em.close();
         return result;
     }
+
+    public static void deleteCar(Car car) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        em.remove(car);
+        em.getTransaction().commit();
+        em.close();
+    }
 }

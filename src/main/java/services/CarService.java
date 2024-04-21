@@ -30,4 +30,8 @@ public class CarService {
             throw new RuntimeException("Familia not found");
         }
     }
+
+    public static void deleteCar(Car car) {
+        CarDao.deleteCar(car);
+    }
 }

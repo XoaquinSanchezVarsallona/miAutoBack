@@ -73,6 +73,24 @@ public class CarController {
             return "Something went wrong";
         }
     };
+    public Route deleteCar = (req, res) -> {
+        String patente = req.params(":patente");
+        try {
+            res.type("application/json");
+            Car car = CarService.getCarByPatente(patente);
+            if (car == null) {
+                res.status(404);
+                return "Couldn't find car with patente " + patente;
+            } else {
+                CarService.deleteCar(car);
+                res.status(200);
+                return "Car deleted successfully";
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
 
 /*
     private List<String> getIdOfCars(List<Car> cars) {
