@@ -93,8 +93,13 @@ public class FamilyController {
             String username = req.params(":username");
 
             FamilyService.joinToFamily(username, apellido);
+
+            //para que se actualicen las familias
+            List<Familia> familias = FamilyService.getFamiliasOfUser(username);
             res.status(200);
-            return "Joined to Family";
+            return gson.toJson(getIdOfFamilias(familias));
+
+            //return "Joined to Family";
         } catch (NoResultException e) {
             System.out.println(e.getMessage());
             res.status(404);
