@@ -28,12 +28,13 @@ public class Application {
 
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
+        get("/vehicle/family/:familyId", familyController.vehiclesOfFamily);
         post("/login", userController.login);
         post("/register", userController.register);
 
         get("/user/:email", userController.findUserByEmail);
         get("/family/:idFamilia", familyController.findFamilyById);
-        get("/vehicles/family/:familyID", familyController.vehiclesOfFamily);
+
         get("/car/:patente", carController.findCarByPatente);
         post("/car/:familyId/addVehicle", carController.createCar);
 
