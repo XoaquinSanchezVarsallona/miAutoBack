@@ -1,5 +1,6 @@
 package services;
 
+import dao.CarDao;
 import dao.FamilyDao;
 import entities.Car;
 import entities.Familia;
@@ -25,15 +26,16 @@ public class CarService {
 
     public static Set<Car> getCarsOfFamily(Integer familyId) {
         Familia familia = FamilyDao.getFamiliaById(familyId);
-        System.out.println("FAMILLLLLLLLIA: " + familia);
         if (familia != null) {
-            System.out.println("familia is not nuuuuuuuuull");
             Set<Car> cars = familia.getCars();
-            System.out.println("CARSsssssssssssss: " + cars);
             return cars;
         } else {
             throw new RuntimeException("Familia not found");
         }
+    }
+
+    public static boolean updateCarProfile(String patente, String field, String newValue) {
+        return CarDao.updateCarProfile(patente, field, newValue);
     }
 
     public static void deleteCar(Car car) {

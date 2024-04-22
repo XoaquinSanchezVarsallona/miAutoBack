@@ -109,7 +109,34 @@ public class CarController {
         }
     };
 
-    private static Set<Car> getCarsOfFamily(Integer familyId) {
+    public Route editCarProfile = (req, res) -> {
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
+        try {
+            res.type("application/json");
+            String patente = jsonObj.get("patente").getAsString();
+            String field = jsonObj.get("field").getAsString();
+            String newValue = jsonObj.get("value").getAsString();
+
+            boolean isUpdated = CarService.updateCarProfile(patente, field, newValue);
+            if (isUpdated) {
+                res.status(200);
+                //return "Profile updated successfully!";
+                return jsonObj.toString();
+            } else {
+                res.status(400);
+                return "Failed to find Car";
+            }
+
+
+        } catch (Exception e){
+            res.status(500);
+            return e.getMessage();
+        }
+    };
+
+
+    private static List<Car> getCarsOfFamily(Integer familyId) {
         return CarService.getCarsOfFamily(familyId);
     }
 }

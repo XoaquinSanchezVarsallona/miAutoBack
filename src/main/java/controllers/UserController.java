@@ -1,6 +1,7 @@
 package controllers;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import dao.UserDao;
 import entities.User;
 import DTOs.UserDTO;
 import services.UserService;
@@ -9,8 +10,6 @@ import utils.PasswordUtilities;
 import utils.JwtUtil;
 
 import java.util.Map;
-
-import static dao.UserDao.createUserDriver;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserController {
@@ -70,7 +69,7 @@ public class UserController {
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
 
-        User user = createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
+        User user = UserDao.createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
         if (UserService.registerUser(user)) {
             res.status(201);
             return "User registered successfully!";

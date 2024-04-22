@@ -6,12 +6,11 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 public class UserDao {
-    private static final EntityManager entityManager = FactoryCreator.getEntityManager();
-
-
     public static User findUserByEmail(String email) {
-        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
-        return entityManagerA.find(User.class, email);
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        User user = entityManager.find(User.class, email);
+        entityManager.close();
+        return user;
     }
 
     public static User findUserByUsername(String username) {
@@ -31,25 +30,23 @@ public class UserDao {
     }
 
     public static void saveUser(User user) {
-        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
-
-        entityManagerA.getTransaction().begin();
-        entityManagerA.persist(user);
-        entityManagerA.getTransaction().commit();
-        entityManagerA.close();
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        entityManager.getTransaction().begin();
+        entityManager.persist(user);
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
 
     public static boolean userExists(String email, String username) {
-        final EntityManager entityManagerA = FactoryCreator.getEntityManager();
-
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
         String jpql = "SELECT COUNT(u) FROM User u WHERE u.email = :email OR u.username = :username";
-        TypedQuery<Long> query = entityManagerA.createQuery(jpql, Long.class);
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
         query.setParameter("email", email);
         query.setParameter("username", username);
-
         try {
             //si hay alguno, existe
             Long count = query.getSingleResult();
+            entityManager.close();
             return count > 0;
         } catch (NoResultException e) {
             //no existen usuarios con ese username o mail
@@ -63,16 +60,15 @@ public class UserDao {
 
     public static boolean updateUserField(Long userId, String field, String newValue) {
         //System.out.println("updateUserField called with userId: " + userId + ", field: " + field + ", newValue: " + newValue);
-
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
         try {
-            final EntityManager entityManager = FactoryCreator.getEntityManager();
             entityManager.getTransaction().begin();
             User user = entityManager.find(User.class, userId);
+            entityManager.close();
             System.out.println("User: " + user);
 
             if (user == null) {
                 System.out.println("User not found");
-                entityManager.close();
                 return false;
             }
 
@@ -97,7 +93,6 @@ public class UserDao {
                     break;
                 default:
                     System.out.println("Invalid field: " + field);
-                    entityManager.close();
                     return false;
             }
             entityManager.merge(user);

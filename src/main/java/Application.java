@@ -56,4 +56,5 @@ public class Application {
         post("/alerts/add", AlertController.addAlertToFamily);
         delete("/alerts/:idAlert", AlertController.deleteAlert);
 
+        post("/editCarProfile" , carController.editCarProfile);
     }}
