@@ -43,18 +43,22 @@ public class Main {
 
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
-        //Query query5 = entityManager.createNativeQuery("ALTER TABLE famlia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK");
-        // Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
-        // Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
-        Query query2 = entityManager.createNativeQuery("DROP TABLE familia");
+        Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKSQ79NXOIP6D3QOO9AI7X81MIS");
+        Query query6 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FK2L52BICGRLY0PS2UBRQBSC9FU");
+        Query query7 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK");
+        //Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
+        //Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
+        //Query query2 = entityManager.createNativeQuery("DROP TABLE familia");
         //Query query3 = entityManager.createNativeQuery("DROP TABLE car");
-        //Query query4 = entityManager.createNativeQuery("DROP TABLE user");
-        //query5.executeUpdate();
-        // query.executeUpdate();
-        // query1.executeUpdate();
-        query2.executeUpdate();
+        Query query4 = entityManager.createNativeQuery("DROP TABLE familia");
+        query5.executeUpdate();
+        query6.executeUpdate();
+        query7.executeUpdate();
+        //query.executeUpdate();
+        //query1.executeUpdate();
+        //query2.executeUpdate();
         //query3.executeUpdate();
-        //query4.executeUpdate();
+        query4.executeUpdate();
 
         entityManager.getTransaction().commit();
         entityManager.close();

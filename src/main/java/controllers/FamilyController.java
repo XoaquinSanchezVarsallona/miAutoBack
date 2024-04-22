@@ -54,28 +54,28 @@ public class FamilyController {
         }
     };
 
-    public Route addFamily = (req, res) -> {
-        try {
-            String requestBody = req.body();
-            JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
-            String apellido = jsonObj.get("surname").getAsString();
-            String username = req.params(":username");
+        public Route addFamily = (req, res) -> {
             try {
-                FamilyService.createFamily(username, apellido);
-                List<Familia> familias = FamilyService.getFamiliasOfUser(username);
-                res.status(200);
-                // Family created successfully
-                return gson.toJson(getIdOfFamilias(familias));
-            } catch (IllegalArgumentException e) {
-                res.status(400);
-                return "Family already exists!";
+                String requestBody = req.body();
+                JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
+                String apellido = jsonObj.get("surname").getAsString();
+                String username = req.params(":username");
+                try {
+                    FamilyService.createFamily(username, apellido);
+                    List<Familia> familias = FamilyService.getFamiliasOfUser(username);
+                    res.status(200);
+                    // Family created successfully
+                    return gson.toJson(getIdOfFamilias(familias));
+                } catch (IllegalArgumentException e) {
+                    res.status(400);
+                    return "Family already exists!";
+                }
+            } catch (Exception e) {
+                res.status(500);
+                e.printStackTrace(); // Log the exception stack trace
+                return "Could not create Family: " + e.getMessage(); // Include the exception message in the error response
             }
-        } catch (Exception e) {
-            res.status(500);
-            e.printStackTrace(); // Log the exception stack trace
-            return "Could not create Family: " + e.getMessage(); // Include the exception message in the error response
-        }
-    };
+        };
 
     private List<Integer> getIdOfFamilias(List<Familia> familias) {
         List<Integer> ids = new ArrayList<>();
