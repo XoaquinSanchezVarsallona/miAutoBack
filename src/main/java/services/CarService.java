@@ -5,7 +5,6 @@ import dao.FamilyDao;
 import entities.Car;
 import entities.Familia;
 
-import java.util.List;
 import java.util.Set;
 
 public class CarService {
@@ -27,8 +26,7 @@ public class CarService {
     public static Set<Car> getCarsOfFamily(Integer familyId) {
         Familia familia = FamilyDao.getFamiliaById(familyId);
         if (familia != null) {
-            Set<Car> cars = familia.getCars();
-            return cars;
+            return familia.getCars();
         } else {
             throw new RuntimeException("Familia not found");
         }

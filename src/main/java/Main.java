@@ -11,11 +11,11 @@ public class Main {
         final EntityManager entityManager = factory.createEntityManager();
 
         //sample1(entityManager);
-        sample2(entityManager);
+        //sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
-        sample5(entityManager); // Sample para vincular auto con familia
-        // sample4(entityManager); // Sample para borrar tablas
+        // sample5(entityManager); // Sample para vincular auto con familia
+        sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
         //sample8(entityManager);
@@ -43,18 +43,18 @@ public class Main {
 
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
-        //Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK ;");
-        Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
-        Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
-        Query query2 = entityManager.createNativeQuery("DROP TABLE Familia");
-        Query query3 = entityManager.createNativeQuery("DROP TABLE car");
-        Query query4 = entityManager.createNativeQuery("DROP TABLE user");
+        //Query query5 = entityManager.createNativeQuery("ALTER TABLE famlia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK");
+        // Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
+        // Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
+        Query query2 = entityManager.createNativeQuery("DROP TABLE familia");
+        //Query query3 = entityManager.createNativeQuery("DROP TABLE car");
+        //Query query4 = entityManager.createNativeQuery("DROP TABLE user");
         //query5.executeUpdate();
-        query.executeUpdate();
-        query1.executeUpdate();
+        // query.executeUpdate();
+        // query1.executeUpdate();
         query2.executeUpdate();
-        query3.executeUpdate();
-        query4.executeUpdate();
+        //query3.executeUpdate();
+        //query4.executeUpdate();
 
         entityManager.getTransaction().commit();
         entityManager.close();

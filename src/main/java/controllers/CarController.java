@@ -4,13 +4,8 @@ import DTOs.CarDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Car;
-import entities.Familia;
 import services.CarService;
-import services.FamilyService;
 import spark.Route;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 public class CarController {
@@ -136,7 +131,7 @@ public class CarController {
     };
 
 
-    private static List<Car> getCarsOfFamily(Integer familyId) {
+    private static Set<Car> getCarsOfFamily(Integer familyId) {
         return CarService.getCarsOfFamily(familyId);
     }
 }
