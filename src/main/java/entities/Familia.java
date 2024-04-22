@@ -19,6 +19,10 @@ public class Familia {
     @Column(nullable= false, unique = true)
     private String apellido;
 
+    //@Column(nullable= false)
+    @Column
+    private String password;
+
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private final Set<Car> cars = new HashSet<>();
 
@@ -31,10 +35,22 @@ public class Familia {
 
     public Familia(String apellido) {
         this.apellido = apellido;
+        this.password = String.valueOf(' ');
+    }
+
+    public Familia(String apellido, String password) {
+        this.apellido = apellido;
+        this.password = password;
     }
 
     public Familia() {
 
+    }
+    public String getPassword() {
+        return password;
+    }
+    public void setPassword(String password) {
+        this.password = password;
     }
     public void addUser(User user) {
         users.add(user);

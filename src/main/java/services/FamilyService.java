@@ -14,19 +14,18 @@ import javax.persistence.NoResultException;
 import javax.validation.ConstraintViolationException;
 import java.util.List;
 import dao.AlertDao;
+import extras.IncorrectPasswordException;
 
 public class FamilyService {
 
-    public static void createFamily(String username , String apellido) {
-
-
+    public static void createFamily(String username , String apellido, String password) {
         User user = FamilyDao.lookForUser(username);
         List<Familia> familias = FamilyDao.getFamiliasOfUser(username);
         // Me fijo que no exista una familia con el ismo apellido en la db
         for (Familia familia : familias) {
             if (familia.getApellido().equals(apellido)) throw new IllegalArgumentException("Apellido has already been used");
         }
-        Familia family = new Familia(apellido);
+        Familia family = new Familia(apellido, password);
         // Comienza la transacción
         FamilyDao.saveFamily(family);
         family.addUser(user);
@@ -106,7 +105,7 @@ public class FamilyService {
     public static List<String> getVehiclesOfFamily(int familyID) {
         return FamilyDao.getVehiclesOfFamily(familyID);
     }
-    public static void joinToFamily(String username, String apellido) throws Exception {
+    public static void joinToFamily(String username, String apellido, String password) throws Exception {
         List<Familia> userFamilias = FamilyDao.getFamiliasOfUser(username);
         for (Familia familia : userFamilias) {
             if (familia.getApellido().equals(apellido)) {
@@ -118,6 +117,10 @@ public class FamilyService {
         if (familia == null) {
             throw new NoResultException("No Familia found for the given apellido");
         }
+        if (!familia.getPassword().equals(password)) {
+            throw new IncorrectPasswordException("Incorrect password");
+        }
+
         User user = FamilyDao.lookForUser(username);
         if (user == null) {
             throw new Exception("User not found");
