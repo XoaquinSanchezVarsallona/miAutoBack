@@ -60,4 +60,8 @@ public class Alert {
     public void setFamilia(Familia familia) {
         this.familia = familia;
     }
+
+    public Familia getFamilia() {
+        return familia;
+    }
 }

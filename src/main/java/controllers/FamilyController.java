@@ -4,6 +4,7 @@ import DTOs.FamiliaDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Familia;
+import extras.IncorrectPasswordException;
 import services.FamilyService;
 import spark.Route;
 import utils.JwtUtil;
@@ -54,28 +55,59 @@ public class FamilyController {
         }
     };
 
-        public Route addFamily = (req, res) -> {
+    public Route addFamily = (req, res) -> {
+        try {
+            String requestBody = req.body();
+            JsonObject jsonObj = (JsonObject)this.gson.fromJson(requestBody, JsonObject.class);
+            String apellido = jsonObj.get("surname").getAsString();
+            String password = jsonObj.get("password").getAsString();
+            String username = req.params(":username");
+
             try {
-                String requestBody = req.body();
-                JsonObject jsonObj = gson.fromJson(requestBody, JsonObject.class);
-                String apellido = jsonObj.get("surname").getAsString();
-                String username = req.params(":username");
-                try {
-                    FamilyService.createFamily(username, apellido);
-                    List<Familia> familias = FamilyService.getFamiliasOfUser(username);
-                    res.status(200);
-                    // Family created successfully
-                    return gson.toJson(getIdOfFamilias(familias));
-                } catch (IllegalArgumentException e) {
-                    res.status(400);
-                    return "Family already exists!";
-                }
-            } catch (Exception e) {
-                res.status(500);
-                e.printStackTrace(); // Log the exception stack trace
-                return "Could not create Family: " + e.getMessage(); // Include the exception message in the error response
+                FamilyService.createFamily(username, apellido, password);
+                List<Familia> familias = FamilyService.getFamiliasOfUser(username);
+                res.status(200);
+                return this.gson.toJson(this.getIdOfFamilias(familias));
+            } catch (IllegalArgumentException var9) {
+                res.status(400);
+                return "Family already exists!";
             }
-        };
+        } catch (Exception var10) {
+            res.status(500);
+            var10.printStackTrace();
+            return "Could not create Family: " + var10.getMessage();
+        }
+    };
+
+    public Route joinToFamily = (req, res) -> {
+        try {
+            String requestBody = req.body();
+            JsonObject jsonObject = (JsonObject)this.gson.fromJson(requestBody, JsonObject.class);
+            String apellido = jsonObject.get("surname").getAsString();
+            String password = jsonObject.get("password").getAsString();
+            String username = req.params(":username");
+            FamilyService.joinToFamily(username, apellido, password);
+            List<Familia> familias = FamilyService.getFamiliasOfUser(username);
+            res.status(200);
+            return this.gson.toJson(this.getIdOfFamilias(familias));
+        } catch (NoResultException var9) {
+            System.out.println(var9.getMessage());
+            res.status(404);
+            return "Family doesn't exist";
+        } catch (IllegalArgumentException var10) {
+            System.out.println(var10.getMessage());
+            res.status(400);
+            return "You are already in that family";
+        } catch (IncorrectPasswordException var11) {
+            System.out.println(var11.getMessage());
+            res.status(401);
+            return "Incorrect password";
+        } catch (Exception var12) {
+            System.out.println(var12.getMessage());
+            res.status(500);
+            return var12.getMessage();
+        }
+    };
 
     private List<Integer> getIdOfFamilias(List<Familia> familias) {
         List<Integer> ids = new ArrayList<>();
@@ -84,37 +116,6 @@ public class FamilyController {
         }
         return ids;
     }
-
-    public Route joinToFamily = (req, res) -> {
-        try {
-            String requestBody = req.body();
-            JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
-            String apellido = jsonObject.get("surname").getAsString();
-            String username = req.params(":username");
-
-            FamilyService.joinToFamily(username, apellido);
-
-            //para que se actualicen las familias
-            List<Familia> familias = FamilyService.getFamiliasOfUser(username);
-            res.status(200);
-            return gson.toJson(getIdOfFamilias(familias));
-
-            //return "Joined to Family";
-        } catch (NoResultException e) {
-            System.out.println(e.getMessage());
-            res.status(404);
-            return "Family doesn't exist";
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            res.status(400);
-            return "You are already in that family";
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            res.status(500);
-            return e.getMessage();
-        }
-    };
-
 
     public Route deleteMember = (req, res) -> {
         try {
