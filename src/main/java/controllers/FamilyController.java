@@ -92,10 +92,9 @@ public class FamilyController {
             String requestBody = req.body();
             JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
             String apellido = jsonObject.get("surname").getAsString();
-            String password = jsonObject.get("password").getAsString(); // Extract password from request body
             String username = req.params(":username");
 
-            FamilyService.joinToFamily(username, apellido, password);
+            FamilyService.joinToFamily(username, apellido);
 
             //para que se actualicen las familias
             List<Familia> familias = FamilyService.getFamiliasOfUser(username);
