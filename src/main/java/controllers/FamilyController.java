@@ -16,7 +16,6 @@ import java.util.Objects;
 
 public class FamilyController {
     private final Gson gson = new Gson();
-    // hola
     public Route findFamilyById = (req, res) -> {
         int idFamilia = Integer.parseInt(req.params(":idFamilia"));
         try {
@@ -35,15 +34,16 @@ public class FamilyController {
             return "Something went wrong";
         }
     };
+    // hola
 
     public Route familyDisplayed = (req, res) -> {
         String username = req.params(":username");
         try {
             res.type("application/json");
             List<Familia> result = FamilyService.getFamiliasOfUser(username);
-            if (result.isEmpty()) {
+            if (result.size() == 1) {
                 res.status(300);
-                return "Couldn't find any familia";
+                return "You only have your family";
             } else {
                 res.status(200);
                 return gson.toJson(result);

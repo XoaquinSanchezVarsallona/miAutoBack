@@ -96,4 +96,32 @@ public class Car {
     public void addFamilia(Familia familia) {
         this.familias.add(familia);
     }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
+    public void setFechaVencimientoSeguro(String fechaVencimientoSeguro) {
+        this.fechaVencimientoSeguro = fechaVencimientoSeguro;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setFechaVencimientoVTV(String fechaVencimientoVTV) {
+        this.fechaVencimientoVTV = fechaVencimientoVTV;
+    }
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
+
+    public void setKilometraje(float kilometraje) {
+        this.kilometraje = kilometraje;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
+    }
 }

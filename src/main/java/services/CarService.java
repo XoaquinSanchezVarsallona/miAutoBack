@@ -1,5 +1,6 @@
 package services;
 
+import dao.CarDao;
 import dao.FamilyDao;
 import entities.Car;
 import entities.Familia;
@@ -29,5 +30,9 @@ public class CarService {
         } else {
             throw new RuntimeException("Familia not found");
         }
+    }
+
+    public static boolean updateCarProfile(String patente, String field, String newValue) {
+        return CarDao.updateCarProfile(patente, field, newValue);
     }
 }
