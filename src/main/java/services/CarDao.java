@@ -30,10 +30,11 @@ public class CarDao {
     }
 
     public static void deleteCar(Car car) {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-        em.remove(car);
-        em.getTransaction().commit();
-        em.close();
+    EntityManager em = factory.createEntityManager();
+    em.getTransaction().begin();
+    Car managedCar = em.merge(car);
+    em.remove(managedCar);
+    em.getTransaction().commit();
+    em.close();
     }
 }

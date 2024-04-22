@@ -11,6 +11,7 @@ import spark.Route;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CarController {
     private final Gson gson = new Gson();
@@ -36,6 +37,7 @@ public class CarController {
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
         try {
+
             res.type("application/json");
             Integer familyId = Integer.valueOf(req.params(":familyId"));
             String patente = jsonObj.get("patente").getAsString();
@@ -63,16 +65,31 @@ public class CarController {
                 res.status(400);
                 return "Invalid kilometraje or año parameter";
             }
+            // Manejo de caso en el que el auto ya existe en la familia
+            if (checkIfCarExistsInFamily(patente, familyId)) {
+                res.status(400);
+                return "Car with patente " + patente + " already exists";
+            }
             CarService.createCar(familyId, patente, marca, modelo, kilometraje, ano, fechaVencimientoSeguro, fechaVencimientoVTV);
-            // List<Car> cars = CarController.getCarsOfFamily(familyId);
             res.status(200);
             return "Car created successfully";
-            // return gson.toJson(getIdOfCars(cars));
         } catch (Exception e) {
             res.status(500);
-            return "Something went wrong";
+            return "Something went wrong, server error";
         }
     };
+
+    private boolean checkIfCarExistsInFamily(String patente, Integer familyId) {
+        Set<Car> cars = CarService.getCarsOfFamily(familyId);
+        for (Car c : cars) {
+            System.out.println(cars);
+            if (c.getPatente().equals(patente)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Route deleteCar = (req, res) -> {
         String patente = req.params(":patente");
         try {
@@ -92,18 +109,7 @@ public class CarController {
         }
     };
 
-/*
-    private List<String> getIdOfCars(List<Car> cars) {
-        List<String> ids = new ArrayList<>();
-        for (Car car : cars) {
-            ids.add(car.getPatente());
-        }
-        return ids;
-    }
-
- */
-
-    private static List<Car> getCarsOfFamily(Integer familyId) {
+    private static Set<Car> getCarsOfFamily(Integer familyId) {
         return CarService.getCarsOfFamily(familyId);
     }
 }

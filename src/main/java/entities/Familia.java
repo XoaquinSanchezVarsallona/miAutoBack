@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class Familia {
@@ -17,8 +19,8 @@ public class Familia {
     @Column(nullable= false, unique = true)
     private String apellido;
 
-    @ManyToMany(mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
-    private final List<Car> cars = new ArrayList<>();
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private final Set<Car> cars = new HashSet<>();
 
     //como no quiero eliminar usuario al eliminar familia, saco cascade.remove de la lista.
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
@@ -50,7 +52,7 @@ public class Familia {
     public int getFamiliaId() {
         return idFamilia;
     }
-    public List<Car> getCars() {
+    public Set<Car> getCars() {
         return cars;
     }
     public List<User> getUserDrivers() {
