@@ -25,7 +25,7 @@ public class UserService {
     public static boolean registerUser(User user) {
         if (!UserDao.userExists(user.getEmail(), user.getUsername())) {
             UserDao.saveUser(user);
-            FamilyService.createFamily(user.getUsername(), "misAutos" + user.username, user.password);
+            FamilyService.createFamily(user.getUsername(), "misAutos " + user.username, user.password);
             return true;
         }
         return false;

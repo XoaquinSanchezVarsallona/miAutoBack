@@ -64,7 +64,6 @@ public class UserDao {
         try {
             entityManager.getTransaction().begin();
             User user = entityManager.find(User.class, userId);
-            entityManager.close();
             System.out.println("User: " + user);
 
             if (user == null) {
@@ -97,6 +96,7 @@ public class UserDao {
             }
             entityManager.merge(user);
             entityManager.getTransaction().commit();
+            entityManager.close();
             return true;
         } catch (Exception e) {
             if (entityManager.getTransaction().isActive()) {
