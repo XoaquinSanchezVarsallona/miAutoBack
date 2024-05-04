@@ -29,7 +29,7 @@ public class Application {
 
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
-        post("/vehicles/:familyId", familyController.vehiclesOfFamily);
+        post("/vehicles/family/:familyId", familyController.vehiclesOfFamily);
         get("/alertasss/family/:familyApellido", AlertController.getAlertsOfFamily);
         post("/alertas/add", AlertController.addAlertToFamily);
         delete("/alerts/:idAlert", AlertController.deleteAlert);

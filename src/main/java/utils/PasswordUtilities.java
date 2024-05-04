@@ -5,8 +5,7 @@ import entities.User;
 import javax.persistence.*;
 import java.util.Objects;
 
-public class PasswordUtilities {
-    static EntityManager entityManager = FactoryCreator.getEntityManager();
+public class PasswordUtilities { ;
 
     public static boolean passwordValidation(String email, String password, String userType) {
         try {
@@ -32,6 +31,7 @@ public class PasswordUtilities {
     }
 
     public static User findUserByEmail(String email) {
+        EntityManager entityManager = FactoryCreator.getEntityManager();
         TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
         query.setParameter("email", email);
         try {
