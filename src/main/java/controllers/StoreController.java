@@ -109,5 +109,21 @@ public class StoreController {
         }
         return gson.toJson(message);
     };
+
+    public Route getAllStores = (Request request, Response response) -> {
+        System.out.println("ENTRO A GETALLSTORE");
+        Gson gson = new Gson();
+
+        List<StoreDTO> stores = StoreService.fetchAllStores();
+        System.out.println("TENGO STORES: " + stores);
+
+        if (stores == null) {
+            response.status(400);
+            return gson.toJson("User not found");
+        }
+
+        response.status(200);
+        return gson.toJson(stores);
+    };
 }
 

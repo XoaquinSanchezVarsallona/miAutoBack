@@ -5,6 +5,8 @@ import entities.Store;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
+import java.util.List;
+
 import static dao.FactoryCreator.factory;
 
 public class StoreDao {
@@ -103,6 +105,16 @@ public class StoreDao {
                 transaction.rollback();
             }
             throw e;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static List<Store> getAllStores() {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Store s", Store.class)
+                    .getResultList();
         } finally {
             entityManager.close();
         }
