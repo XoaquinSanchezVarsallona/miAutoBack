@@ -58,6 +58,7 @@ public class Application {
 
         post("/editCarProfile" , carController.editCarProfile);
 
+        post("/fetchAllStores", storeController.getAllStores);
         post("stores/addStore", storeController.addStore);
         post("stores/fetchStores", storeController.getStores);
         delete("/store/:storeEmail/deleteStore", storeController.deleteStore);

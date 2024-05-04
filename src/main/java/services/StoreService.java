@@ -31,4 +31,14 @@ public class StoreService {
     public static boolean editStoreProfile(String email, String field, String value) {
         return StoreDao.editStoreProfile(email, field, value);
     }
+
+    public static List<StoreDTO> fetchAllStores() {
+        List<Store> stores = StoreDao.getAllStores();
+        if (stores == null) {
+            return null;
+        }
+        return stores.stream()
+                .map(StoreDTO::from)
+                .collect(Collectors.toList());
+    }
 }
