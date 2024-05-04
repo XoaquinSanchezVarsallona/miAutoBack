@@ -1,11 +1,13 @@
 package dao;
 
+import entities.Familia;
 import entities.User;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+
+import javax.persistence.*;
 
 public class UserDao {
+    static EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
+
     public static User findUserByEmail(String email) {
         final EntityManager entityManager = FactoryCreator.getEntityManager();
         User user = entityManager.find(User.class, email);
@@ -21,6 +23,19 @@ public class UserDao {
             return query.getSingleResult();
         } catch (NoResultException e) {
             return null;
+        }
+    }
+
+    public static User getUserByEmail(String email) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        TypedQuery<User> query = entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            entityManager.close();
         }
     }
 
@@ -107,5 +122,27 @@ public class UserDao {
         } finally {
             entityManager.close();
         }
-}}
+}
+
+
+    public static User updateUser(User user) {
+        EntityManager entityManager = factory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        User managedUser = null;
+        try {
+            transaction.begin();
+            managedUser = entityManager.merge(user);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
+        return managedUser;
+    }
+
+}
 

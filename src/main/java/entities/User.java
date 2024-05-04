@@ -1,9 +1,6 @@
 package entities;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Entity
 public class User {
@@ -42,6 +39,9 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
     private List<Familia> familias = new ArrayList<>();
+
+    @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
+    private Set<Store> stores = new HashSet<>();
 
 
     //constructores
@@ -129,5 +129,13 @@ public class User {
             result.put(familia.getFamiliaId(), familia.getApellido());
         }
         return result;
+    }
+
+    public void addStore(Store store) {
+        stores.add(store);
+    }
+
+    public Set<Store> getStores() {
+        return stores;
     }
 }

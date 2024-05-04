@@ -10,6 +10,7 @@ public class Application {
         UserController userController = new UserController();
         FamilyController familyController = new FamilyController();
         CarController carController = new CarController();
+        StoreController storeController = new StoreController();
 
         port(9002);
 
@@ -56,4 +57,10 @@ public class Application {
         post("/validateToken", userController.validateToken);
 
         post("/editCarProfile" , carController.editCarProfile);
+
+        post("stores/addStore", storeController.addStore);
+        post("stores/fetchStores", storeController.getStores);
+        delete("/store/:storeEmail/deleteStore", storeController.deleteStore);
+        post("/editStoreProfile", storeController.editStoreProfile);
+
     }}
