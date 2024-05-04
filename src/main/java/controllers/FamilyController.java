@@ -198,6 +198,7 @@ public class FamilyController {
     };
     public Route vehiclesOfFamily = (req, res) -> {
         try {
+            System.out.println("ENTRO A VEHICLESOFFAMILY");
             int familyID = Integer.parseInt(req.params(":familyId"));
             res.type("application/json");
             List<String> result = FamilyService.getVehiclesOfFamily(familyID);

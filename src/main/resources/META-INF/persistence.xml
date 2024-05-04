@@ -8,6 +8,7 @@
         <class>entities.Car</class>
         <class>entities.Familia</class>
         <class>entities.Alert</class>
+        <class>entities.Store</class>
 
 
         <properties>
