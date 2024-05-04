@@ -119,6 +119,18 @@ public class UserController {
         }
     };
 
+    public Route findUserById = (req, res) -> {
+        Gson gson = new Gson();
+        Long userId = Long.parseLong(req.params("userId"));
+        User user = UserService.findUserById(userId);
+        if (user == null) {
+            res.status(404);
+            return "User not found";
+        }
+        res.status(200);
+        UserDTO userDTO = new UserDTO(user);
+        return gson.toJson(userDTO);
+    };
 }
 
 

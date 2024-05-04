@@ -39,6 +39,7 @@ public class Application {
         post("/register", userController.register);
 
         get("/user/:email", userController.findUserByEmail);
+        post("/user/:userId", userController.findUserById);
         get("/family/:idFamilia", familyController.findFamilyById);
         get("/car/:patente", carController.findCarByPatente);
         post("/car/:familyId/addVehicle", carController.createCar);

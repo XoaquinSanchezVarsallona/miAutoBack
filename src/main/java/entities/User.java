@@ -138,4 +138,16 @@ public class User {
     public Set<Store> getStores() {
         return stores;
     }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
 }

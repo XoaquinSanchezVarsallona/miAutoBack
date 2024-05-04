@@ -143,6 +143,5 @@ public class UserDao {
         }
         return managedUser;
     }
-
 }
 

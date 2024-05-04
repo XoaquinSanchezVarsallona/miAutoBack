@@ -13,6 +13,10 @@ public class UserService {
         return UserDao.updateUserField(userId, field, newValue);
     }
 
+    public static User findUserById(Long userId) {
+        return UserDao.findUserByUserID(userId);
+    }
+
     public User login(String email, String password) {
         User user = UserDao.findUserByEmail(email);
 
