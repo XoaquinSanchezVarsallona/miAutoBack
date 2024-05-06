@@ -9,6 +9,7 @@
         <class>entities.Familia</class>
         <class>entities.Alert</class>
         <class>entities.Store</class>
+        <class>entities.Route</class>
 
 
         <properties>

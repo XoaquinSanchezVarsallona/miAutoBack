@@ -31,7 +31,7 @@ public class User {
     @Column
     public String userType;
 
-    //tabla familia_conductores
+    // tabla familia_conductores
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "familia_conductores",
@@ -42,6 +42,9 @@ public class User {
 
     @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
     private Set<Store> stores = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    private Set<Route> routes = new HashSet<>();
 
 
     //constructores
@@ -58,8 +61,17 @@ public class User {
     public User() {
 
     }
+    // Métodos de route
+    public void addRoute(Route route) {
+        this.routes.add(route);
+    }
+    public void removeRoute(Route route) {
+        this.routes.remove(route);
+    }
+    public Set<Route> getRoutes() {
+        return routes;
+    }
 
-    //obtener las familias a las que pertenece el usuario
     public List<Familia> getFamilias() {
         return familias;
     }
