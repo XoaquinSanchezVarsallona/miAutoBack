@@ -153,4 +153,13 @@ public class FamilyDao {
         }
         return managedFamilia;
     }
+
+    public static List<User> getMembersOfFamily(int familyId) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<User> query = em.createQuery("SELECT u FROM Familia f JOIN f.users u WHERE f.idFamilia = :familyId", User.class);
+        query.setParameter("familyId", familyId);
+        List<User> result = query.getResultList();
+        em.close();
+    return result;
+}
 }

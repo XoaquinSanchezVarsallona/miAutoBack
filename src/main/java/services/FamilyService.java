@@ -182,4 +182,8 @@ public class FamilyService {
 
 
     }
+
+    public static List<User> getMembersOfFamily(int familyId) {
+        return FamilyDao.getMembersOfFamily(familyId);
+    }
 }

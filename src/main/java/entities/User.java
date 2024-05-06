@@ -64,6 +64,7 @@ public class User {
     // Métodos de route
     public void addRoute(Route route) {
         this.routes.add(route);
+        route.setUser(this);
     }
     public void removeRoute(Route route) {
         this.routes.remove(route);

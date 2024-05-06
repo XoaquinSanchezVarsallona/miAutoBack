@@ -1,9 +1,11 @@
 package controllers;
 
 import DTOs.FamiliaDTO;
+import DTOs.UserDTO;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import entities.Familia;
+import entities.User;
 import extras.IncorrectPasswordException;
 import services.FamilyService;
 import spark.Route;
@@ -108,6 +110,35 @@ public class FamilyController {
             return var12.getMessage();
         }
     };
+
+    public Route getMembers = (req, res) -> {
+        try {
+            String requestBody = req.body();
+            JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
+            int familyId = jsonObject.get("familyId").getAsInt();
+            res.type("application/json");
+            List<User> result = FamilyService.getMembersOfFamily(familyId);
+            List<UserDTO> userDTOs = getDTOVersionOfList(result);
+            if (result.isEmpty()) {
+                res.status(300);
+                return "Couldn't find any member";
+            } else {
+                res.status(200);
+                return gson.toJson(userDTOs);
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
+
+    private List<UserDTO> getDTOVersionOfList(List<User> list) {
+        List<UserDTO> result = new ArrayList<>();
+        for (User u : list) {
+            result.add(new UserDTO(u));
+        }
+        return result;
+    }
 
     private List<Integer> getIdOfFamilias(List<Familia> familias) {
         List<Integer> ids = new ArrayList<>();

@@ -11,6 +11,7 @@ public class Application {
         FamilyController familyController = new FamilyController();
         CarController carController = new CarController();
         StoreController storeController = new StoreController();
+        RouteController routeController = new RouteController();
 
         port(9002);
 
@@ -50,9 +51,11 @@ public class Application {
         get("/user/:username/delMember", familyController.deleteMember);
         get("/user/:username/addMember", familyController.addMember);
         post("/user/:username/joinToFamily", familyController.joinToFamily);
+        get("/user/:user.id/vehicle/:patente/routes", routeController.getRoutesOfUser);
 
         delete("/family/:surname", FamilyController.deleteFamily);
         put("/family/:surname", familyController.updateSurname);
+        post("/family/:familyId/getUsers", familyController.getMembers);
 
         post("/editProfile", userController.editProfile);
         post("/validateToken", userController.validateToken);
@@ -65,4 +68,6 @@ public class Application {
         delete("/store/:storeEmail/deleteStore", storeController.deleteStore);
         post("/editStoreProfile", storeController.editStoreProfile);
 
+        // Route
+        post("/route/:userID/addRoute", RouteController.addRoute);
     }}
