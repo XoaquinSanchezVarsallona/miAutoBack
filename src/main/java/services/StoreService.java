@@ -41,4 +41,16 @@ public class StoreService {
                 .map(StoreDTO::from)
                 .collect(Collectors.toList());
     }
+
+    public static boolean editVisualStoreProfile(String email, String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+        return StoreDao.editVisualStoreProfile(email,name, domicilio, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
+    }
+
+    public static StoreDTO getVisualStoreProfile(String email) {
+        Store store = StoreDao.getStoreByEmail(email);
+        if (store == null) {
+            return null;
+        }
+        return StoreDTO.from(store);
+    }
 }

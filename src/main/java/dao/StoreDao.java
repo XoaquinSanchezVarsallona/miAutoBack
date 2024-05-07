@@ -4,6 +4,7 @@ import entities.Store;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 
 import java.util.List;
 
@@ -115,6 +116,57 @@ public class StoreDao {
         try {
             return entityManager.createQuery("SELECT s FROM Store s", Store.class)
                     .getResultList();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static boolean editVisualStoreProfile(String email,  String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+        EntityManager entityManager = factory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+
+        try {
+            transaction.begin();
+
+            Store store = entityManager.createQuery("SELECT s FROM Store s WHERE s.storeEmail = :storeEmail", Store.class)
+                    .setParameter("storeEmail", email)
+                    .getSingleResult();
+            System.out.println("ENCONTRE A STORE" + store);
+
+            if (store != null) {
+                store.setStoreName(name);
+                store.setDomicilio(domicilio);
+                store.setTipoDeServicio(tipoDeServicio);
+                store.setDescription(description);
+                store.setPhoneNumber(phoneNumber);
+                store.setWebPageLink(webPageLink);
+                store.setInstagramLink(instagramLink);
+                store.setGoogleMapsLink(googleMapsLink);
+
+                entityManager.merge(store);
+                transaction.commit();
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static Store getStoreByEmail(String email) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Store s WHERE s.storeEmail = :email", Store.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
         } finally {
             entityManager.close();
         }
