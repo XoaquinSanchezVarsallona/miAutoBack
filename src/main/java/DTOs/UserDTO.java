@@ -12,10 +12,12 @@ public class UserDTO {
     private String domicilio;
     private String surname;
     private String name;
+    private String userId;
     private final Map<Integer, String> familiasMapa;
 
     public UserDTO(User user) {
         this.email = user.getEmail();
+        this.userId = user.getUserID();
         this.username = user.getUsername();
         this.domicilio = user.getDomicilio();
         this.name = user.getName();

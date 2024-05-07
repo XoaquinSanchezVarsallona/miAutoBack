@@ -11,7 +11,7 @@ public class RouteService {
         RouteDao.createRoute(patente, user, kilometres, duration, date);
     }
 
-    public static Set<Route> getRoutesOfUser(User user) {
-        return RouteDao.getRoutesOfUser(user);
+    public static Set<Route> getRoutesOfUser(User user, String patente) {
+        return RouteDao.getRoutesOfUser(user, patente);
     }
 }

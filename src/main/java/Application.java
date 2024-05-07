@@ -51,7 +51,8 @@ public class Application {
         get("/user/:username/delMember", familyController.deleteMember);
         get("/user/:username/addMember", familyController.addMember);
         post("/user/:username/joinToFamily", familyController.joinToFamily);
-        get("/user/:user.id/vehicle/:patente/routes", routeController.getRoutesOfUser);
+        get("/user/:userId/vehicle/:patente/routes", routeController.getRoutesOfUserByCar);
+        get("/user/:userId/routes", routeController.getRoutesOfUser);
 
         delete("/family/:surname", FamilyController.deleteFamily);
         put("/family/:surname", familyController.updateSurname);

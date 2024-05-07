@@ -5,6 +5,7 @@ import entities.Route;
 
 import javax.persistence.EntityManager;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class RouteDao {
     public static void createRoute(String patente, User user, String kilometres, String duration, String date) {
@@ -17,7 +18,8 @@ public class RouteDao {
         entityManager.close();
     }
 
-    public static Set<Route> getRoutesOfUser(User user) {
-        return user.getRoutes();
+    public static Set<Route> getRoutesOfUser(User user, String patente) {
+        Set<Route> routes = user.getRoutes();
+        return routes.stream().filter(route -> route.getPatente().equals(patente)).collect(Collectors.toSet()); // Filtro por patente
     }
 }

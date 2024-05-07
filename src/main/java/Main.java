@@ -11,11 +11,11 @@ public class Main {
         final EntityManager entityManager = factory.createEntityManager();
 
         //sample1(entityManager);
-        //sample2(entityManager);
+        sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
         // sample5(entityManager); // Sample para vincular auto con familia
-        sample4(entityManager); // Sample para borrar tablas
+        // sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
         //sample8(entityManager);
@@ -153,16 +153,12 @@ public class Main {
     }
 
     private static void sample2(EntityManager entityManager) {
-        User user = getUserWithUsername("hola", entityManager);
-
-        Familia Perez = new Familia("Gonzales");
-        user.addFamily(Perez);
-        Perez.addUser(user);
+        User user = new User("hola", "hola", "hola", "hola", "hola", "hola", "hola");
 
         //comienza transacción //
         entityManager.getTransaction().begin();
 
-        entityManager.persist(Perez);
+        entityManager.persist(user);
 
         entityManager.getTransaction().commit();
         // terminó transacción //
