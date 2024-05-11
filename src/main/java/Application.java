@@ -73,4 +73,5 @@ public class Application {
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
+        delete("/route/:routeID/deleteRoute", RouteController.deleteRoute);
     }}

@@ -81,7 +81,6 @@ public class FamilyService {
             Familia familia = entityManager.createQuery("SELECT f FROM Familia f WHERE f.apellido = :apellido", Familia.class)
                     .setParameter("apellido", apellido)
                     .getSingleResult();
-            System.out.println("FAMILIAAAA" + familia);
 
             familia.setSurname(nuevoApellido);
             entityManager.merge(familia);

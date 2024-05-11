@@ -1,5 +1,6 @@
 package dao;
 
+import entities.Car;
 import entities.User;
 import entities.Route;
 
@@ -19,7 +20,56 @@ public class RouteDao {
     }
 
     public static Set<Route> getRoutesOfUser(User user, String patente) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        entityManager.getTransaction().begin();
         Set<Route> routes = user.getRoutes();
-        return routes.stream().filter(route -> route.getPatente().equals(patente)).collect(Collectors.toSet()); // Filtro por patente
+        Set<Route> result = routes.stream().filter(route -> route.getPatente().equals(patente)).collect(Collectors.toSet()); // Filtro por patente
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return result;
+    }
+
+    public static Set<Route> getRoutesOfUser(User user) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        entityManager.getTransaction().begin();
+        Set<Route> routes = user.getRoutes();
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return routes;
+    }
+
+    public static void deleteRoute(Route route) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Route managedRoute = entityManager.merge(route);
+            User user = managedRoute.getUser();
+            user.getRoutes().remove(managedRoute);
+            entityManager.merge(user);
+            entityManager.remove(managedRoute);
+            entityManager.getTransaction().commit();
+            entityManager.clear();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            System.out.println("Error deleting route");
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    public static Route getRouteById(Integer routeId) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        entityManager.getTransaction().begin();
+        Route route = entityManager.find(Route.class, routeId);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        if (route == null) {
+            System.out.println("Route not found with id: " + routeId);
+            return null;
+        }
+        return route;
     }
 }

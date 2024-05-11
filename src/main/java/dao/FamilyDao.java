@@ -77,16 +77,27 @@ public class FamilyDao {
     }
 
     public static void removeFamily(Familia familia) {
-        EntityManager em = factory.createEntityManager();
-        em.getTransaction().begin();
-        Familia toRemove = em.merge(familia);
-        for (User user : toRemove.getUsers()) {
-            user.getFamilias().remove(toRemove);
-            em.merge(user);
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            Familia managedFamilia = entityManager.merge(familia);
+            for (User conductor : managedFamilia.getUsers()) {
+                conductor.removeFamilia(managedFamilia); // Disassociate the conductor from the familia
+                entityManager.merge(conductor); // Merge the updated conductor back into the persistence context
+            }
+            entityManager.remove(managedFamilia);
+            entityManager.getTransaction().commit();
+            entityManager.clear();
+            System.out.println("Familia deleted");
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            System.out.println("Error deleting familia");
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
         }
-        em.remove(toRemove);
-        em.getTransaction().commit();
-        em.close();
     }
 
     public static Familia getFamiliaById(int idFamilia) {

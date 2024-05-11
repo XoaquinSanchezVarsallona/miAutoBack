@@ -78,4 +78,8 @@ public class Route {
     public void setDuration(String duration) {
         this.duration = duration;
     }
+
+    public int getRouteId() {
+        return routeId;
+    }
 }

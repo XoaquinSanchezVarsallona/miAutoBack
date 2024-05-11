@@ -14,4 +14,16 @@ public class RouteService {
     public static Set<Route> getRoutesOfUser(User user, String patente) {
         return RouteDao.getRoutesOfUser(user, patente);
     }
+
+    public static Set<Route> getRoutesOfUser(User user) {
+        return RouteDao.getRoutesOfUser(user);
+    }
+
+    public static void deleteRoute(Route route) {
+        RouteDao.deleteRoute(route);
+    }
+
+    public static Route getRouteById(Integer routeId) {
+        return RouteDao.getRouteById(routeId);
+    }
 }

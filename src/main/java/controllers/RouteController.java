@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RouteController {
+
     public static Route addRoute = (req, res) -> {
         Gson gson = new Gson();
         Long userId = Long.valueOf(req.params(":userID"));
@@ -30,13 +31,39 @@ public class RouteController {
             String date = jsonObject.get("date").getAsString();
             RouteService.createRoute(patente, user, kilometres, duration, date);
             res.status(200);
-            return "Route added successfully";
+            Set<entities.Route> routes = RouteService.getRoutesOfUser(user);
+            Set<String> routeIds = generateRouteIdsFrom(routes);
+            res.type("application/json");
+            return gson.toJson(routeIds);
         }
         catch (Exception e) {
             res.status(500);
             return "Could not add Route";
         }
     };
+
+    public static Route deleteRoute = (req, res) -> {
+        Integer routeId = Integer.valueOf(req.params(":routeID"));
+        entities.Route route = RouteService.getRouteById(routeId);
+        try {
+            RouteService.deleteRoute(route);
+            res.status(200);
+            return "Route deleted";
+        }
+        catch (Exception e) {
+            res.status(500);
+            return "Could not delete Route";
+        }
+    };
+
+    private static Set<String> generateRouteIdsFrom(Set<entities.Route> routes) {
+        Set<String> routeIds = new HashSet<>();
+        for (entities.Route route : routes) {
+            routeIds.add(String.valueOf(route.getRouteId()));
+        }
+        return routeIds;
+    }
+
     public Route getRoutesOfUserByCar = (req, res) -> {
         Long userId = Long.valueOf(req.params(":userId"));
         String patente = String.valueOf(req.params(":patente"));
@@ -79,7 +106,7 @@ public class RouteController {
         }
     };
 
-    private Set<RouteDTO> generateRouteDTOsFrom(Set<entities.Route> routes) {
+    private static Set<RouteDTO> generateRouteDTOsFrom(Set<entities.Route> routes) {
         Set<RouteDTO> routeDTOs = new HashSet<>();
         for (entities.Route route : routes) {
             routeDTOs.add(new RouteDTO(route));
