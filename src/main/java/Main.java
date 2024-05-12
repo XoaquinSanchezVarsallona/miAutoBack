@@ -14,7 +14,6 @@ public class Main {
         sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
-        // sample5(entityManager); // Sample para vincular auto con familia
         // sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
@@ -24,21 +23,6 @@ public class Main {
 
         entityManager.close();
         factory.close();
-    }
-
-    private static void sample5(EntityManager entityManager) {
-        User user = getUserWithUsername("hola", entityManager);
-        Car car = new Car("AB567KU", "Toyota", "Corolla Cross", 1000, 2019,
-                "11/12/24", "12/12/2023");
-        Familia familia = user.getFamilias().get(0);
-        familia.addCar(car);
-        car.addFamilia(familia);
-        // Comienza la transacción
-        entityManager.getTransaction().begin();
-        entityManager.persist(car);
-        entityManager.getTransaction().commit();
-        // Finaliza la transacción
-        entityManager.close();
     }
 
     private static void sample4(EntityManager entityManager) {

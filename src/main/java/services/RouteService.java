@@ -26,4 +26,8 @@ public class RouteService {
     public static Route getRouteById(Integer routeId) {
         return RouteDao.getRouteById(routeId);
     }
+
+    public static void updateRoute(Route route, String kilometres, String duration, String date) {
+        RouteDao.updateRoute(route, kilometres, duration, date);
+    }
 }

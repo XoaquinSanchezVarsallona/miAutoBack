@@ -38,7 +38,7 @@ public class User {
             joinColumns = @JoinColumn(name = "idUser"),
             inverseJoinColumns = @JoinColumn(name = "idFamilia")
     )
-    private List<Familia> familias = new ArrayList<>();
+    private Set<Familia> familias = new HashSet<>();
 
     @OneToMany(mappedBy="user", fetch = FetchType.EAGER)
     private Set<Store> stores = new HashSet<>();
@@ -69,11 +69,12 @@ public class User {
     public void removeRoute(Route route) {
         this.routes.remove(route);
     }
+
     public Set<Route> getRoutes() {
         return routes;
     }
 
-    public List<Familia> getFamilias() {
+    public Set<Familia> getFamilias() {
         return familias;
     }
 

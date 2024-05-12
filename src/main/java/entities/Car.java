@@ -124,4 +124,8 @@ public class Car {
     public void setPatente(String patente) {
         this.patente = patente;
     }
+
+    public void removeFamily(Familia familia) {
+        this.familias.remove(familia);
+    }
 }

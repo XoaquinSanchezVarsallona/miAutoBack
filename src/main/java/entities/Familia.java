@@ -63,7 +63,8 @@ public class Familia {
         users.remove(user);
     }
     public void removeCar(Car car) {
-        cars.remove(car);
+        this.cars.remove(car);
+        car.removeFamily(this);
     }
     public String getApellido() {return apellido;}
     public int getFamiliaId() {

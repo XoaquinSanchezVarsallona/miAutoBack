@@ -55,6 +55,42 @@ public class RouteController {
             return "Could not delete Route";
         }
     };
+    public static Route editRoute = (req, res) -> {
+        Gson gson = new Gson();
+        String requestBody = req.body();
+        JsonObject jsonObject = gson.fromJson(requestBody, JsonObject.class);
+        Integer routeId = jsonObject.get("routeId").getAsInt();
+        entities.Route route = RouteService.getRouteById(routeId);
+        if (route == null) {
+            res.status(404);
+            return "Route not found";
+        }
+        try {
+            JsonObject updatesObject = jsonObject.getAsJsonObject("updates");
+            String kilometres = updatesObject.get("Distance").getAsString();
+            String duration = updatesObject.get("Duration").getAsString();
+            String date = updatesObject.get("Date").getAsString();
+            RouteService.updateRoute(route, kilometres, duration, date);
+            entities.Route updatedRoute = RouteService.getRouteById(routeId);
+            res.status(200);
+            return gson.toJson(new RouteDTO(updatedRoute));
+        }
+        catch (Exception e) {
+            res.status(500);
+            return "Could not update Route";
+        }
+    };
+    public static Route getRouteById = (req, res) -> {
+        Integer routeId = Integer.valueOf(req.params(":routeId"));
+        entities.Route route = RouteService.getRouteById(routeId);
+        if (route == null) {
+            res.status(404);
+            return "Route not found";
+        }
+        Gson gson = new Gson();
+        res.status(200);
+        return gson.toJson(new RouteDTO(route));
+    };
 
     private static Set<String> generateRouteIdsFrom(Set<entities.Route> routes) {
         Set<String> routeIds = new HashSet<>();

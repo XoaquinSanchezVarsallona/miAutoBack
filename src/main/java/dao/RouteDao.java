@@ -1,6 +1,5 @@
 package dao;
 
-import entities.Car;
 import entities.User;
 import entities.Route;
 
@@ -44,7 +43,7 @@ public class RouteDao {
             entityManager.getTransaction().begin();
             Route managedRoute = entityManager.merge(route);
             User user = managedRoute.getUser();
-            user.getRoutes().remove(managedRoute);
+            user.removeRoute(managedRoute);
             entityManager.merge(user);
             entityManager.remove(managedRoute);
             entityManager.getTransaction().commit();
@@ -71,5 +70,25 @@ public class RouteDao {
             return null;
         }
         return route;
+    }
+
+    public static void updateRoute(Route route, String kilometres, String duration, String date) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        try {
+            entityManager.getTransaction().begin();
+            route.setKilometraje(kilometres);
+            route.setDuration(duration);
+            route.setFecha(date);
+            entityManager.merge(route);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            if (entityManager.getTransaction().isActive()) {
+                entityManager.getTransaction().rollback();
+            }
+            System.out.println("Error updating route");
+            e.printStackTrace();
+        } finally {
+            entityManager.close();
+        }
     }
 }

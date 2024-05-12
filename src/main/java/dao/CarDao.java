@@ -1,12 +1,15 @@
 package dao;
 
 import entities.Car;
+import entities.Familia;
 import entities.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarDao {
     static EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
@@ -83,6 +86,11 @@ public class CarDao {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         Car managedCar = em.merge(car);
+        List<Familia> familias = new ArrayList<>(managedCar.getFamilias());
+        for (Familia familia : familias) {
+            familia.removeCar(managedCar);
+            em.merge(familia);
+        }
         em.remove(managedCar);
         em.getTransaction().commit();
         em.close();
