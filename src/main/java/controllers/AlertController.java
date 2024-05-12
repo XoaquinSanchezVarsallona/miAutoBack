@@ -1,10 +1,15 @@
 package controllers;
 
+import DTOs.PapersToDisplay;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import dao.UserDao;
 import entities.Alert;
+import entities.Car;
 import entities.Familia;
+import entities.User;
+import services.CarService;
 import spark.Route;
 import services.FamilyService;
 import java.util.List;
@@ -73,4 +78,35 @@ public class AlertController {
             return "Something went wrong";
         }
     };
+
+    private String displayPapers(String username, String patente) {
+        try {
+            User user = UserDao.findUserByUsername(username);
+            Car car = CarService.getCarByPatente(patente);
+
+            assert user != null;
+            assert car != null;
+            PapersToDisplay papers = AlertService.getPapersFromUser(user, car);
+
+            return gson.toJson(papers);
+
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+    }
+
+    private String sendAlertToFamilies(String username, String patente) {
+        try {
+            User user = UserDao.findUserByUsername(username);
+            Car car = CarService.getCarByPatente(patente);
+
+            AlertService.alertAllFamilies(car,user);
+
+            return "OK";
+
+        } catch (Exception e) {
+
+            return "Error message: " + e.getMessage();
+        }
+    }
 }

@@ -1,7 +1,7 @@
 package dao;
 
-import entities.Alert;
-import entities.Familia;
+import entities.*;
+import services.FamilyService;
 
 import javax.persistence.*;
 import java.util.List;
@@ -63,6 +63,35 @@ public class AlertDao {
         em.getTransaction().commit();
         em.close();
         return isDeleted;
+    }
+
+    public static void alertAllFamilies(Car car, User user) {
+        EntityManager em = factory.createEntityManager();
+        List<Familia> familias = car.getFamilias();
+        String name = user.getName();
+        String patente  = car.getPatente();
+        String message = name + " has crashed vehicle " + patente;
+
+
+        for (Familia familia : familias){
+            try {
+                FamilyService.addAlertToFamily(message, familia.getApellido(), name);
+            }
+            catch (Exception e) {
+                System.out.println("An error occurred while saving the alert: " + e.getMessage());
+            }
+        }
+        em.close();
+    }
+
+    public static byte[] getPapers(User user, Car car) {
+        for (Registration paper : user.getRegistration()) {
+            if (paper.getCar() == car) {
+                return paper.getPng();
+            }
+
+        }
+        return null;
     }
 
     /*public static boolean deleteAlert(Long idAlert) {
