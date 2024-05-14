@@ -125,5 +125,62 @@ public class StoreController {
         response.status(200);
         return gson.toJson(stores);
     };
+
+    public Route editVisualStoreProfile = (Request request, Response response) -> {
+        System.out.println("ENTRO A EDITVISUALPROFILE" );
+
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
+
+        String email = jsonObj.get("email").getAsString();
+        String domicilio = jsonObj.get("domicilio").getAsString();
+        String name = jsonObj.get("storeName").getAsString();
+        String tipoDeServicio = jsonObj.get("tipoDeServicio").getAsString();
+        String description = jsonObj.get("description").getAsString();
+        String phoneNumber = jsonObj.get("phoneNumber").getAsString();
+        String webPageLink = jsonObj.get("webPageLink").getAsString();
+        String instagramLink = jsonObj.get("instagramLink").getAsString();
+        String googleMapsLink = jsonObj.get("googleMapsLink").getAsString();
+
+        System.out.println("TENGO EMAIL" + email);
+        System.out.println("TENGO DESCRIPTION" + description);
+        System.out.println("TENGO PHONE" + phoneNumber);
+        System.out.println("TENGO WEB" + webPageLink);
+        System.out.println("TENGO INSTAGRAM" + instagramLink);
+        System.out.println("TENGO GOOGLE" + googleMapsLink);
+
+        boolean result = StoreService.editVisualStoreProfile(email, name, domicilio, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
+
+        Map<String, String> message = new HashMap<>();
+        if (result) {
+            response.status(200);
+            message.put("message", "Updated successfully");
+        } else {
+            response.status(400);
+            message.put("message", "Failed to update profile");
+        }
+        return gson.toJson(message);
+    };
+
+    public Route getVisualStoreProfile = (Request request, Response response) -> {
+        System.out.println("ENTRO A GETVISUALPROFILE" );
+
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
+
+        String email = jsonObj.get("email").getAsString();
+        System.out.println("EMAILLL" + email);
+
+
+        StoreDTO store = StoreService.getVisualStoreProfile(email);
+
+        if (store == null) {
+            response.status(400);
+            return gson.toJson("Store not found");
+        }
+
+        response.status(200);
+        return gson.toJson(store);
+    };
 }
 

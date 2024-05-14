@@ -22,6 +22,22 @@ public class Store {
     @Column
     public String storeEmail;
 
+    //visual profile data
+    @Column
+    public String description;
+
+    @Column
+    public String phoneNumber;
+
+    @Column
+    public String webPageLink;
+
+    @Column
+    public String instagramLink;
+
+    @Column
+    public String googleMapsLink;
+
     //un store pertenece a un user 'servicio'
     @ManyToOne
     @JoinColumn(name="idUser", nullable=false)
@@ -32,6 +48,18 @@ public class Store {
         this.storeName = storeName;
         this.domicilio = domicilio;
         this.tipoDeServicio = tipoDeServicio;
+    }
+
+    public Store(String email, String storeName, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+        this.storeEmail = email;
+        this.storeName = storeName;
+        this.domicilio = domicilio;
+        this.tipoDeServicio = tipoDeServicio;
+        this.description = description;
+        this.phoneNumber = phoneNumber;
+        this.webPageLink = webPageLink;
+        this.instagramLink = instagramLink;
+        this.googleMapsLink = googleMapsLink;
     }
 
     public Store() {
@@ -53,6 +81,41 @@ public class Store {
         this.tipoDeServicio = tipoDeServicio;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setGoogleMapsLink(String googleMapsLink) {
+        this.googleMapsLink = googleMapsLink;
+    }
+
+    public void setInstagramLink(String instagramLink) {
+        this.instagramLink = instagramLink;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setWebPageLink(String webPageLink) {
+        this.webPageLink = webPageLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getGoogleMapsLink() {
+        return googleMapsLink;
+    }
+
+    public String getInstagramLink() {
+        return instagramLink;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
     public void setUser(User user) {
         this.user = user;
     }
@@ -75,5 +138,9 @@ public class Store {
 
     public String getTipoDeServicio() {
         return tipoDeServicio;
+    }
+
+    public String getWebPageLink() {
+        return webPageLink;
     }
 }
