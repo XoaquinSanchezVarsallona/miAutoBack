@@ -7,8 +7,8 @@ import entities.User;
 import java.util.Set;
 
 public class RouteService {
-    public static void createRoute(String patente, User user, String kilometres, String duration, String date) {
-        RouteDao.createRoute(patente, user, kilometres, duration, date);
+    public static Route createRoute(String patente, User user, String kilometres, String duration, String date) {
+        return RouteDao.createRoute(patente, user, kilometres, duration, date);
     }
 
     public static Set<Route> getRoutesOfUser(User user, String patente) {

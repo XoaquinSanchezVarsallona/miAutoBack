@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class RouteDao {
-    public static void createRoute(String patente, User user, String kilometres, String duration, String date) {
+    public static Route createRoute(String patente, User user, String kilometres, String duration, String date) {
         final EntityManager entityManager = FactoryCreator.getEntityManager();
         entityManager.getTransaction().begin();
         Route route = new Route(patente, kilometres, date, duration);
@@ -16,6 +16,7 @@ public class RouteDao {
         entityManager.persist(route);
         entityManager.getTransaction().commit();
         entityManager.close();
+        return route;
     }
 
     public static Set<Route> getRoutesOfUser(User user, String patente) {

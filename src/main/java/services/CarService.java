@@ -48,4 +48,16 @@ public class CarService {
             System.out.println("Error deleting car: " + e.getMessage());
         }
     }
+
+    public static void updateKilometraje(String patente) {
+        Car car = CarDao.getCarByPatente(patente);
+        if (car == null) {
+            throw new RuntimeException("Car not found");
+        }
+        CarDao.updateCar(car);
+    }
+
+    public static String getCarOfRouteId(Integer routeId) {
+        return CarDao.getCarOfRouteId(routeId);
+    }
 }

@@ -4,6 +4,8 @@ import entities.Familia;
 import entities.User;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDao {
     static EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
@@ -142,6 +144,17 @@ public class UserDao {
             entityManager.close();
         }
         return managedUser;
+    }
+
+    public static List<User> findUsersByUserIDs(List<Long> result) {
+        List<User> users = new ArrayList<>();
+        for (Long id : result) {
+            User user = findUserByUserID(id);
+            if (user != null) {
+                users.add(user);
+            }
+        }
+        return users;
     }
 }
 

@@ -2,6 +2,7 @@ package dao;
 
 import entities.Car;
 import entities.Familia;
+import entities.Route;
 import entities.User;
 
 import javax.persistence.EntityManager;
@@ -94,5 +95,61 @@ public class CarDao {
         em.remove(managedCar);
         em.getTransaction().commit();
         em.close();
+    }
+
+    public static List<User> getUsersOfCar(String patente) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<Long> query = em.createQuery("SELECT DISTINCT r.user.idUser FROM Route r WHERE r.patente = :patente", Long.class);
+        query.setParameter("patente", patente);
+        List<Long> result = query.getResultList();
+        List<User> users = UserDao.findUsersByUserIDs(result);
+        em.close();
+        return users;
+    }
+
+    public static List<Route> getRoutesOfAllUsersOfCar(List<User> usersOfCar, String patente) {
+        List<Route> routes = new ArrayList<>();
+        for (User u : usersOfCar) {
+            routes.addAll(getRoutesOfUserOnCar(u, patente));
+        }
+        return routes;
+    }
+
+    private static List<Route> getRoutesOfUserOnCar(User user, String patente) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<Route> query = em.createQuery("SELECT r FROM Route r WHERE r.user = :user AND r.patente = :patente", Route.class);
+        query.setParameter("user", user);
+        query.setParameter("patente", patente);
+        List<Route> results = query.getResultList();
+        em.close();
+        return results;
+    }
+
+    public static void updateCar(Car car) {
+        EntityManager em = factory.createEntityManager();
+        car.setKilometraje(getKilometrajeAddedByRoutes(car.getPatente()));
+        em.getTransaction().begin();
+        em.merge(car);
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    private static float getKilometrajeAddedByRoutes(String patente) {
+        List<User> usersOfCar = CarDao.getUsersOfCar(patente);
+        List<Route> routesOfUserOnCar = CarDao.getRoutesOfAllUsersOfCar(usersOfCar, patente);
+        float totalKilometraje = 0;
+        for (Route r : routesOfUserOnCar) {
+            totalKilometraje += Float.parseFloat(r.getKilometraje());
+        }
+        return totalKilometraje;
+    }
+
+    public static String getCarOfRouteId(Integer routeId) {
+        EntityManager em = factory.createEntityManager();
+        TypedQuery<Route> query = em.createQuery("SELECT r FROM Route r WHERE r.routeId = :routeId", Route.class);
+        query.setParameter("routeId", routeId);
+        Route route = query.getSingleResult();
+        em.close();
+        return route.getPatente();
     }
 }

@@ -1,5 +1,7 @@
 package entities;
 
+import dao.CarDao;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -56,6 +58,7 @@ public class Car {
         this.fechaVencimientoSeguro = fechaVencimientoSeguro;
         this.fechaVencimientoVTV = fechaVencimientoVTV;
     }
+
 
     public Car() {
 

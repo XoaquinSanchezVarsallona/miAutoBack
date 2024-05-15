@@ -8,7 +8,6 @@ import entities.User;
 import services.RouteService;
 import spark.Route;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,24 +28,28 @@ public class RouteController {
             String duration = jsonObject.get("duration").getAsString();
             String patente = jsonObject.get("patente").getAsString();
             String date = jsonObject.get("date").getAsString();
-            RouteService.createRoute(patente, user, kilometres, duration, date);
+            entities.Route route = RouteService.createRoute(patente, user, kilometres, duration, date);
+            // Updateo el kilometraje del auto
+            CarController.updateKilometraje(patente);
             res.status(200);
-            Set<entities.Route> routes = RouteService.getRoutesOfUser(user);
-            Set<String> routeIds = generateRouteIdsFrom(routes);
             res.type("application/json");
-            return gson.toJson(routeIds);
+            return gson.toJson(route.getRouteId());
         }
         catch (Exception e) {
             res.status(500);
             return "Could not add Route";
         }
+
     };
 
     public static Route deleteRoute = (req, res) -> {
         Integer routeId = Integer.valueOf(req.params(":routeID"));
         entities.Route route = RouteService.getRouteById(routeId);
         try {
+            String patente = CarController.getPatenteOfRouteId(routeId);
             RouteService.deleteRoute(route);
+            // Update car mileage
+            CarController.updateKilometraje(patente);
             res.status(200);
             return "Route deleted";
         }
@@ -72,6 +75,9 @@ public class RouteController {
             String date = updatesObject.get("Date").getAsString();
             RouteService.updateRoute(route, kilometres, duration, date);
             entities.Route updatedRoute = RouteService.getRouteById(routeId);
+            // Update car mileage
+            String patente = CarController.getPatenteOfRouteId(routeId);
+            CarController.updateKilometraje(patente);
             res.status(200);
             return gson.toJson(new RouteDTO(updatedRoute));
         }
@@ -92,13 +98,6 @@ public class RouteController {
         return gson.toJson(new RouteDTO(route));
     };
 
-    private static Set<String> generateRouteIdsFrom(Set<entities.Route> routes) {
-        Set<String> routeIds = new HashSet<>();
-        for (entities.Route route : routes) {
-            routeIds.add(String.valueOf(route.getRouteId()));
-        }
-        return routeIds;
-    }
 
     public Route getRoutesOfUserByCar = (req, res) -> {
         Long userId = Long.valueOf(req.params(":userId"));

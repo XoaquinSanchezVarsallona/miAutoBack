@@ -74,6 +74,14 @@ public class CarController {
         }
     };
 
+    public static void updateKilometraje(String patente) {
+        CarService.updateKilometraje(patente);
+    }
+
+    public static String getPatenteOfRouteId(Integer routeId) {
+        return CarService.getCarOfRouteId(routeId);
+    }
+
     private boolean checkIfCarExistsInFamily(String patente, Integer familyId) {
         Set<Car> cars = CarService.getCarsOfFamily(familyId);
         for (Car c : cars) {
