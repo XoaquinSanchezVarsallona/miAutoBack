@@ -10,6 +10,7 @@
         <class>entities.Alert</class>
         <class>entities.Store</class>
         <class>entities.Route</class>
+        <class>entities.Registration</class>
 
 
         <properties>
