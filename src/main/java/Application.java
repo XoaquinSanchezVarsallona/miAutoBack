@@ -69,7 +69,7 @@ public class Application {
         post("stores/fetchStores", storeController.getStores);
         delete("/store/:storeEmail/deleteStore", storeController.deleteStore);
         post("/editStoreProfile", storeController.editStoreProfile);
-        // post("editVisualStoreProfile", storeController.editVisualStoreProfile);
+        // post("editVisualStoreProfile", storeController.editVisualStoreProfile); 
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
