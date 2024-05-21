@@ -1,6 +1,7 @@
 package services;
 
 import dao.UserDao;
+import entities.Review;
 import entities.Store;
 import entities.User;
 import DTOs.StoreDTO;
@@ -52,5 +53,37 @@ public class StoreService {
             return null;
         }
         return StoreDTO.from(store);
+    }
+
+    public static boolean submitRatingAndComment(long userID, long storeID, int rating, String comment) {
+        try {
+            Review review = new Review();
+            review.setUserID(userID);
+            review.setStoreID(storeID);
+            review.setRating(rating);
+            review.setComment(comment);
+            StoreDao.saveReview(review);
+            return true;
+        } catch (Exception e) {
+            System.out.println("An error occurred while submitting the rating and comment: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static List<Review> fetchAllReviews(long storeID) {
+        return StoreDao.getAllReviews(storeID);
+    }
+
+    public static Review fetchUserReview(long userId, long storeId) {
+        return StoreDao.getUserReview(userId, storeId);
+    }
+
+    public static boolean deleteReview(Long userID, Long storeID) {
+
+        return StoreDao.deleteReview(userID, storeID);
+    }
+
+    public static boolean updateReview(long userId, long storeId, int rating, String comment) {
+        return StoreDao.updateReview(userId, storeId, rating, comment);
     }
 }

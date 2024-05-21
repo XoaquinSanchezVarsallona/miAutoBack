@@ -73,4 +73,11 @@ public class Application {
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
+
+        // Review
+        post("/submitRatingAndComment", StoreController.submitRatingAndComment);
+        post("/getReviews", storeController.getAllReviews);
+        post("/getUserReview", storeController.getUserReview);
+        post("/DeleteReview", storeController.deleteReview);
+        post("/UpdateReview", storeController.updateReview);
     }}
