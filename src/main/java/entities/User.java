@@ -58,27 +58,28 @@ public class User {
         this.userType = userType;
     }
 
-    public byte[] getDniCara() {
+    public String getDniCara() {
         return dniCara;
     }
 
-    public void setDniCara(byte[] dniCara) {
+    public void setDniCara(String dniCara) {
         this.dniCara = dniCara;
     }
+    @Lob
+    @Column(name = "dni_cara", columnDefinition = "CLOB")
+    public String dniCara;
 
-    @Column
-    public byte[] dniCara;
-
-    public byte[] getDniContracara() {
+    public String getDniContracara() {
         return dniContracara;
     }
 
-    public void setDniContracara(byte[] dniContracara) {
+    public void setDniContracara(String dniContracara) {
         this.dniContracara = dniContracara;
     }
 
-    @Column
-    public byte[] dniContracara;
+    @Lob
+    @Column(name = "dni_contracara", columnDefinition = "CLOB")
+    public String dniContracara;
 
     @OneToMany(mappedBy = "userRegistered", fetch = FetchType.EAGER)
     private Set<Registration> carsRegistered = new HashSet<>();

@@ -7,7 +7,7 @@ public class Registration {
     public Registration() {
 
     }
-    public Registration(byte[] png) {
+    public Registration(String png) {
         this.png = png;
     }
 
@@ -27,15 +27,15 @@ public class Registration {
     @JoinColumn(name="userRegistered", nullable=false)
     private User userRegistered ;
 
-    public byte[] getPng() {
+    public String getPng() {
         return png;
     }
 
-    public void setPng(byte[] png) {
+    public void setPng(String png) {
         this.png = png;
     }
 
     @Column
-    private byte[] png;
+    private String png;
 
 }

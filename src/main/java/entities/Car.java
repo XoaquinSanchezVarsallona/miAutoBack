@@ -7,7 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -48,6 +50,16 @@ public class Car {
     )
     private List<Familia> familias = new ArrayList<>();
 
+    public Set<Registration> getRegisters() {
+        return registers;
+    }
+
+    public void addRegister(Registration register) {
+        registers.add(register);
+    }
+
+    @OneToMany(mappedBy = "car", fetch = FetchType.EAGER)
+    private Set<Registration> registers = new HashSet<>();
 
     public Car(String patente, String marca, String modelo, float kilometraje, int ano, String fechaVencimientoSeguro, String fechaVencimientoVTV) {
         this.patente = patente;

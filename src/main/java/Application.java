@@ -76,4 +76,5 @@ public class Application {
         delete("/route/:routeID/deleteRoute", RouteController.deleteRoute);
         post("/route/editRoute", RouteController.editRoute);
         post("/route/:routeId/getRoute", RouteController.getRouteById);
+        post("/saveImage", ImageController.saveImage);
     }}
