@@ -32,4 +32,16 @@ public class NotificationDao {
             em.close();
         }
     }
+
+    public static List<Notification> getNotificationsByStoreEmail(Long storeId) {
+        EntityManager em = factory.createEntityManager();
+
+        try {
+            TypedQuery<Notification> query = em.createQuery("SELECT n FROM Notification n WHERE n.storeId = :storeId", Notification.class);
+            query.setParameter("storeId", storeId);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

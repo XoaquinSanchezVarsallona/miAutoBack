@@ -88,4 +88,5 @@ public class Application {
 
         //notification
         post("/createNotification", notificationController.createNotification);
+        post("/notifications/fetchNotifications", notificationController.fetchNotifications);
     }}
