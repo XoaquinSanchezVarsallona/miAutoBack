@@ -84,7 +84,7 @@ public class AlertDao {
         em.close();
     }
 
-    public static byte[] getPapers(User user, Car car) {
+    public static String getPapers(User user, Car car) {
         for (Registration paper : user.getRegistration()) {
             if (paper.getCar() == car) {
                 return paper.getPng();
