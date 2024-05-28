@@ -31,6 +31,7 @@ public class Application {
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
         post("/vehicles/family/:familyId", familyController.vehiclesOfFamily);
+
         // Alert
         post("/alertas/family/:familyApellido", AlertController.getAlertsOfFamily);
         post("/alertas/add", AlertController.addAlertToFamily);
