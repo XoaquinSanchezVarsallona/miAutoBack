@@ -13,6 +13,7 @@ public class Application {
         CarController carController = new CarController();
         StoreController storeController = new StoreController();
         RouteController routeController = new RouteController();
+        NotificationController notificationController = new NotificationController();
 
         port(9002);
 
@@ -84,4 +85,7 @@ public class Application {
         post("/getUserReview", storeController.getUserReview);
         post("/DeleteReview", storeController.deleteReview);
         post("/UpdateReview", storeController.updateReview);
+
+        //notification
+        post("/createNotification", notificationController.createNotification);
     }}
