@@ -1,4 +1,5 @@
 package controllers;
+import DTOs.PapersToDisplay;
 import services.ImageService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -29,4 +30,21 @@ public class ImageController {
      };
 
 
+     public static Route getImages = (req, res) -> {
+          res.type("application/json");
+          Gson gson = new Gson();
+          JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
+          try {
+               String userID = jsonObj.get("userId").getAsString();
+               String patente = jsonObj.get("patente").getAsString();
+
+               PapersToDisplay papers = ImageService.getImages(userID, patente);
+               res.status(200);
+               return gson.toJson(papers);
+          }
+          catch (Exception e) {
+               res.status(500);
+               return e.getMessage();
+          }
+     };
 }

@@ -11,20 +11,28 @@ public class Main {
         final EntityManager entityManager = factory.createEntityManager();
 
         //sample1(entityManager);
-        sample2(entityManager);
+        //sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
         // sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
         //sample8(entityManager);
-
+        sample9(entityManager);
 
 
         entityManager.close();
         factory.close();
     }
+    private static void sample9 (EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+     //   Query query5 = entityManager.createNativeQuery("ALTER TABLE Registration ALTER COLUMN png LONGVARCHAR;");
+      //  query5.executeUpdate();
+        Query query3 = entityManager.createNativeQuery("DROP TABLE Registration");
+        query3.executeUpdate();
+        entityManager.getTransaction().commit();
 
+    }
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
         Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKSQ79NXOIP6D3QOO9AI7X81MIS");

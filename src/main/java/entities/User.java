@@ -81,8 +81,9 @@ public class User {
     @Column(name = "dni_contracara", columnDefinition = "CLOB")
     public String dniContracara;
 
-    @OneToMany(mappedBy = "userRegistered", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userRegistered", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Registration> carsRegistered = new HashSet<>();
+
 
     public Set<Registration> getRegistration () {
         return carsRegistered;
