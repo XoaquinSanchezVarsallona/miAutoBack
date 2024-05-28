@@ -11,6 +11,7 @@
         <class>entities.Store</class>
         <class>entities.Route</class>
         <class>entities.Registration</class>
+        <class>entities.Review</class>
 
 
         <properties>

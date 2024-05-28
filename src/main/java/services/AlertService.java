@@ -23,9 +23,9 @@ public class AlertService {
     }
 
     public static PapersToDisplay getPapersFromUser(User user, Car car) throws IllegalArgumentException {
-        byte [] dniCara = user.getDniCara();
-        byte [] dniContra = user.getDniContracara();
-        byte [] registration = AlertDao.getPapers(user, car);
+        String dniCara = user.getDniCara();
+        String dniContra = user.getDniContracara();
+        String registration = AlertDao.getPapers(user, car);
 
         return new PapersToDisplay(user, car, dniCara, dniContra, registration);
     }

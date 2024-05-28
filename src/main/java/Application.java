@@ -77,5 +77,4 @@ public class Application {
         post("/route/editRoute", RouteController.editRoute);
         post("/route/:routeId/getRoute", RouteController.getRouteById);
         post("/saveImage", ImageController.saveImage);
-        get("/getImages", ImageController.getImages);
     }}
