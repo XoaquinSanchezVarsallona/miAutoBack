@@ -1,7 +1,4 @@
-import entities.Alert;
-import entities.Car;
-import entities.Familia;
-import entities.User;
+import entities.*;
 
 import javax.persistence.*;
 
@@ -145,12 +142,15 @@ public class Main {
     }
 
     private static void sample2(EntityManager entityManager) {
-        User user = new User("hola", "hola", "hola", "hola", "hola", "hola", "hola");
+        Notification noti = new Notification();
+        noti.setDescription("descuentooo");
+        noti.setStoreId(8989);
+        noti.setUserId(9999);
 
         //comienza transacción //
         entityManager.getTransaction().begin();
 
-        entityManager.persist(user);
+        entityManager.persist(noti);
 
         entityManager.getTransaction().commit();
         // terminó transacción //
