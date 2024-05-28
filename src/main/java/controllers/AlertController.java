@@ -36,7 +36,6 @@ public class AlertController {
     };
 
     public static Route getAlertsOfFamily = (req, res) -> {
-        System.out.println("ENTRO EN RUTA GETALERTS");
         String familyApellido = req.params(":familyApellido");
 
         try {
@@ -79,7 +78,53 @@ public class AlertController {
         }
     };
 
-    private String displayPapers(String username, String patente) {
+    public static Route setAsRead = (req, res) -> {
+        try {
+            Long idAlert = Long.parseLong(req.params(":idAlert"));
+            AlertService.setAsRead(idAlert);
+            res.status(200);
+            return "Alert set as read";
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong while trying to set alert as read";
+        }
+    };
+    public static Route setAsUnread = (req, res) -> {
+        try {
+            Long idAlert = Long.parseLong(req.params(":idAlert"));
+            AlertService.setAsUnread(idAlert);
+            res.status(200);
+            return "Alert set as unread";
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong while trying to set alert as unread";
+        }
+    };
+    public static Route countUnreadAlertsOfFamily = (req, res) -> {
+        String familyApellido = req.params(":familyApellido");
+        try {
+            int count = AlertService.countUnreadAlertsOfFamily(familyApellido);
+            res.status(200);
+            return count;
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
+    public static Route countUnreadAlertsOfFamilyId = (req, res) -> {
+        int idFamilia = Integer.parseInt(req.params(":idFamilia"));
+        String familyApellido = FamilyService.getFamiliaById(idFamilia).getApellido();
+        try {
+            int count = AlertService.countUnreadAlertsOfFamily(familyApellido);
+            res.status(200);
+            return count;
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
+
+    public String displayPapers(String username, String patente) {
         try {
             User user = UserDao.findUserByUsername(username);
             Car car = CarService.getCarByPatente(patente);
@@ -95,7 +140,10 @@ public class AlertController {
         }
     }
 
-    private String sendAlertToFamilies(String username, String patente) {
+    public static Route sendAlertToFamilies = (req, res) -> {
+        String username = req.params(":username");
+        String patente = req.params(":patente");
+
         try {
             User user = UserDao.findUserByUsername(username);
             Car car = CarService.getCarByPatente(patente);
@@ -108,5 +156,5 @@ public class AlertController {
 
             return "Error message: " + e.getMessage();
         }
-    }
+    };
 }

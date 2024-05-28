@@ -1,3 +1,4 @@
+import dao.FamilyDao;
 import entities.Alert;
 import entities.Car;
 import entities.Familia;
@@ -11,15 +12,15 @@ public class Main {
         final EntityManager entityManager = factory.createEntityManager();
 
         //sample1(entityManager);
-        sample2(entityManager);
+        //sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
-        //sample4(entityManager); // Sample para borrar tablas
+        sample4(entityManager); // Sample para borrar tablas
         // sample4(entityManager); // Sample para borrar tablas
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
         //sample8(entityManager);
 
-
+        //sample3(entityManager);
 
         entityManager.close();
         factory.close();
@@ -27,18 +28,15 @@ public class Main {
 
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
-        Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKSQ79NXOIP6D3QOO9AI7X81MIS");
-        Query query6 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FK2L52BICGRLY0PS2UBRQBSC9FU");
-        Query query7 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK");
+        Query query5 = entityManager.createNativeQuery("ALTER TABLE car DROP CONSTRAINT FKIPU68V540CNJ2KREWJVR9TG5V");
+        Query query = entityManager.createNativeQuery("ALTER TABLE car DROP CONSTRAINT FK1JLMG2PEGINETF27X83FNHTKW");
         //Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
         //Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
         //Query query2 = entityManager.createNativeQuery("DROP TABLE familia");
         //Query query3 = entityManager.createNativeQuery("DROP TABLE car");
-        Query query4 = entityManager.createNativeQuery("DROP TABLE familia");
+        Query query4 = entityManager.createNativeQuery("DROP TABLE car");
         query5.executeUpdate();
-        query6.executeUpdate();
-        query7.executeUpdate();
-        //query.executeUpdate();
+        query.executeUpdate();
         //query1.executeUpdate();
         //query2.executeUpdate();
         //query3.executeUpdate();
@@ -49,17 +47,8 @@ public class Main {
     }
 
     private static void sample3(EntityManager entityManager) {
-        Familia gonzales = new Familia("Gonzalessss");
-        User mateo = new User("AAA", "AAA", "mateo", "A", "AAA", "buenosaires", "driver");
-        mateo.addFamily(gonzales);
-        gonzales.addUser(mateo);
-        //comienza transacción //
-        entityManager.getTransaction().begin();
-
-        entityManager.persist(mateo);
-        entityManager.persist(gonzales);
-
-        entityManager.getTransaction().commit();
+        Familia gonzales = FamilyDao.getFamiliaFromAllExistingFamilies("Chevallier");
+        FamilyDao.removeFamily(gonzales);
         // terminó transacción //
     }
 

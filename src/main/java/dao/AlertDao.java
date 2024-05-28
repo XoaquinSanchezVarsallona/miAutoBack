@@ -1,6 +1,7 @@
 package dao;
 
 import entities.*;
+import org.hibernate.Hibernate;
 import services.FamilyService;
 
 import javax.persistence.*;
@@ -70,7 +71,7 @@ public class AlertDao {
         List<Familia> familias = car.getFamilias();
         String name = user.getName();
         String patente  = car.getPatente();
-        String message = name + " has crashed vehicle " + patente;
+        String message = name + " has crashed the vehicle with patente: " + patente;
 
 
         for (Familia familia : familias){
@@ -92,6 +93,44 @@ public class AlertDao {
 
         }
         return null;
+    }
+
+    public static void setAsRead(Long idAlert) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Alert alert = em.find(Alert.class, idAlert);
+        if (alert != null) {
+            alert.setAsRead();
+            em.persist(alert);
+        }
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public static void setAsUnread(Long idAlert) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Alert alert = em.find(Alert.class, idAlert);
+        if (alert != null) {
+            alert.setAsUnread();
+            em.persist(alert);
+        }
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    public static Integer countUnreadAlertsOfFamily(String familyApellido) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        TypedQuery<Alert> query = em.createQuery(
+                "SELECT a FROM Alert a WHERE a.familia.apellido = :familyApellido AND a.isRead = false", Alert.class);
+        query.setParameter("familyApellido", familyApellido);
+        List<Alert> alerts = query.getResultList();
+        int count = alerts.size();
+        System.out.println("The number of unread alerts for the family " + familyApellido + " is: " + count);
+        em.getTransaction().commit();
+        em.close();
+        return count;
     }
 
     /*public static boolean deleteAlert(Long idAlert) {

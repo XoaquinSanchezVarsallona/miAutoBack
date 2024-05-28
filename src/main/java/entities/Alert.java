@@ -20,6 +20,10 @@ public class Alert {
     @Expose
     private String tipoDeAlerta;
 
+    @Column(nullable = false)
+    @Expose
+    private boolean isRead;
+
     @ManyToOne
     @JoinColumn(name="idFamilia", nullable=false)
     private Familia familia;
@@ -30,6 +34,7 @@ public class Alert {
     public Alert(String message, String tipoDeAlerta) {
         this.message = message;
         this.tipoDeAlerta = tipoDeAlerta;
+        this.isRead = false;
     }
 
     public Alert(String message) {
@@ -63,5 +68,13 @@ public class Alert {
 
     public Familia getFamilia() {
         return familia;
+    }
+
+    public void setAsRead() {
+        this.isRead = true;
+    }
+
+    public void setAsUnread() {
+        this.isRead = false;
     }
 }

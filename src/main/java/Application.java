@@ -1,6 +1,5 @@
 
 import controllers.*;
-import spark.Spark;
 
 
 import static spark.Spark.*;
@@ -32,10 +31,15 @@ public class Application {
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
         post("/vehicles/family/:familyId", familyController.vehiclesOfFamily);
-        get("/alertasss/family/:familyApellido", AlertController.getAlertsOfFamily);
+        // Alert
+        post("/alertas/family/:familyApellido", AlertController.getAlertsOfFamily);
         post("/alertas/add", AlertController.addAlertToFamily);
         delete("/alerts/:idAlert", AlertController.deleteAlert);
-
+        post("/alertas/alertAccident/:username/:patente", AlertController.sendAlertToFamilies);
+        post("/alerts/setAsRead/:idAlert", AlertController.setAsRead);
+        post("/alerts/setAsUnread/:idAlert", AlertController.setAsUnread);
+        post("/alerts/unreadAlerts/:familyApellido", AlertController.countUnreadAlertsOfFamily);
+        post("/alerts/unreadAlertsWithId/:idFamilia", AlertController.countUnreadAlertsOfFamilyId);
 
         post("/login", userController.login);
         post("/register", userController.register);

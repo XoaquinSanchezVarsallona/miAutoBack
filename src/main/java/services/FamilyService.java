@@ -21,9 +21,9 @@ public class FamilyService {
     public static void createFamily(String username , String apellido, String password) {
         User user = FamilyDao.lookForUser(username);
         List<Familia> familias = FamilyDao.getFamiliasOfUser(username);
-        // Me fijo que no exista una familia con el ismo apellido en la db
-        for (Familia familia : familias) {
-            if (familia.getApellido().equals(apellido)) throw new IllegalArgumentException("Apellido has already been used");
+        // Me fijo que no exista una familia con el mismo apellido en la db
+        if (FamilyDao.getFamiliaFromAllExistingFamilies(apellido) != null) {
+            throw new IllegalArgumentException("Apellido has already been used");
         }
         Familia family = new Familia(apellido, password);
         // Comienza la transacción
@@ -162,7 +162,7 @@ public class FamilyService {
         System.out.println("voy a agregar la alerta a familia ");
 
         // Create a new Alert
-        Alert alert = new Alert(message);
+        Alert alert = new Alert(message, "warning");
         alert.setFamilia(familia);
 
         System.out.println("ya la agregué y le agregue la familia ");

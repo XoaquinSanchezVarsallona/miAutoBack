@@ -70,14 +70,13 @@ public class FamilyController {
                 List<Familia> familias = FamilyService.getFamiliasOfUser(username);
                 res.status(200);
                 return this.gson.toJson(this.getIdOfFamilias(familias));
-            } catch (IllegalArgumentException var9) {
+            } catch (IllegalArgumentException e) {
                 res.status(400);
                 return "Family already exists!";
             }
-        } catch (Exception var10) {
+        } catch (Exception e) {
             res.status(500);
-            var10.printStackTrace();
-            return "Could not create Family: " + var10.getMessage();
+            return "Could not create Family: " + e.getMessage();
         }
     };
 

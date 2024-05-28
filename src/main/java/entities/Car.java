@@ -40,7 +40,7 @@ public class Car {
     @Column
     private String fechaVencimientoVTV;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "familia_auto",
             joinColumns = @JoinColumn(name = "patente"),

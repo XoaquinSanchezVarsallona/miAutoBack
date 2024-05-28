@@ -29,4 +29,16 @@ public class AlertService {
 
         return new PapersToDisplay(user, car, dniCara, dniContra, registration);
     }
+
+    public static void setAsRead(Long idAlert) {
+        AlertDao.setAsRead(idAlert);
+    }
+
+    public static void setAsUnread(Long idAlert) {
+        AlertDao.setAsUnread(idAlert);
+    }
+
+    public static int countUnreadAlertsOfFamily(String familyApellido) {
+        return AlertDao.countUnreadAlertsOfFamily(familyApellido);
+    }
 }

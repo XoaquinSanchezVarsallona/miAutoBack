@@ -1,11 +1,7 @@
 package entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import java.sql.Driver;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -24,7 +20,7 @@ public class Familia {
     @Column
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.ALL})
     private final Set<Car> cars = new HashSet<>();
 
     //como no quiero eliminar usuario al eliminar familia, saco cascade.remove de la lista.
@@ -50,6 +46,7 @@ public class Familia {
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
