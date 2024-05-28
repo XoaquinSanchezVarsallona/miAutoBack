@@ -6,15 +6,18 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Notification {
+
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long notificationId;
+    private long notificationId;
 
     @Column(nullable = false)
-    private Long storeId;
+    private long storeId;
 
     @Column(nullable = false)
-    private Long userId;
+    private long userId;
 
     @Column(nullable = false)
     private Timestamp creationDate = new Timestamp(System.currentTimeMillis());
@@ -26,7 +29,7 @@ public class Notification {
         this.storeId = storeId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

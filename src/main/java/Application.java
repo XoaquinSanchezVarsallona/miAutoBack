@@ -88,5 +88,6 @@ public class Application {
 
         //notification
         post("/createNotification", notificationController.createNotification);
-        post("/notifications/fetchNotifications", notificationController.fetchNotifications);
+        post("/fetchNotifications", notificationController.fetchNotifications);
+        post("/fetchNotificationsByUserId", notificationController.fetchNotificationsByUserId);
     }}
