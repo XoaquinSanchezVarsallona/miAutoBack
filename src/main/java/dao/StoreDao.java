@@ -1,10 +1,12 @@
 package dao;
 
+import entities.Review;
 import entities.Store;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 
 import java.util.List;
 
@@ -169,6 +171,96 @@ public class StoreDao {
             return null;
         } finally {
             entityManager.close();
+        }
+    }
+
+    public static void saveReview(Review review){
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            em.persist(review);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            e.printStackTrace(); // Print the full stack trace
+            System.out.println("An error occurred while saving the review: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
+
+    public static List<Review> getAllReviews(long storeID) {
+        EntityManager em = factory.createEntityManager();
+
+        try {
+            TypedQuery<Review> query = em.createQuery("SELECT r FROM Review r WHERE r.storeID = :storeID", Review.class);
+            query.setParameter("storeID", storeID);
+            return query.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public static Review getUserReview(long userId, long storeId) {
+        EntityManager em = factory.createEntityManager();
+        try {
+            TypedQuery<Review> query = em.createQuery("SELECT r FROM Review r WHERE r.userID = :userId AND r.storeID = :storeId", Review.class);
+            query.setParameter("userId", userId);
+            query.setParameter("storeId", storeId);
+            System.out.println("QUERYYYYY" + query.getSingleResult());
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
+    public static boolean deleteReview(long userId, long storeId) {
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            TypedQuery<Review> query = em.createQuery("SELECT r FROM Review r WHERE r.userID = :userId AND r.storeID = :storeId", Review.class);
+            query.setParameter("userId", userId);
+            query.setParameter("storeId", storeId);
+            Review review = query.getSingleResult();
+            em.remove(review);
+            transaction.commit();
+            return true;
+        } catch (NoResultException e) {
+            return false;
+        } finally {
+            em.close();
+        }
+    }
+
+    public static boolean updateReview(long userId, long storeId, int rating, String comment) {
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            TypedQuery<Review> query = em.createQuery("SELECT r FROM Review r WHERE r.userID = :userId AND r.storeID = :storeId", Review.class);
+            query.setParameter("userId", userId);
+            query.setParameter("storeId", storeId);
+            Review review = query.getSingleResult();
+            System.out.println("REVIEWWWW" + review);
+            review.setRating(rating);
+            review.setComment(comment);
+            em.merge(review);
+            transaction.commit();
+            return true;
+        } catch (NoResultException e) {
+            System.out.println("excepcion de no resultadooo");
+            return false;
+        } finally {
+            em.close();
         }
     }
 }

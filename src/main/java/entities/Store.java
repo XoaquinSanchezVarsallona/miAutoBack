@@ -143,4 +143,8 @@ public class Store {
     public String getWebPageLink() {
         return webPageLink;
     }
+
+    public long getIdStore() {
+        return idStore;
+    }
 }

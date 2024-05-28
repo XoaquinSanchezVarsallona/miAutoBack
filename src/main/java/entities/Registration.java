@@ -7,8 +7,10 @@ public class Registration {
     public Registration() {
 
     }
-    public Registration(byte[] png) {
-        this.png = png;
+    public Registration(String png , User user, Car car) {
+        setCar(car);
+        setPng(png);
+        setUserRegistered(user);
     }
 
     @Id
@@ -19,23 +21,35 @@ public class Registration {
         return car;
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name= "car", nullable = false)
     private Car car;
 
-    @ManyToOne
+    public void setUserRegistered(User userRegistered) {
+        this.userRegistered = userRegistered;
+    }
+
+    public User getUserRegistered() {
+        return userRegistered;
+    }
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="userRegistered", nullable=false)
     private User userRegistered ;
 
-    public byte[] getPng() {
+    public String getPng() {
         return png;
     }
 
-    public void setPng(byte[] png) {
+    public void setPng(String png) {
         this.png = png;
     }
 
-    @Column
-    private byte[] png;
+    @Lob
+    @Column(columnDefinition = "LONGVARCHAR")
+    private String png;
 
+    public void setCar(Car car) {
+        this.car = car;
+    }
 }

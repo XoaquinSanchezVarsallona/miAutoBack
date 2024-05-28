@@ -12,6 +12,7 @@ public class Application {
         CarController carController = new CarController();
         StoreController storeController = new StoreController();
         RouteController routeController = new RouteController();
+        NotificationController notificationController = new NotificationController();
 
         port(9002);
 
@@ -80,4 +81,17 @@ public class Application {
         delete("/route/:routeID/deleteRoute", RouteController.deleteRoute);
         post("/route/editRoute", RouteController.editRoute);
         post("/route/:routeId/getRoute", RouteController.getRouteById);
+        post("/saveImage", ImageController.saveImage);
+
+        // Review
+        post("/submitRatingAndComment", StoreController.submitRatingAndComment);
+        post("/getReviews", storeController.getAllReviews);
+        post("/getUserReview", storeController.getUserReview);
+        post("/DeleteReview", storeController.deleteReview);
+        post("/UpdateReview", storeController.updateReview);
+
+        //notification
+        post("/createNotification", notificationController.createNotification);
+        post("/fetchNotifications", notificationController.fetchNotifications);
+        post("/fetchNotificationsByUserId", notificationController.fetchNotificationsByUserId);
     }}
