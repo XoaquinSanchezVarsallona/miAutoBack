@@ -17,4 +17,12 @@ public class NotificationService {
     public static List<Notification> getNotificationsByUserId(long userId) {
         return NotificationDao.getNotificationsByUserId(userId);
     }
+
+    public static void deleteNotification(long notificationId) {
+        NotificationDao.deleteNotification(notificationId);
+    }
+
+    public static void deleteNotificationFromDescription(long storeId, String description) {
+        NotificationDao.deleteNotificationFromDescription(storeId, description);
+    }
 }

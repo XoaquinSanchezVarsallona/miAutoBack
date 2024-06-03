@@ -90,4 +90,6 @@ public class Application {
         post("/createNotification", notificationController.createNotification);
         post("/fetchNotifications", notificationController.fetchNotifications);
         post("/fetchNotificationsByUserId", notificationController.fetchNotificationsByUserId);
+        post("/deleteNotification", notificationController.deleteNotification);
+        post("/deleteNotificationFromDescription", notificationController.deleteNotificationFromDescription);
     }}
