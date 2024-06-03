@@ -45,6 +45,7 @@ public class NotificationController {
         System.out.println("storeeee id" + storeId);
         System.out.println("notification" + notifications);
         response.status(200);
+        response.type("application/json");
         return gson.toJson(notifications);
     };
 
@@ -58,4 +59,32 @@ public class NotificationController {
         response.status(200);
         return gson.toJson(notifications);
     };
+    public Route deleteNotification = (Request request, Response response) -> {
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
+
+        long notificationId = jsonObj.get("notificationId").getAsLong();
+        NotificationService.deleteNotification(notificationId);
+
+        response.status(200);
+        return "Notification deleted";
+    };
+
+    public Route deleteNotificationFromDescription = (Request request, Response response) -> {
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
+
+        String storeEmail = jsonObj.get("storeEmail").getAsString();
+        System.out.println("storeEmailll" + storeEmail);
+
+        long storeId = Objects.requireNonNull(StoreDao.getStoreByEmail(storeEmail)).getIdStore();
+
+        String description = jsonObj.get("description").getAsString();
+        System.out.println("descriptionnnn" + description);
+        NotificationService.deleteNotificationFromDescription(storeId, description);
+
+        response.status(200);
+        return "Notification deleted";
+    };
+
 }
