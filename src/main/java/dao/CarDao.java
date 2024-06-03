@@ -127,7 +127,7 @@ public class CarDao {
 
     public static void updateCar(Car car) {
         EntityManager em = factory.createEntityManager();
-        car.setKilometraje(getKilometrajeAddedByRoutes(car.getPatente()));
+        car.setKilometraje(car.getKilometraje() + getKilometrajeAddedByRoutes(car.getPatente()));
         em.getTransaction().begin();
         em.merge(car);
         em.getTransaction().commit();
@@ -151,5 +151,14 @@ public class CarDao {
         Route route = query.getSingleResult();
         em.close();
         return route.getPatente();
+    }
+
+    public static void substractKilometraje(Car car, String kilometraje) {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        car.setKilometraje(car.getKilometraje() - Float.parseFloat(kilometraje));
+        em.merge(car);
+        em.getTransaction().commit();
+        em.close();
     }
 }

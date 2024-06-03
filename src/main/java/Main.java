@@ -22,14 +22,10 @@ public class Main {
         factory.close();
     }
     private static void sample9 (EntityManager entityManager) {
-        entityManager.getTransaction().begin();
-     //   Query query5 = entityManager.createNativeQuery("ALTER TABLE Registration ALTER COLUMN png LONGVARCHAR;");
-      //  query5.executeUpdate();
-        Query query3 = entityManager.createNativeQuery("DROP TABLE Registration");
-        query3.executeUpdate();
-        entityManager.getTransaction().commit();
-
+        Car car = new Car("AA476OV", "Toyota", "Corolla Cross", 1000, 2019,
+                "11/12/24", "12/12/2023");
     }
+
     private static void sample4(EntityManager entityManager) {
         entityManager.getTransaction().begin();
         Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKSQ79NXOIP6D3QOO9AI7X81MIS");

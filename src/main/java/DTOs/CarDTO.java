@@ -11,6 +11,7 @@ public class CarDTO {
     int ano;
     String fechaVencimientoSeguro;
     String fechaVencimientoVTV;
+    String estadoActual;
     public CarDTO(Car result) {
         this.patente = result.getPatente();
         this.marca = result.getMarca();
@@ -19,5 +20,6 @@ public class CarDTO {
         this.ano = result.getAno();
         this.fechaVencimientoSeguro = result.getFechaVencimientoSeguro();
         this.fechaVencimientoVTV = result.getFechaVencimientoVTV();
+        this.estadoActual = result.getEstado();
     }
 }

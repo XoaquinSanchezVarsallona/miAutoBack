@@ -60,4 +60,8 @@ public class CarService {
     public static String getCarOfRouteId(Integer routeId) {
         return CarDao.getCarOfRouteId(routeId);
     }
+
+    public static void substractKilometraje(Car car, String kilometraje) {
+        CarDao.substractKilometraje(car, kilometraje);
+    }
 }

@@ -82,6 +82,14 @@ public class CarController {
         return CarService.getCarOfRouteId(routeId);
     }
 
+    public static void substractKilometraje(String patente, String kilometraje) {
+        Car car = CarService.getCarByPatente(patente);
+        if (car == null) {
+            throw new RuntimeException("Car not found while trying to substract kilometraje");
+        }
+        CarService.substractKilometraje(car, kilometraje);
+    }
+
     private boolean checkIfCarExistsInFamily(String patente, Integer familyId) {
         Set<Car> cars = CarService.getCarsOfFamily(familyId);
         for (Car c : cars) {

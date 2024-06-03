@@ -132,54 +132,38 @@ public class FamilyService {
 
     public static void addAlertToFamily(String message, String apellido, String username) throws Exception {
         Familia familia = FamilyDao.getFamiliaFromAllExistingFamilies(apellido);
-        System.out.println("FAMILIAAAA: " + familia);
 
         // Find the User entity by username
-        System.out.println("voy a buscar el user ");
-
         User user = UserDao.findUserByUsername(username);
         if (user == null) {
             throw new Exception("User not found");
         }
 
-        System.out.println("USERRRR: " + user);
-
-        // Check if the user is part of the family
         // Check if the user is part of the family
         assert familia != null;
-        boolean isUserPartOfFamily = false;
-        for (User familyUser : familia.getUsers()) {
-            if (familyUser.getUsername().equals(user.getUsername())) {
-                isUserPartOfFamily = true;
-                break;
-            }
-        }
-
-        if (!isUserPartOfFamily) {
+        if (!isUserPartOfFamily(familia, user)) {
             throw new IllegalArgumentException("User is not part of the family");
         }
-
-        System.out.println("voy a agregar la alerta a familia ");
 
         // Create a new Alert
         Alert alert = new Alert(message, "warning");
         alert.setFamilia(familia);
 
-        System.out.println("ya la agregué y le agregue la familia ");
-
-        //System.out.println(familia.getAlerts()); //because of the lazy
-
         familia = FamilyDao.updateFamilia(familia);
 
         familia.addAlert(alert);
 
-        System.out.println("ya la agregué a la familia ");
-
         // Save the Alert
         AlertDao.saveAlert(alert);
-        System.out.println("ya la guardé ");
+    }
 
-
+    private static boolean isUserPartOfFamily(Familia familia, User user) {
+        for (User familyUser : familia.getUsers()) {
+            if (familyUser.getUsername().equals(user.getUsername())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static List<User> getMembersOfFamily(int familyId) {

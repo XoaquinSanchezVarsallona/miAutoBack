@@ -1,6 +1,6 @@
 package entities;
 
-import dao.CarDao;
+import entities.condicionales.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -18,9 +18,8 @@ public class Car {
     @Id
     private String patente;
 
-    // Se me ocurrió que el estado va a fluctuar entre 0 y 10 dependiendo como ponderemos las alertas/kilometraje/reparaciones. Y que basándonos en el número, sé display rojo, verde o naranja
     @Column
-    private Float estado;
+    private String estadoActual;
 
     @Column
     private String marca;
@@ -31,11 +30,9 @@ public class Car {
     @Column
     private float kilometraje;
 
-    // Año de compra? Año desde q se arrancó a usar? año de creación?
     @Column
     private int ano;
 
-    // Estas dos serian string, o serian datetime? en el caso de datetime, no nos importa la hora sino q el año/mes/dia.
     @Column
     private String fechaVencimientoSeguro;
 
@@ -61,6 +58,9 @@ public class Car {
     @OneToMany(mappedBy = "car", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Registration> registers = new HashSet<>();
 
+    @Transient
+    private final List<Condicionales> condicionales;
+
     public Car(String patente, String marca, String modelo, float kilometraje, int ano, String fechaVencimientoSeguro, String fechaVencimientoVTV) {
         this.patente = patente;
         this.marca = marca;
@@ -69,11 +69,13 @@ public class Car {
         this.ano = ano;
         this.fechaVencimientoSeguro = fechaVencimientoSeguro;
         this.fechaVencimientoVTV = fechaVencimientoVTV;
+        this.estadoActual = getEstado();
+        this.condicionales = getCondicionales();
     }
 
 
     public Car() {
-
+        this.condicionales = getCondicionales();
     }
 
     public String getPatente() {
@@ -142,5 +144,34 @@ public class Car {
 
     public void removeFamily(Familia familia) {
         this.familias.remove(familia);
+    }
+
+    public String getEstado() {
+        int count = 0;
+        int total = condicionales.size();
+        for (Condicionales condicional : condicionales) {
+            if (condicional.verificado(this.kilometraje)) {
+                count++;
+            }
+        }
+        double avg = (double) count / total;
+        if (avg >= 0.7) {
+            return "Verde";
+        } else if (avg >= 0.3) {
+            return "Amarillo";
+        } else {
+            return "Rojo";
+        }
+    }
+
+    private List<Condicionales> getCondicionales() {
+        List<Condicionales> result = new ArrayList<>();
+        result.add(new AceiteMotor());
+        result.add(new CorreaDistribucion());
+        result.add(new FiltroAceite());
+        result.add(new FiltroAire());
+        result.add(new FiltroCombustible());
+        result.add(new FiltroHabitaculo());
+        return result;
     }
 }

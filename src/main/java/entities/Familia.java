@@ -16,18 +16,18 @@ public class Familia {
     @Column(nullable= false, unique = true)
     private String apellido;
 
-    //@Column(nullable= false)
+    // @Column(nullable= false)
     @Column
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.ALL})
     private final Set<Car> cars = new HashSet<>();
 
-    //como no quiero eliminar usuario al eliminar familia, saco cascade.remove de la lista.
+    // Como no quiero eliminar usuario al eliminar familia, saco cascade remove de la lista.
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "familias", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     private final List<User> users = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy="familia", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
+    @OneToMany(fetch = FetchType.LAZY, mappedBy="familia", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Alert> alerts = new ArrayList<>();
 
     public Familia(String apellido) {

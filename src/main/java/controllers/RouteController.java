@@ -45,11 +45,16 @@ public class RouteController {
     public static Route deleteRoute = (req, res) -> {
         Integer routeId = Integer.valueOf(req.params(":routeID"));
         entities.Route route = RouteService.getRouteById(routeId);
+        if (route == null) {
+            res.status(404);
+            return "Route not found";
+        }
+        String kilometraje = route.getKilometraje();
         try {
             String patente = CarController.getPatenteOfRouteId(routeId);
             RouteService.deleteRoute(route);
             // Update car mileage
-            CarController.updateKilometraje(patente);
+            CarController.substractKilometraje(patente, kilometraje);
             res.status(200);
             return "Route deleted";
         }
