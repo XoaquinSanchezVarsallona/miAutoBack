@@ -64,4 +64,39 @@ public class NotificationDao {
             em.close();
         }
     }
+
+    public static void deleteNotification(long notificationId) {
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            Notification notification = em.find(Notification.class, notificationId);
+            if (notification != null) {
+                em.remove(notification);
+            }
+            transaction.commit();
+        } finally {
+            em.close();
+        }
+    }
+
+    public static void deleteNotificationFromDescription(long storeId, String description) {
+        EntityManager em = factory.createEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        try {
+            transaction.begin();
+            TypedQuery<Notification> query = em.createQuery("SELECT n FROM Notification n WHERE n.storeId = :storeId AND n.description = :description", Notification.class);
+            query.setParameter("storeId", storeId);
+            query.setParameter("description", description);
+            List<Notification> notifications = query.getResultList();
+            for (Notification notification : notifications) {
+                em.remove(notification);
+            }
+            transaction.commit();
+        } finally {
+            em.close();
+        }
+    }
 }
