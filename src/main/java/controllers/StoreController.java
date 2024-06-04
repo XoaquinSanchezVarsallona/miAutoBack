@@ -57,14 +57,11 @@ public class StoreController {
     };
 
     public Route getStores = (Request request, Response response) -> {
-        System.out.println("ENTRO A GETSTORE");
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
 
         String email = jsonObj.get("email").getAsString();
-        System.out.println("TENGO MAIL: " + email);
         List<StoreDTO> stores = StoreService.fetchStores(email);
-        System.out.println("TENGO STORES: " + stores);
 
         if (stores == null) {
             response.status(400);
