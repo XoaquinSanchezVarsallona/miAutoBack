@@ -42,6 +42,7 @@ public class Application {
         post("/alerts/setAsUnread/:idAlert", AlertController.setAsUnread);
         post("/alerts/unreadAlerts/:familyApellido", AlertController.countUnreadAlertsOfFamily);
         post("/alerts/unreadAlertsWithId/:idFamilia", AlertController.countUnreadAlertsOfFamilyId);
+        post("/displayPapers", AlertController.displayPapers);
 
         // User
         post("/login", userController.login);
