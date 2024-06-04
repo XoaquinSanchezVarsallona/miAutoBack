@@ -16,7 +16,7 @@ public class ImageDao {
 
         User user = em.find(User.class, Long.parseLong(userID));
         if (fields.equals("front of DNI")) user.setDniCara(image);
-        else if (fields.equals("back of DNI")) user.setDniCara(image);
+        else if (fields.equals("back of DNI")) user.setDniContracara(image);
         else throw new IllegalArgumentException("Invalid fields");
 
         em.merge(user);

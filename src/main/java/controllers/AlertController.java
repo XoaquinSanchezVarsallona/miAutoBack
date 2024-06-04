@@ -124,8 +124,12 @@ public class AlertController {
         }
     };
 
-    public String displayPapers(String username, String patente) {
+    public static Route displayPapers = (req, res)  -> {
+        Gson gson = new Gson();
+        JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
         try {
+            String username = jsonObj.get("username").getAsString();
+            String patente = jsonObj.get("patente").getAsString();
             User user = UserDao.findUserByUsername(username);
             Car car = CarService.getCarByPatente(patente);
 
@@ -138,7 +142,7 @@ public class AlertController {
         } catch (Exception e) {
             return e.getMessage();
         }
-    }
+    };
 
     public static Route sendAlertToFamilies = (req, res) -> {
         String username = req.params(":username");

@@ -9,7 +9,6 @@ public class ImageController {
 
 
      public static Route saveImage = (req, res) -> {
-          res.type("application/json");
           Gson gson = new Gson();
           JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
           try {
