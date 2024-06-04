@@ -20,8 +20,6 @@ import java.util.Objects;
 
 public class StoreController {
     public Route addStore = (Request request, Response response) -> {
-        System.out.println("ENTRO A ADDSTORE");
-
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
 
@@ -39,19 +37,10 @@ public class StoreController {
             return "User not found";
         }
 
-        System.out.println("USUUUARIO" + user);
-
         Store store = new Store(storeEmail, storeName, domicilio, tipoDeServicio);
         store.setUser(user);
         StoreDao.saveStore(store);
 
-        System.out.println("NUEVOOO STORE" + store);
-
-        System.out.println("STORE AGREGADOOO" + store);
-        System.out.println("User's stores: " + user.getStores());
-
-
-        System.out.println("se agrego succesfullyyyyy");
         response.status(200);
         return "Store added successfully";
     };
