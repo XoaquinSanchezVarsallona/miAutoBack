@@ -69,8 +69,9 @@ public class Car {
         this.ano = ano;
         this.fechaVencimientoSeguro = fechaVencimientoSeguro;
         this.fechaVencimientoVTV = fechaVencimientoVTV;
-        this.estadoActual = getEstado();
         this.condicionales = getCondicionales();
+        this.estadoActual = getEstado();
+
     }
 
 
