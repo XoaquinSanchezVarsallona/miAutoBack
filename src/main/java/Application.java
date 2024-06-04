@@ -30,6 +30,7 @@ public class Application {
             return "OK";
         });
 
+        // Before each request, set the response header to allow CORS
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
 
