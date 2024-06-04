@@ -1,6 +1,4 @@
-
 import controllers.*;
-
 
 import static spark.Spark.*;
 
