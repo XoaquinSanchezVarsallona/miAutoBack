@@ -102,6 +102,21 @@ public class RouteController {
         res.status(200);
         return gson.toJson(new RouteDTO(route));
     };
+    public static Route getRoutesOfCar = (req, res) -> {
+        String patente = String.valueOf(req.params(":patente"));
+        try {
+            Set<entities.Route> routes = RouteService.getRoutesOfCar(patente);
+            Gson gson = new Gson();
+            Set<RouteDTO> routeDTOs = generateRouteDTOsFrom(routes);
+            String json = gson.toJson(routeDTOs);
+            res.type("application/json");
+            return json;
+        }
+        catch (Exception e) {
+            res.status(500);
+            return "Could not get Routes";
+        }
+    };
 
 
     public Route getRoutesOfUserByCar = (req, res) -> {
