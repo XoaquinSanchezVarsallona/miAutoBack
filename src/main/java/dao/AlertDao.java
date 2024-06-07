@@ -133,22 +133,16 @@ public class AlertDao {
         return count;
     }
 
-    /*public static boolean deleteAlert(Long idAlert) {
+    public static boolean alertExists(String message) {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Alert alert = em.find(Alert.class, idAlert);
-        boolean isDeleted = false;
-        if (alert != null) {
-            Familia familia = alert.getFamilia(); // Assuming you have a getter for Familia in Alert
-            if (familia != null) {
-                familia.getAlerts().remove(alert); // Assuming you have a getter for alerts in Familia
-                em.persist(familia); // Update the Familia entity
-            }
-            em.remove(alert);
-            isDeleted = true;
-        }
+        TypedQuery<Alert> query = em.createQuery(
+                "SELECT a FROM Alert a WHERE a.message = :message", Alert.class);
+        query.setParameter("message", message);
+        List<Alert> alerts = query.getResultList();
+        boolean exists = !alerts.isEmpty();
         em.getTransaction().commit();
         em.close();
-        return isDeleted;
-    }*/
+        return exists;
+    }
 }

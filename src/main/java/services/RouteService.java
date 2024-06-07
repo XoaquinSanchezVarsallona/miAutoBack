@@ -30,4 +30,8 @@ public class RouteService {
     public static void updateRoute(Route route, String kilometres, String duration, String date) {
         RouteDao.updateRoute(route, kilometres, duration, date);
     }
+
+    public static Set<Route> getRoutesOfCar(String patente) {
+        return RouteDao.getRoutesOfCar(patente);
+    }
 }

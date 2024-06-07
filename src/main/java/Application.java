@@ -1,7 +1,4 @@
-
 import controllers.*;
-
-
 import static spark.Spark.*;
 
 public class Application {
@@ -84,9 +81,12 @@ public class Application {
         delete("/route/:routeID/deleteRoute", RouteController.deleteRoute);
         post("/route/editRoute", RouteController.editRoute);
         post("/route/:routeId/getRoute", RouteController.getRouteById);
-        post("/saveImage", ImageController.saveImage);
+        get("/route/:patente", RouteController.getRoutesOfCar);
         get("/user/:userId/vehicle/:patente/routes", routeController.getRoutesOfUserByCar);
         get("/user/:userId/routes", routeController.getRoutesOfUser);
+
+        // Image
+        post("/saveImage", ImageController.saveImage);
 
         // Review
         post("/submitRatingAndComment", StoreController.submitRatingAndComment);

@@ -92,4 +92,17 @@ public class RouteDao {
             entityManager.close();
         }
     }
+
+    public static Set<Route> getRoutesOfCar(String patente) {
+        final EntityManager entityManager = FactoryCreator.getEntityManager();
+        entityManager.getTransaction().begin();
+        Set<Route> routes = entityManager.createQuery("SELECT r FROM Route r WHERE r.patente = :patente", Route.class)
+                .setParameter("patente", patente)
+                .getResultList()
+                .stream()
+                .collect(Collectors.toSet());
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        return routes;
+    }
 }
