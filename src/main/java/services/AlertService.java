@@ -41,4 +41,8 @@ public class AlertService {
     public static int countUnreadAlertsOfFamily(String familyApellido) {
         return AlertDao.countUnreadAlertsOfFamily(familyApellido);
     }
+
+    public static boolean alertExists(String message) {
+        return AlertDao.alertExists(message);
+    }
 }

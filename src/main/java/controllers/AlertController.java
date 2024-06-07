@@ -25,7 +25,10 @@ public class AlertController {
             String message = jsonObj.get("message").getAsString();
             String apellido = jsonObj.get("apellido").getAsString();
             String username = jsonObj.get("username").getAsString();
-
+            if (AlertService.alertExists(message)) {
+                res.status(200);
+                return "Alert already exists";
+            }
             FamilyService.addAlertToFamily(message, apellido, username);
             res.status(200);
             return "Alert added to family";
