@@ -283,5 +283,17 @@ public class StoreController {
             return "Failed to update review";
         }
     };
+
+    public Route getStoresByRating = (Request req, Response res) -> {
+        try {
+            List<StoreDTO> list = StoreService.getStoresByRating();
+            res.status(200);
+            return list;
+        } catch (Exception e) {
+            res.status(500);
+            e.printStackTrace();
+            return "Something went wrong with the function getStoresByRating";
+        }
+    };
 }
 

@@ -8,7 +8,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static dao.FactoryCreator.factory;
 
@@ -262,5 +264,24 @@ public class StoreDao {
         } finally {
             em.close();
         }
+    }
+
+    public static Map<Store, Integer> getStoresbyRating() {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Map<Store, Integer> map = new HashMap<>();
+        em.getTransaction().begin();
+        List <Store> stores = getAllStores();
+        for (Store store : stores) {
+            List<Review> reviews = getAllReviews(store.getIdStore());
+            int totalRating = 0;
+            for (Review review : reviews) {
+                totalRating += review.getRating();
+            }
+            map.put(store, totalRating/reviews.size()-1);
+        }
+        em.getTransaction().commit();
+        return map;
+
     }
 }
