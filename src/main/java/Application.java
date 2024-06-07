@@ -1,5 +1,4 @@
 import controllers.*;
-
 import static spark.Spark.*;
 
 public class Application {
