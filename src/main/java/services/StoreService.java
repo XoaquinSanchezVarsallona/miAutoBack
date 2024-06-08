@@ -100,4 +100,8 @@ public class StoreService {
     public static boolean updateReview(long userId, long storeId, int rating, String comment) {
         return StoreDao.updateReview(userId, storeId, rating, comment);
     }
+
+    public static Store getStoreByEmail(String email) {
+        return StoreDao.getStoreByEmail(email);
+    }
 }

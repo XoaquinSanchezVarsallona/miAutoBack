@@ -176,6 +176,19 @@ public class StoreDao {
         }
     }
 
+    public static Store getStoreByName(String storeName) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Store s WHERE s.storeName = :storeName", Store.class)
+                    .setParameter("storeName", storeName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public static void saveReview(Review review){
         EntityManager em = factory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
