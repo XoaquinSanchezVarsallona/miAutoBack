@@ -285,10 +285,12 @@ public class StoreController {
     };
 
     public Route getStoresByRating = (Request req, Response res) -> {
+
         try {
             List<StoreDTO> list = StoreService.getStoresByRating();
+            Gson gson = new Gson();
             res.status(200);
-            return list;
+            return gson.toJson(list);
         } catch (Exception e) {
             res.status(500);
             e.printStackTrace();

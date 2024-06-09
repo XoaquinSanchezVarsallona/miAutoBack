@@ -7,10 +7,7 @@ import entities.User;
 import DTOs.StoreDTO;
 import dao.StoreDao;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StoreService {
@@ -54,7 +51,8 @@ public class StoreService {
         List<Map.Entry<Store, Integer>> sortedKeys = stores.entrySet().stream().sorted(comparator).toList();
         List<StoreDTO> storesDTO  = new ArrayList<>();
         for (Map.Entry<Store, Integer> entry : sortedKeys) storesDTO.add(StoreDTO.from(entry.getKey()));
-        return storesDTO.reversed();
+        Collections.reverse(storesDTO);
+        return storesDTO;
     }
 
     public static boolean editVisualStoreProfile(String email, String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {

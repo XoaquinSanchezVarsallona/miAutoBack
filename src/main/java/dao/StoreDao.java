@@ -270,7 +270,6 @@ public class StoreDao {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
         Map<Store, Integer> map = new HashMap<>();
-        em.getTransaction().begin();
         List <Store> stores = getAllStores();
         for (Store store : stores) {
             List<Review> reviews = getAllReviews(store.getIdStore());

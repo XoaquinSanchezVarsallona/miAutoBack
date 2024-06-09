@@ -75,7 +75,7 @@ public class Application {
         post("/editStoreProfile", storeController.editStoreProfile);
         post("/editVisualStoreProfile", storeController.editVisualStoreProfile);
         post("/getVisualStoreProfile", storeController.getVisualStoreProfile);
-        post("getStoresByRating", storeController.getStoresByRating);
+        post("/getStoresByRating", storeController.getStoresByRating);
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
