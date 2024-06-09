@@ -297,5 +297,22 @@ public class StoreController {
             return "Something went wrong with the function getStoresByRating";
         }
     };
+
+    public Route getStoreByEmail = (Request request, Response response) -> {
+        Gson gson = new Gson();
+        String email = gson.fromJson(request.body(), JsonObject.class).get("storeEmail").getAsString();
+
+        Store store = StoreService.getStoreByEmail(email);
+        System.out.println("STOREEE" + store);
+        System.out.println("EMAIL" + store.getIdStore());
+
+        if (store != null) {
+            response.status(200);
+            return gson.toJson(store.getIdStore());
+        } else {
+            response.status(400);
+            return gson.toJson("Store not found");
+        }
+    };
 }
 

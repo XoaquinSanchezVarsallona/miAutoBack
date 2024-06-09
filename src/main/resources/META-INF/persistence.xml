@@ -13,6 +13,7 @@
         <class>entities.Registration</class>
         <class>entities.Review</class>
         <class>entities.Notification</class>
+        <class>entities.Experience</class>
 
 
         <properties>
