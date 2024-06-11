@@ -8,7 +8,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static dao.FactoryCreator.factory;
 
@@ -174,6 +177,19 @@ public class StoreDao {
         }
     }
 
+    public static Store getStoreByName(String storeName) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Store s WHERE s.storeName = :storeName", Store.class)
+                    .setParameter("storeName", storeName)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public static void saveReview(Review review){
         EntityManager em = factory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -262,5 +278,27 @@ public class StoreDao {
         } finally {
             em.close();
         }
+    }
+
+    public static Map<Store, Integer> getStoresbyRating() {
+        EntityManager em = factory.createEntityManager();
+        em.getTransaction().begin();
+        Map<Store, Integer> map = new LinkedHashMap<>();
+        List <Store> stores = getAllStores();
+        for (Store store : stores) {
+            List<Review> reviews = getAllReviews(store.getIdStore());
+            int totalRating = 0;
+            for (Review review : reviews) {
+                totalRating += review.getRating();
+            }
+            if (!reviews.isEmpty()) {
+                map.put(store, totalRating / reviews.size() - 1);
+            } else {
+                map.put(store, 0);
+            }
+        }
+        em.getTransaction().commit();
+        return map;
+
     }
 }

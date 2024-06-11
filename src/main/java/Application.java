@@ -11,6 +11,7 @@ public class Application {
         StoreController storeController = new StoreController();
         RouteController routeController = new RouteController();
         NotificationController notificationController = new NotificationController();
+        ExperienceController experienceController = new ExperienceController();
 
         port(9002);
 
@@ -75,6 +76,8 @@ public class Application {
         post("/editStoreProfile", storeController.editStoreProfile);
         post("/editVisualStoreProfile", storeController.editVisualStoreProfile);
         post("/getVisualStoreProfile", storeController.getVisualStoreProfile);
+        post("/getStoreByEmail", storeController.getStoreByEmail);
+        post("getStoresByRating", storeController.getStoresByRating);
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
@@ -101,4 +104,9 @@ public class Application {
         post("/fetchNotificationsByUserId", notificationController.fetchNotificationsByUserId);
         post("/deleteNotification", notificationController.deleteNotification);
         post("/deleteNotificationFromDescription", notificationController.deleteNotificationFromDescription);
+
+        //Experiences
+        post("/getExperiences", experienceController.getExperiences);
+        delete("/deleteExperience/:experienceId", experienceController.deleteExperience);
+        post("/submitExperience", experienceController.submitExperience);
     }}

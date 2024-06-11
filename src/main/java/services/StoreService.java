@@ -7,8 +7,7 @@ import entities.User;
 import DTOs.StoreDTO;
 import dao.StoreDao;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class StoreService {
@@ -41,6 +40,19 @@ public class StoreService {
         return stores.stream()
                 .map(StoreDTO::from)
                 .collect(Collectors.toList());
+    }
+
+    public static List<StoreDTO> getStoresByRating() {
+        Map<Store, Integer> stores = StoreDao.getStoresbyRating();
+        if (stores.isEmpty()) {
+            return null;
+        }
+        Comparator<Map.Entry<Store, Integer>> comparator = Map.Entry.comparingByValue();
+        List<Map.Entry<Store, Integer>> sortedKeys = stores.entrySet().stream().sorted(comparator).toList();
+        List<StoreDTO> storesDTO  = new ArrayList<>();
+        for (Map.Entry<Store, Integer> entry : sortedKeys) storesDTO.add(StoreDTO.from(entry.getKey()));
+        Collections.reverse(storesDTO);
+        return storesDTO;
     }
 
     public static boolean editVisualStoreProfile(String email, String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
@@ -85,5 +97,9 @@ public class StoreService {
 
     public static boolean updateReview(long userId, long storeId, int rating, String comment) {
         return StoreDao.updateReview(userId, storeId, rating, comment);
+    }
+
+    public static Store getStoreByEmail(String email) {
+        return StoreDao.getStoreByEmail(email);
     }
 }

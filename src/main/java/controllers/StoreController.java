@@ -283,5 +283,36 @@ public class StoreController {
             return "Failed to update review";
         }
     };
+
+    public Route getStoresByRating = (Request req, Response res) -> {
+
+        try {
+            List<StoreDTO> list = StoreService.getStoresByRating();
+            Gson gson = new Gson();
+            res.status(200);
+            return gson.toJson(list);
+        } catch (Exception e) {
+            res.status(500);
+            e.printStackTrace();
+            return "Something went wrong with the function getStoresByRating";
+        }
+    };
+
+    public Route getStoreByEmail = (Request request, Response response) -> {
+        Gson gson = new Gson();
+        String email = gson.fromJson(request.body(), JsonObject.class).get("storeEmail").getAsString();
+
+        Store store = StoreService.getStoreByEmail(email);
+        System.out.println("STOREEE" + store);
+        System.out.println("EMAIL" + store.getIdStore());
+
+        if (store != null) {
+            response.status(200);
+            return gson.toJson(store.getIdStore());
+        } else {
+            response.status(400);
+            return gson.toJson("Store not found");
+        }
+    };
 }
 
