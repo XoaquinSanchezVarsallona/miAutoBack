@@ -7,7 +7,6 @@ import com.google.gson.JsonObject;
 import dao.UserDao;
 import entities.Alert;
 import entities.Car;
-import entities.Familia;
 import entities.User;
 import services.CarService;
 import spark.Route;
