@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -282,7 +283,7 @@ public class StoreDao {
     public static Map<Store, Integer> getStoresbyRating() {
         EntityManager em = factory.createEntityManager();
         em.getTransaction().begin();
-        Map<Store, Integer> map = new HashMap<>();
+        Map<Store, Integer> map = new LinkedHashMap<>();
         List <Store> stores = getAllStores();
         for (Store store : stores) {
             List<Review> reviews = getAllReviews(store.getIdStore());
@@ -290,7 +291,11 @@ public class StoreDao {
             for (Review review : reviews) {
                 totalRating += review.getRating();
             }
-            map.put(store, totalRating/reviews.size()-1);
+            if (!reviews.isEmpty()) {
+                map.put(store, totalRating / reviews.size() - 1);
+            } else {
+                map.put(store, 0);
+            }
         }
         em.getTransaction().commit();
         return map;
