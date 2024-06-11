@@ -78,6 +78,7 @@ public class Application {
         post("/getVisualStoreProfile", storeController.getVisualStoreProfile);
         post("/getStoreByEmail", storeController.getStoreByEmail);
         post("getStoresByRating", storeController.getStoresByRating);
+        post("/getStoreById", storeController.getStoreById);
 
         // Route
         post("/route/:userID/addRoute", RouteController.addRoute);
