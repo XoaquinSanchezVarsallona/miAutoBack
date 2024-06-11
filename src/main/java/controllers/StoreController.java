@@ -314,5 +314,22 @@ public class StoreController {
             return gson.toJson("Store not found");
         }
     };
+
+    public Route getStoreById = (Request request, Response response) -> {
+        Gson gson = new Gson();
+        long storeId = gson.fromJson(request.body(), JsonObject.class).get("storeId").getAsLong();
+
+        Store store = StoreService.getStoreById(storeId);
+        System.out.println("STOREEEDDDD" + store);
+        System.out.println("STOREID" + store.getIdStore());
+
+        if (store != null) {
+            response.status(200);
+            return gson.toJson(store.getStoreName());
+        } else {
+            response.status(404);
+            return "Store not found";
+        }
+    };
 }
 

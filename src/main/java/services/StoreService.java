@@ -102,4 +102,8 @@ public class StoreService {
     public static Store getStoreByEmail(String email) {
         return StoreDao.getStoreByEmail(email);
     }
+
+    public static Store getStoreById(long storeId) {
+        return StoreDao.getStoreById(storeId);
+    }
 }

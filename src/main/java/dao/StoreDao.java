@@ -190,6 +190,19 @@ public class StoreDao {
         }
     }
 
+    public static Store getStoreById(long storeId) {
+        EntityManager entityManager = factory.createEntityManager();
+        try {
+            return entityManager.createQuery("SELECT s FROM Store s WHERE s.idStore = :storeId", Store.class)
+                    .setParameter("storeId", storeId)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            entityManager.close();
+        }
+    }
+
     public static void saveReview(Review review){
         EntityManager em = factory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
