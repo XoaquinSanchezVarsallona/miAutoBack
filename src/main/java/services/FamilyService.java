@@ -22,7 +22,6 @@ public class FamilyService {
 
     public static void createFamily(String username , String apellido, String password) {
         User user = FamilyDao.lookForUser(username);
-        List<Familia> familias = FamilyDao.getFamiliasOfUser(username);
         // Me fijo que no exista una familia con el mismo apellido en la db
         if (FamilyDao.getFamiliaFromAllExistingFamilies(apellido) != null) {
             throw new IllegalArgumentException("Surname already in use");
