@@ -116,20 +116,18 @@ public class StoreController {
     };
 
     public Route editVisualStoreProfile = (Request request, Response response) -> {
-        System.out.println("ENTRO A EDITVISUALPROFILE" );
-
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
 
-        String email = jsonObj.get("email").getAsString();
-        String domicilio = jsonObj.get("domicilio").getAsString();
-        String name = jsonObj.get("storeName").getAsString();
-        String tipoDeServicio = jsonObj.get("tipoDeServicio").getAsString();
-        String description = jsonObj.get("description").getAsString();
-        String phoneNumber = jsonObj.get("phoneNumber").getAsString();
-        String webPageLink = jsonObj.get("webPageLink").getAsString();
-        String instagramLink = jsonObj.get("instagramLink").getAsString();
-        String googleMapsLink = jsonObj.get("googleMapsLink").getAsString();
+        String email = jsonObj.get("Email").getAsString();
+        String domicilio = jsonObj.get("Domicilio").getAsString();
+        String name = jsonObj.get("StoreName").getAsString();
+        String tipoDeServicio = jsonObj.get("TipoDeServicio").getAsString();
+        String description = jsonObj.get("Description").getAsString();
+        String phoneNumber = jsonObj.get("PhoneNumber").getAsString();
+        String webPageLink = jsonObj.get("WebPageLink").getAsString();
+        String instagramLink = jsonObj.get("InstagramLink").getAsString();
+        String googleMapsLink = jsonObj.get("GoogleMapsLink").getAsString();
 
         System.out.println("TENGO EMAIL" + email);
         System.out.println("TENGO DESCRIPTION" + description);
