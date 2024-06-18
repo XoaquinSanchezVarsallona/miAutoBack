@@ -76,7 +76,6 @@ public class UserDao {
     }
 
     public static boolean updateUserField(Long userId, String field, String newValue) {
-        //System.out.println("updateUserField called with userId: " + userId + ", field: " + field + ", newValue: " + newValue);
         final EntityManager entityManager = FactoryCreator.getEntityManager();
         try {
             entityManager.getTransaction().begin();
@@ -155,6 +154,10 @@ public class UserDao {
             }
         }
         return users;
+    }
+
+    public static boolean usernameExists(String newValue) {
+        return findUserByUsername(newValue) != null;
     }
 }
 

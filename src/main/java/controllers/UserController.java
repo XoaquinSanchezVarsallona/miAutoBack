@@ -10,6 +10,7 @@ import utils.PasswordUtilities;
 import utils.JwtUtil;
 
 import java.util.Map;
+import java.util.Objects;
 
 // Clase para definir la conexión entre la página web y la base de datos
 public class UserController {
@@ -80,22 +81,24 @@ public class UserController {
     };
 
     public Route editProfile = (req, res) -> {
-        //System.out.println("editProfile route hitted");
 
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
-        Long userId = jsonObj.get("userId").getAsLong();  // Assuming you send userId to identify the user
+        Long userId = jsonObj.get("userId").getAsLong();
         String field = jsonObj.get("field").getAsString();
         String newValue = jsonObj.get("value").getAsString();
 
-        try {
-            //System.out.println("Calling UserService.updateUserField");
+        if (Objects.equals(field, "username")) {
+            if (UserService.usernameExists(newValue)) {
+                res.status(409);
+                return "Username already exists";
+            }
+        }
 
-            // Implement the update logic. Assuming updateUserField updates the given field with the new value for the specified user
+        try {
             boolean isUpdated = UserService.updateUserField(userId, field, newValue);
             if (isUpdated) {
                 res.status(200);
-                //return "Profile updated successfully!";
                 return jsonObj.toString();
             } else {
                 res.status(400);

@@ -7,14 +7,15 @@ import utils.PasswordUtilities;
 public class UserService {
 
     public static boolean updateUserField(Long userId, String field, String newValue) {
-        //updatea el userField.
-        //System.out.println("UserService.updateUserField called");
-
         return UserDao.updateUserField(userId, field, newValue);
     }
 
     public static User findUserById(Long userId) {
         return UserDao.findUserByUserID(userId);
+    }
+
+    public static boolean usernameExists(String newValue) {
+        return UserDao.usernameExists(newValue);
     }
 
     public User login(String email, String password) {
