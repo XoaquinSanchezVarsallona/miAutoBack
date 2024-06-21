@@ -11,7 +11,6 @@ import entities.User;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
-import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Objects;
 

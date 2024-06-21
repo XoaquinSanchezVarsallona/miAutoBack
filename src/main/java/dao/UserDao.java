@@ -2,7 +2,6 @@ package dao;
 
 import entities.Familia;
 import entities.User;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,12 +60,12 @@ public class UserDao {
         query.setParameter("email", email);
         query.setParameter("username", username);
         try {
-            //si hay alguno, existe
+            // Si hay alguno, existe
             Long count = query.getSingleResult();
             entityManager.close();
             return count > 0;
         } catch (NoResultException e) {
-            //no existen usuarios con ese username o mail
+            // No existen usuarios con ese username o mail
             return false;
         }
 
@@ -123,26 +122,6 @@ public class UserDao {
         } finally {
             entityManager.close();
         }
-}
-
-
-    public static User updateUser(User user) {
-        EntityManager entityManager = factory.createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        User managedUser = null;
-        try {
-            transaction.begin();
-            managedUser = entityManager.merge(user);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            throw e;
-        } finally {
-            entityManager.close();
-        }
-        return managedUser;
     }
 
     public static List<User> findUsersByUserIDs(List<Long> result) {
@@ -158,6 +137,34 @@ public class UserDao {
 
     public static boolean usernameExists(String newValue) {
         return findUserByUsername(newValue) != null;
+    }
+
+    public static boolean deleteUser(Long userId) {
+        EntityManager entityManager = factory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            User user = entityManager.find(User.class, userId);
+            if (user == null) {
+                return false;
+            }
+            for (Familia family : user.getFamilias()) {
+                family.getUsers().remove(user);
+                entityManager.merge(family);
+            }
+            user.getFamilias().clear();
+            entityManager.remove(user);
+            entityManager.flush();
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
+        } finally {
+            entityManager.close();
+        }
     }
 }
 

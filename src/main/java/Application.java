@@ -31,6 +31,9 @@ public class Application {
         // Before each request, set the response header to allow CORS
         before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
 
+        // Mercado Pago
+        post("/mercadopago/createPreference", PaymentController.createPreference);
+
         // Alert
         post("/alertas/family/:familyApellido", AlertController.getAlertsOfFamily);
         post("/alertas/add", AlertController.addAlertToFamily);
@@ -49,6 +52,7 @@ public class Application {
         post("/validateToken", userController.validateToken);
         get("/user/:email", userController.findUserByEmail);
         post("/user/:userId", userController.findUserById);
+        delete("/user/:userId/deleteUser", userController.deleteUser);
 
         // Car
         get("/car/:patente", carController.findCarByPatente);
@@ -106,7 +110,7 @@ public class Application {
         post("/deleteNotification", notificationController.deleteNotification);
         post("/deleteNotificationFromDescription", notificationController.deleteNotificationFromDescription);
 
-        //Experiences
+        // Experiences
         post("/getExperiences", experienceController.getExperiences);
         delete("/deleteExperience/:experienceId", experienceController.deleteExperience);
         post("/submitExperience", experienceController.submitExperience);
