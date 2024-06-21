@@ -74,6 +74,24 @@ public class CarController {
         }
     };
 
+    public Route getCarInformation = (req, res) -> {
+        String patente = req.params(":patente");
+        try {
+            res.type("application/json");
+            Car result = CarService.getCarByPatente(patente);
+            if (result == null) {
+                res.status(404);
+                return "Couldn't find car with patente " + patente;
+            } else {
+                res.status(200);
+                return gson.toJson(new CarDTO(result));
+            }
+        } catch (Exception e) {
+            res.status(500);
+            return "Something went wrong";
+        }
+    };
+
     public static void updateKilometraje(String patente) {
         CarService.updateKilometraje(patente);
     }

@@ -60,6 +60,7 @@ public class Application {
         delete("/car/:patente/deleteCar", carController.deleteCar);
         post("/editCarProfile" , carController.editCarProfile);
         post("/vehicles/family/:familyId", familyController.vehiclesOfFamily);
+        post("/car/:patente/getInfo", carController.getCarInformation);
 
         // Family
         get("/family/:idFamilia", familyController.findFamilyById);
