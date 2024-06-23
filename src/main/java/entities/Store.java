@@ -14,7 +14,10 @@ public class Store {
     public String tipoDeServicio;
 
     @Column
-    public String domicilio;
+    public Double domicilioLongitud;
+
+    @Column
+    public Double domicilioLatitud;
 
     @Column(nullable= false, unique = true)
     public String storeName;
@@ -43,17 +46,19 @@ public class Store {
     @JoinColumn(name="idUser", nullable=false)
     private User user;
 
-    public Store(String email, String storeName, String domicilio, String tipoDeServicio) {
+    public Store(String email, String storeName, Double domicilioLongitud, Double domicilioLatitud, String tipoDeServicio) {
         this.storeEmail = email;
         this.storeName = storeName;
-        this.domicilio = domicilio;
+        this.domicilioLongitud = domicilioLongitud;
+        this.domicilioLatitud = domicilioLatitud;
         this.tipoDeServicio = tipoDeServicio;
     }
 
-    public Store(String email, String storeName, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+    public Store(String email, String storeName, Double domicilioLongitud, Double domicilioLatitud, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
         this.storeEmail = email;
         this.storeName = storeName;
-        this.domicilio = domicilio;
+        this.domicilioLongitud = domicilioLongitud;
+        this.domicilioLatitud = domicilioLatitud;
         this.tipoDeServicio = tipoDeServicio;
         this.description = description;
         this.phoneNumber = phoneNumber;
@@ -73,9 +78,13 @@ public class Store {
         this.storeName = storeName;
     }
 
-    public void setDomicilio(String domicilio) {
-        this.domicilio = domicilio;
+    public void setDomicilioLongitud(Double domicilio) {
+        this.domicilioLongitud = domicilio;
     }
+    public void setDomicilioLatitud(Double domicilio) {
+        this.domicilioLatitud = domicilio;
+    }
+
 
     public void setTipoDeServicio(String tipoDeServicio) {
         this.tipoDeServicio = tipoDeServicio;
@@ -131,10 +140,13 @@ public class Store {
     public String getStoreEmail() {
         return storeEmail;
     }
-
-    public String getDomicilio() {
-        return domicilio;
+    public Double getDomicilioLongitud() {
+        return domicilioLongitud;
     }
+    public Double getDomicilioLatitud() {
+        return domicilioLatitud;
+    }
+
 
     public String getTipoDeServicio() {
         return tipoDeServicio;

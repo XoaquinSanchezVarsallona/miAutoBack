@@ -55,8 +55,8 @@ public class StoreService {
         return storesDTO;
     }
 
-    public static boolean editVisualStoreProfile(String email, String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
-        return StoreDao.editVisualStoreProfile(email,name, domicilio, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
+    public static boolean editVisualStoreProfile(String email, String name, Double domicilioLongitud, Double domicilioLatitud, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+        return StoreDao.editVisualStoreProfile(email,name, domicilioLongitud, domicilioLatitud, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
     }
 
     public static StoreDTO getVisualStoreProfile(String email) {

@@ -9,7 +9,8 @@ public class UserDTO {
     private final List<Integer> familias;
     private String email;
     private String username;
-    private String domicilio;
+    private Double domicilioLongitude;
+    private Double domicilioLatitude;
     private String surname;
     private String name;
     private String userId;
@@ -19,7 +20,8 @@ public class UserDTO {
         this.email = user.getEmail();
         this.userId = user.getUserID();
         this.username = user.getUsername();
-        this.domicilio = user.getDomicilio();
+        this.domicilioLongitude = user.getDomicilioLongitude();
+        this.domicilioLatitude = user.getDomicilioLatitude();
         this.name = user.getName();
         this.surname = user.getSurname();
         this.familias = user.getFamiliasId();
