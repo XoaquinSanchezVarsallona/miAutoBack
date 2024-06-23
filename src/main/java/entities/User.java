@@ -25,7 +25,10 @@ public class User {
     public String password;
 
     @Column
-    public String domicilio;
+    private Double domicilioLongitude;
+
+    @Column
+    private Double domicilioLatitude;
 
     //driver o service
     @Column
@@ -48,15 +51,17 @@ public class User {
 
 
     //constructores
-    public User(String Email, String Username, String Name, String Surname, String Password, String Domicilio, String userType) {
+    public User(String Email, String Username, String Name, String Surname, String Password, Double longitude, Double latitude, String userType) {
         this.email = Email;
         this.username = Username;
         this.password = Password;
-        this.domicilio = Domicilio;
+        this.domicilioLongitude = longitude;
+        this.domicilioLatitude = latitude;
         this.name = Name;
         this.surname = Surname;
         this.userType = userType;
     }
+
 
     public String getDniCara() {
         return dniCara;
@@ -147,9 +152,13 @@ public class User {
         this.username = username;
     }
 
-    public void setDomicilio(String domicilio) {
-        this.domicilio = domicilio;
+    public void setDomicilioLongitude(Double domicilioLongitude) {
+        this.domicilioLongitude = domicilioLongitude;
     }
+    public void setDomicilioLatitude(Double domicilioLatitude) {
+        this.domicilioLatitude = domicilioLatitude;
+    }
+
 
     public void setEmail(String email) {
         this.email = email;
@@ -188,9 +197,6 @@ public class User {
         return stores;
     }
 
-    public String getDomicilio() {
-        return domicilio;
-    }
 
     public String getName() {
         return name;
@@ -198,5 +204,13 @@ public class User {
 
     public String getSurname() {
         return surname;
+    }
+
+    public Double getDomicilioLongitude() {
+        return domicilioLongitude;
+    }
+    
+    public Double getDomicilioLatitude() {
+        return domicilioLatitude;
     }
 }

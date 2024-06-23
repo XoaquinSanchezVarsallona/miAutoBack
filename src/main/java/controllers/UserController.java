@@ -69,7 +69,7 @@ public class UserController {
         Gson gson = new Gson();
         JsonObject jsonObj = gson.fromJson(req.body(), JsonObject.class);
 
-        User user = UserDao.createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("domicilio").getAsString(), jsonObj.get("usertype").getAsString());
+        User user = UserDao.createUserDriver(jsonObj.get("email").getAsString(), jsonObj.get("username").getAsString(), jsonObj.get("name").getAsString(), jsonObj.get("surname").getAsString(), jsonObj.get("password").getAsString(), jsonObj.get("longitud").getAsDouble(), jsonObj.get("latitud").getAsDouble(), jsonObj.get("usertype").getAsString());
         if (UserService.registerUser(user)) {
             res.status(201);
             return "User registered successfully!";
