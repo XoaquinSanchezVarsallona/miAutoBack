@@ -1,13 +1,17 @@
 import entities.*;
+import services.RouteService;
+import services.UserService;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
         final EntityManager entityManager = factory.createEntityManager();
 
-        //sample1(entityManager);
+        sample1(entityManager);
         //sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
@@ -15,7 +19,8 @@ public class Main {
         //sample5(entityManager); // Sample para vincular auto con familia
         //sample7(entityManager); // Sample para vincular alerta con familia
         //sample8(entityManager);
-        sample9(entityManager);
+        // sample9(entityManager);
+
 
 
         entityManager.close();
@@ -119,23 +124,19 @@ public class Main {
     }
 
     private static void sample1(EntityManager entityManager) {
-        // Creo un conductor, una familia y un auto.
-        Familia familiaPerez = new Familia("Perez");
-        Car motomoto = new Car("AA476OV", "Toyota", "Corolla Cross", 1000, 2019,
-                "11/12/24", "12/12/2023");
+        LocalDate startDate = LocalDate.of(2024, 1, 1);
+        LocalDate endDate = LocalDate.of(2024, 12, 31);
+        Random random = new Random();
+        User user = UserService.findUserById(8052L);
 
-        // Genero la relación entre familia y auto, agregando cada uno a la lista del otro.
-        familiaPerez.getCars().add(motomoto);
-        motomoto.getFamilias().add(familiaPerez);
-
-        //comienza transacción //
         entityManager.getTransaction().begin();
 
-        entityManager.persist(familiaPerez);
-        entityManager.persist(motomoto);
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            int randomKilometraje = 1 + random.nextInt(150); // Generates random integers between 100 and 999
+            RouteService.createRoute("ETU234", user, String.valueOf(randomKilometraje), "1", date.toString());
+        }
 
         entityManager.getTransaction().commit();
-        // terminó transacción //
     }
 
     private static void sample2(EntityManager entityManager) {

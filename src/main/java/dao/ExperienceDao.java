@@ -20,7 +20,7 @@ public class ExperienceDao {
         }
     }
 
-    public static void createExperience(Long userId, Long storeId, String patente, String description, int rating) {
+    public static void createExperience(Long userId, Long storeId, String patente, String description, int rating, Float price) {
         EntityManager em = factory.createEntityManager();
         EntityTransaction transaction = em.getTransaction();
 
@@ -33,6 +33,7 @@ public class ExperienceDao {
             experience.setDescription(description);
             experience.setRating(rating);
             experience.setCreationDate(new Timestamp(System.currentTimeMillis()));
+            experience.setPrice(price);
             em.persist(experience);
             transaction.commit();
         } finally {

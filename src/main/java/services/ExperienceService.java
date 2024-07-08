@@ -14,8 +14,8 @@ public class ExperienceService {
         ExperienceDao.deleteExperience(experienceId);
     }
 
-    public static void createExperience(Long userId, Long storeId, String patente, String description, int rating) {
-        ExperienceDao.createExperience(userId, storeId, patente, description, rating);
+    public static void createExperience(Long userId, Long storeId, String patente, String description, int rating, Float price) {
+        ExperienceDao.createExperience(userId, storeId, patente, description, rating, price);
     }
 
 }

@@ -43,14 +43,9 @@ public class ExperienceController {
         String patente = jsonObj.get("idAuto").getAsString();
         String description = jsonObj.get("description").getAsString();
         int rating = jsonObj.get("rating").getAsInt();
+        Float price = jsonObj.get("price").getAsFloat();
 
-        System.out.println("useeeerId: " + userId);
-        System.out.println("storeId: " + storeId);
-        System.out.println("patente: " + patente);
-        System.out.println("description: " + description);
-        System.out.println("rating: " + rating);
-
-        ExperienceService.createExperience(userId, storeId, patente, description, rating);
+        ExperienceService.createExperience(userId, storeId, patente, description, rating, price);
 
         response.status(200);
         return "";

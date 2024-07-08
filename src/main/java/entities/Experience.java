@@ -28,6 +28,9 @@ public class Experience {
     @Column(nullable = false)
     private Timestamp creationDate = new Timestamp(System.currentTimeMillis());
 
+    @Column(nullable = false)
+    private Float price;
+
     // Getters and setters...
 
     public Long getId() {
@@ -80,5 +83,13 @@ public class Experience {
 
     public void setCreationDate(Timestamp timestamp) {
         this.creationDate = timestamp;
+    }
+
+    public Float getPrice() {
+        return price;
+    }
+
+    public void setPrice(Float price) {
+        this.price = price;
     }
 }
