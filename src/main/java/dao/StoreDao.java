@@ -89,8 +89,11 @@ public class StoreDao {
                     case "email":
                         store.setEmail(value);
                         break;
-                    case "domicilio":
-                        store.setDomicilio(value);
+                    case "domicilioLongitud":
+                        store.setDomicilioLongitud(Double.valueOf(value));
+                        break;
+                    case "domicilioLatitud":
+                        store.setDomicilioLatitud(Double.valueOf(value));
                         break;
                     case "serviceType":
                         store.setTipoDeServicio(value);
@@ -126,7 +129,7 @@ public class StoreDao {
         }
     }
 
-    public static boolean editVisualStoreProfile(String email,  String name, String domicilio, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
+    public static boolean editVisualStoreProfile(String email,  String name, Double domicilioLongitud, Double domicilioLatitud, String tipoDeServicio, String description, String phoneNumber, String webPageLink, String instagramLink, String googleMapsLink) {
         EntityManager entityManager = factory.createEntityManager();
         EntityTransaction transaction = entityManager.getTransaction();
 
@@ -140,7 +143,8 @@ public class StoreDao {
 
             if (store != null) {
                 store.setStoreName(name);
-                store.setDomicilio(domicilio);
+                store.setDomicilioLongitud(domicilioLongitud);
+                store.setDomicilioLatitud(domicilioLatitud);
                 store.setTipoDeServicio(tipoDeServicio);
                 store.setDescription(description);
                 store.setPhoneNumber(phoneNumber);

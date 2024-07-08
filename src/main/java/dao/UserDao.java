@@ -70,8 +70,8 @@ public class UserDao {
         }
 
     }
-    public static User createUserDriver(String email, String username, String name, String surname, String password, String domicilio, String userType) {
-        return new User(email, username, name, surname, password, domicilio, userType);
+    public static User createUserDriver(String email, String username, String name, String surname, String password, Double longitude, Double latitude, String userType) {
+        return new User(email, username, name, surname, password, longitude, latitude, userType);
     }
 
     public static boolean updateUserField(Long userId, String field, String newValue) {
@@ -102,8 +102,11 @@ public class UserDao {
                 case "password":
                     user.setPassword(newValue);
                     break;
-                case "domicilio":
-                    user.setDomicilio(newValue);
+                case "domicilioLongitude":
+                    user.setDomicilioLongitude(Double.valueOf(newValue));
+                    break;
+                case "domicilioLatitude":
+                    user.setDomicilioLatitude(Double.valueOf(newValue));
                     break;
                 default:
                     System.out.println("Invalid field: " + field);

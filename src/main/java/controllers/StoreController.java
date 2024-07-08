@@ -27,7 +27,8 @@ public class StoreController {
 
         String storeEmail = jsonObj.get("storeEmail").getAsString();
         String storeName = jsonObj.get("storeName").getAsString();
-        String domicilio = jsonObj.get("domicilio").getAsString();
+        Double longitud = jsonObj.get("longitud").getAsDouble();
+        Double latitud = jsonObj.get("latitud").getAsDouble();
         String tipoDeServicio = jsonObj.get("tipoDeServicio").getAsString();
 
         System.out.println("EMAIL STOREEE" + email);
@@ -37,7 +38,7 @@ public class StoreController {
             return "User not found";
         }
 
-        Store store = new Store(storeEmail, storeName, domicilio, tipoDeServicio);
+        Store store = new Store(storeEmail, storeName, longitud, latitud, tipoDeServicio);
         store.setUser(user);
         StoreDao.saveStore(store);
 
@@ -120,7 +121,8 @@ public class StoreController {
         JsonObject jsonObj = gson.fromJson(request.body(), JsonObject.class);
 
         String email = jsonObj.get("Email").getAsString();
-        String domicilio = jsonObj.get("Domicilio").getAsString();
+        Double domicilioLongitud = jsonObj.get("longitud").getAsDouble();
+        Double domicilioLatitud = jsonObj.get("latitud").getAsDouble();
         String name = jsonObj.get("StoreName").getAsString();
         String tipoDeServicio = jsonObj.get("TipoDeServicio").getAsString();
         String description = jsonObj.get("Description").getAsString();
@@ -136,7 +138,7 @@ public class StoreController {
         System.out.println("TENGO INSTAGRAM" + instagramLink);
         System.out.println("TENGO GOOGLE" + googleMapsLink);
 
-        boolean result = StoreService.editVisualStoreProfile(email, name, domicilio, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
+        boolean result = StoreService.editVisualStoreProfile(email, name, domicilioLongitud, domicilioLatitud, tipoDeServicio, description, phoneNumber, webPageLink, instagramLink, googleMapsLink);
 
         Map<String, String> message = new HashMap<>();
         if (result) {

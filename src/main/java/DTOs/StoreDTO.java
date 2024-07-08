@@ -6,7 +6,8 @@ public class StoreDTO {
 
     public String storeName;
     public String storeEmail;
-    public String domicilio;
+    public Double domicilioLongitud;
+    public Double domicilioLatitud;
     public String tipoDeServicio;
     public String description;
     public String phoneNumber;
@@ -17,7 +18,8 @@ public class StoreDTO {
     public StoreDTO(Store store) {
         this.storeName = store.getStoreName();
         this.storeEmail = store.getStoreEmail();
-        this.domicilio = store.getDomicilio();
+        this.domicilioLongitud = store.getDomicilioLongitud();
+        this.domicilioLatitud = store.getDomicilioLatitud();
         this.tipoDeServicio = store.getTipoDeServicio();
         this.description = store.getDescription();
         this.phoneNumber = store.getPhoneNumber();
