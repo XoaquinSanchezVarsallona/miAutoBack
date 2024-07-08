@@ -87,7 +87,7 @@ public class AlertDao {
 
     public static String getPapers(User user, Car car) {
         for (Registration paper : user.getRegistration()) {
-            if (paper.getCar() == car) {
+            if (paper.getCar().getPatente().equals(car.getPatente())) {
                 return paper.getPng();
             }
 
