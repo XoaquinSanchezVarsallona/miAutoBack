@@ -74,7 +74,7 @@ public class Main {
         // Start a new transaction
         entityManager.getTransaction().begin();
 
-        User user = new User("123", "123", "mateo", "A", "123", 50.0, 50.0, "driver");
+        User user = new User("123", "123", "mateo", "A", "123", 11.0,11.0, "driver");
         Familia familia = new Familia("Smith");
         Alert alert = new Alert("Alert message", "Alert type");
 
@@ -101,7 +101,7 @@ public class Main {
         Familia misAutos = new Familia("misAutosAA");
 
 
-        User mateo = new User("AAA", "AAA", "mateo", "AA", "AAA", 100.0, 100.0, "driver");
+        User mateo = new User("AAA", "AAA", "mateo", "AA", "AAA", 11.0,11.0, "driver");
         mateo.addFamily(gonzales);
         gonzales.addUser(mateo);
 
