@@ -73,6 +73,7 @@ public class RouteController {
             res.status(404);
             return "Route not found";
         }
+        String previousKm = route.getKilometraje();
         try {
             JsonObject updatesObject = jsonObject.getAsJsonObject("updates");
             String kilometres = updatesObject.get("Distance").getAsString();
@@ -80,8 +81,10 @@ public class RouteController {
             String date = updatesObject.get("Date").getAsString();
             RouteService.updateRoute(route, kilometres, duration, date);
             entities.Route updatedRoute = RouteService.getRouteById(routeId);
-            // Update car mileage
+            // First substract previous mileage
             String patente = CarController.getPatenteOfRouteId(routeId);
+            CarController.substractKilometraje(patente, previousKm);
+            // Update car mileage
             CarController.updateKilometraje(patente);
             res.status(200);
             return gson.toJson(new RouteDTO(updatedRoute));
