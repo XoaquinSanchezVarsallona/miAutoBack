@@ -32,13 +32,16 @@ public class ImageDao {
 
             User user = em.find(User.class, Long.parseLong(userID));
             Car car = em.find(Car.class, patente);
+            Registration registration = registrationAlreadyExists(user, car);
 
-            System.out.println(car.getClass());
-            System.out.println(user.getClass());
-            System.out.println(image.getClass());
-            Registration register = new Registration(image, user, car);
-            user.addRegistration(register);
-            car.addRegister(register);
+            if (registration != null) {
+                registration.setPng(image);
+            }
+            else {
+                registration = new Registration(image, user, car);
+                user.addRegistration(registration);
+                car.addRegister(registration);
+            }
 
             em.merge(user);
             em.merge(car);
@@ -50,6 +53,13 @@ public class ImageDao {
             e.printStackTrace();
         }
         em.close();
+    }
+
+    private static Registration registrationAlreadyExists(User user, Car car) {
+        for (Registration registration : user.getRegistration()) {
+            if (registration.getCar().getPatente().equals(car.getPatente())) return registration;
+        }
+        return null;
     }
 
     public static PapersToDisplay getImages(String userID, String patente) {

@@ -11,7 +11,8 @@ public class Main {
         final EntityManagerFactory factory = Persistence.createEntityManagerFactory("miAutoDB");
         final EntityManager entityManager = factory.createEntityManager();
 
-        sample1(entityManager);
+        sample0(entityManager);
+        //sample1(entityManager);
         //sample2(entityManager);
         // sample8(entityManager); // Intento de vínculo user y familia
         //sample4(entityManager); // Sample para borrar tablas
@@ -25,6 +26,14 @@ public class Main {
 
         entityManager.close();
         factory.close();
+    }
+
+    private static void sample0(final EntityManager entityManager) {
+        entityManager.getTransaction().begin();
+        Query query = entityManager.createNativeQuery("DROP TABLE REGISTRATION");
+        query.executeUpdate();
+        entityManager.getTransaction().commit();
+        entityManager.close();
     }
     private static void sample9 (EntityManager entityManager) {
         Car car = new Car("AA476OV", "Toyota", "Corolla Cross", 1000, 2019,
