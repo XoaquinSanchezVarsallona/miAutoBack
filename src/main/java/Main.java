@@ -36,20 +36,16 @@ public class Main {
         //Query query5 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKSQ79NXOIP6D3QOO9AI7X81MIS");
         //Query query6 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FK2L52BICGRLY0PS2UBRQBSC9FU");
         //Query query7 = entityManager.createNativeQuery("ALTER TABLE familia DROP CONSTRAINT FKL3926P5KPEVQ2G93VDA1W7RWK");
-        Query query = entityManager.createNativeQuery("DROP TABLE familia_conductores");
-        Query query1 = entityManager.createNativeQuery("DROP TABLE familia_auto");
-        Query query2 = entityManager.createNativeQuery("DROP TABLE familia");
+        Query query = entityManager.createNativeQuery("ALTER TABLE CAR DROP CONSTRAINT FK1JLMG2PEGINETF27X83FNHTKW");
+        Query query2 = entityManager.createNativeQuery("ALTER TABLE CAR DROP CONSTRAINT FKIPU68V540CNJ2KREWJVR9TG5V");
         Query query3 = entityManager.createNativeQuery("DROP TABLE car");
-        Query query4 = entityManager.createNativeQuery("DROP TABLE familia");
-        Query query6 = entityManager.createNativeQuery("DROP TABLE car");
         //query5.executeUpdate();
         //query6.executeUpdate();
         //query7.executeUpdate();
         //query.executeUpdate();
-        query1.executeUpdate();
+        query.executeUpdate();
         query2.executeUpdate();
         query3.executeUpdate();
-        query4.executeUpdate();
 
         entityManager.getTransaction().commit();
         entityManager.close();
@@ -127,13 +123,13 @@ public class Main {
         LocalDate startDate = LocalDate.of(2024, 1, 1);
         LocalDate endDate = LocalDate.of(2024, 12, 31);
         Random random = new Random();
-        User user = UserService.findUserById(8052L);
+        User user = UserService.findUserById(353L);
 
         entityManager.getTransaction().begin();
 
         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
             int randomKilometraje = 1 + random.nextInt(150); // Generates random integers between 100 and 999
-            RouteService.createRoute("ETU234", user, String.valueOf(randomKilometraje), "1", date.toString());
+            RouteService.createRoute("ETU238", user, String.valueOf(randomKilometraje), "1", date.toString());
         }
 
         entityManager.getTransaction().commit();

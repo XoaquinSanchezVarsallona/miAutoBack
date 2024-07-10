@@ -1,0 +1,1 @@
+java -cp D:\Nacho\hsqldb\lib\hsqldb.jar org.hsqldb.server.Server --database.0 file:D:\Nacho\hsqldb\lib\hsqldb\db --dbname.0 MiAutodb

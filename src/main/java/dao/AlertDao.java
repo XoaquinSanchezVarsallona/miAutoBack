@@ -76,7 +76,7 @@ public class AlertDao {
 
         for (Familia familia : familias){
             try {
-                FamilyService.addAlertToFamily(message, familia.getApellido(), name);
+                FamilyService.addAlertToFamily(message, familia.getApellido(), user.getUsername());
             }
             catch (Exception e) {
                 System.out.println("An error occurred while saving the alert: " + e.getMessage());
