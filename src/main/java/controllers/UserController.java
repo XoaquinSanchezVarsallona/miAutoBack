@@ -110,6 +110,7 @@ public class UserController {
     };
 
     public Route validateToken = (req, res) -> {
+        System.out.println("busco tokeeeeen");
         String token = req.headers("Authorization").replace("Bearer ", "");
         Map<String, String> userInfo = JwtUtil.validateToken(token);
         if (userInfo == null) {
@@ -122,6 +123,8 @@ public class UserController {
     };
 
     public Route findUserById = (req, res) -> {
+        System.out.println("Entrooo a finduserbyid");
+
         Gson gson = new Gson();
         Long userId = Long.parseLong(req.params("userId"));
         User user = UserService.findUserById(userId);
@@ -131,6 +134,9 @@ public class UserController {
         }
         res.status(200);
         UserDTO userDTO = new UserDTO(user);
+        System.out.println("el siguiente usuario se obtuvo");
+        System.out.println(userDTO.email);
+        System.out.println(userDTO);
         return gson.toJson(userDTO);
     };
     public Route deleteUser = (req, res) -> {

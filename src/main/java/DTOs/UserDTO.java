@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class UserDTO {
     private final List<Integer> familias;
-    private String email;
+    public String email;
     private String username;
     private Double domicilioLongitude;
     private Double domicilioLatitude;

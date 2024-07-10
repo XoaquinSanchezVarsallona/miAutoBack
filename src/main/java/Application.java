@@ -52,6 +52,7 @@ public class  Application {
         post("/validateToken", userController.validateToken);
         get("/user/:email", userController.findUserByEmail);
         post("/user/:userId", userController.findUserById);
+        post("/findUserById/:userId", userController.findUserById);
         delete("/user/:userId/deleteUser", userController.deleteUser);
 
         // Car
